@@ -1,0 +1,2413 @@
+{
+  "fileName": "ForesightVault.sol",
+  "contractName": "ForesightVault",
+  "source": "// SPDX-License-Identifier: Unlicense\n\npragma solidity 0.6.12;\n\nimport \"@openzeppelin/contracts/access/Ownable.sol\";\nimport \"./Foresight.sol\";\n\n\n/// @title ForesightVault\n/// @notice Holds data to mint complete sets of Foresight tokens.\n/// @dev Foresight Tokens are ERC777 for hooks usage if necessary.\n///      Contract can only be controlled by owning contract.\ncontract ForesightVault is Ownable {\n    /// @notice Address of the market connected to the Foresight Vault.\n    address public marketAddress;\n    /// @notice YesShort token pointer.\n    Foresight public yesShortToken;\n    /// @notice NoLong token pointer.\n    Foresight public noLongToken;\n    /// @notice Invalid token pointer.\n    Foresight public invalidToken;\n    /// @notice YesShort token address pointer.\n    address public yesShortTokenAddress;\n    /// @notice NoLong token address pointer.\n    address public noLongTokenAddress;\n    /// @notice Invalid token address pointer.\n    address public invalidTokenAddress;\n\n    /// @notice Create a minter and store market address data.\n    /// @param setMarketAddress Pointer to the market Address linking the Foresight token.\n    constructor(address setMarketAddress) public {\n        marketAddress = setMarketAddress;\n        yesShortToken = new Foresight(\"Foresight - Yes/Short\", \"FYS\", setMarketAddress);\n        noLongToken = new Foresight(\"Foresight - No/Long\", \"FNL\", setMarketAddress);\n        invalidToken = new Foresight(\"Foresight - Invalid\", \"FINV\", setMarketAddress);\n        yesShortTokenAddress = address(yesShortToken);\n        noLongTokenAddress = address(noLongToken);\n        invalidTokenAddress = address(invalidToken);\n    }\n\n    /// @notice Mints a complete set of Foresight Tokens.\n    /// @dev Only the owner of the contract can mint tokens.\n    /// @param amount Amount of each token to mint.\n    /// @param to Address to send tokens to.\n    function mintCompleteSets(address to, uint amount) public onlyOwner {\n        noLongToken.mint(to, amount);\n        yesShortToken.mint(to, amount);\n        invalidToken.mint(to, amount);\n    }\n\n    /// @notice Burn the YesShort Foresight Token for the given address.\n    /// @dev Only the owner of the contract can burn tokens.\n    /// @param amount Amount of each token to mint.\n    /// @param from Address to burn tokens from.\n    function burnYesShort(address from, uint amount) public onlyOwner {\n        yesShortToken.burn(from, amount);\n    }\n\n    /// @notice Burn the NoLong Foresight Token for the given address.\n    /// @dev Only the owner of the contract can burn tokens.\n    /// @param amount Amount of each token to mint.\n    /// @param from Address to burn tokens from.\n    function burnNoLong(address from, uint amount) public onlyOwner {\n        noLongToken.burn(from, amount);\n    }\n\n    /// @notice Burn the NoLong Foresight Token for the given address.\n    /// @dev Only the owner of the contract can burn tokens.\n    /// @param amount Amount of each token to mint.\n    /// @param from Address to burn tokens from.\n    function burnInvalid(address from, uint amount) public onlyOwner {\n        invalidToken.burn(from, amount);\n    }\n\n}\n",
+  "sourcePath": "contracts/ForesightVault.sol",
+  "sourceMap": "365:2774:16:-:0;;;1150:514;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;1150:514:16;865:17:1;885:12;:10;:12::i;:::-;907:6;:18;;-1:-1:-1;;;;;;907:18:1;-1:-1:-1;;;;;907:18:1;;;;;;;940:43;;907:18;;-1:-1:-1;907:18:1;940:43;;907:6;;940:43;-1:-1:-1;1205:13:16;:32;;-1:-1:-1;;;;;;1205:32:16;-1:-1:-1;;;;;1205:32:16;;;;;1263:63;;1205:32;;1263:63;;;:::i;:::-;-1:-1:-1;;;;;1263:63:16;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;1263:63:16;;;;-1:-1:-1;1263:63:16;;;;;;;;;;;-1:-1:-1;;;1263:63:16;;;;;;;;;;;;-1:-1:-1;1263:63:16;;;;;;;;;;;;;;;-1:-1:-1;1247:13:16;:79;;-1:-1:-1;;;;;;1247:79:16;-1:-1:-1;;;;;1247:79:16;;;;;;;;;;1350:61;;1394:16;;1350:61;;;:::i;:::-;-1:-1:-1;;;;;1350:61:16;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;1350:61:16;;;;-1:-1:-1;1350:61:16;;;;;;;;;;;-1:-1:-1;;;1350:61:16;;;;;;;;;;;;-1:-1:-1;1350:61:16;;;;;;;;;;;;;;;-1:-1:-1;1336:11:16;:75;;-1:-1:-1;;;;;;1336:75:16;-1:-1:-1;;;;;1336:75:16;;;;;;;;;;1436:62;;1481:16;;1436:62;;;:::i;:::-;-1:-1:-1;;;;;1436:62:16;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;1436:62:16;;;;-1:-1:-1;1436:62:16;;;;;;;;;;;-1:-1:-1;;;1436:62:16;;;;;;;;;;;;-1:-1:-1;1436:62:16;;;;;;;;;;;;;;;-1:-1:-1;1421:12:16;:77;;-1:-1:-1;;;;;1421:77:16;;;-1:-1:-1;;;;;;1421:77:16;;;;;;;;1539:13;;1508:20;:45;;;;1539:13;;;1508:45;;;;;;1592:11;;1563:18;:41;;;;1592:11;;;1563:41;;;;;;1614:19;:43;;;;;1644:12;;;;1614:43;;;-1:-1:-1;365:2774:16;;590:104:0;677:10;590:104;:::o;365:2774:16:-;;;;;;;;:::o;:::-;;;;;;;",
+  "deployedSourceMap": "365:2774:16:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;782:35;;;:::i;:::-;;;;-1:-1:-1;;;;;782:35:16;;;;;;;;;;;;;;869:33;;;:::i;955:34::-;;;:::i;552:30::-;;;:::i;699:29::-;;;:::i;1689:145:1:-;;;:::i;:::-;;1066:77;;;:::i;2319:115:16:-;;;;;;;;;;;;;;;;-1:-1:-1;;;;;;2319:115:16;;;;;;;;:::i;478:28::-;;;:::i;3023:113::-;;;;;;;;;;;;;;;;-1:-1:-1;;;;;;3023:113:16;;;;;;;;:::i;1983:240:1:-;;;;;;;;;;;;;;;;-1:-1:-1;1983:240:1;-1:-1:-1;;;;;1983:240:1;;:::i;1886:192:16:-;;;;;;;;;;;;;;;;-1:-1:-1;;;;;;1886:192:16;;;;;;;;:::i;626:28::-;;;:::i;2673:111::-;;;;;;;;;;;;;;;;-1:-1:-1;;;;;;2673:111:16;;;;;;;;:::i;782:35::-;;;-1:-1:-1;;;;;782:35:16;;:::o;869:33::-;;;-1:-1:-1;;;;;869:33:16;;:::o;955:34::-;;;-1:-1:-1;;;;;955:34:16;;:::o;552:30::-;;;-1:-1:-1;;;;;552:30:16;;:::o;699:29::-;;;-1:-1:-1;;;;;699:29:16;;:::o;1689:145:1:-;1280:12;:10;:12::i;:::-;1270:6;;-1:-1:-1;;;;;1270:6:1;;;:22;;;1262:67;;;;;-1:-1:-1;;;1262:67:1;;;;;;;;;;;;;-1:-1:-1;;;;;;;;;;;1262:67:1;;;;;;;;;;;;;;;1795:1:::1;1779:6:::0;;1758:40:::1;::::0;-1:-1:-1;;;;;;;1779:6:1;;::::1;::::0;1795:1;;-1:-1:-1;;1795:1:1;-1:-1:-1;;;;;1758:40:1;1795:1;;1758:40:::1;1825:1;1808:19:::0;;-1:-1:-1;;;;;;1808:19:1::1;::::0;;1689:145::o;1066:77::-;1104:7;1130:6;-1:-1:-1;;;;;1130:6:1;;1066:77::o;2319:115:16:-;1280:12:1;:10;:12::i;:::-;1270:6;;-1:-1:-1;;;;;1270:6:1;;;:22;;;1262:67;;;;;-1:-1:-1;;;1262:67:1;;;;;;;;;;;;;-1:-1:-1;;;;;;;;;;;1262:67:1;;;;;;;;;;;;;;;2395:13:16::1;::::0;:32:::1;::::0;;-1:-1:-1;;;2395:32:16;;-1:-1:-1;;;;;2395:32:16;;::::1;;::::0;::::1;::::0;;;;;;;;;:13;;;::::1;::::0;:18:::1;::::0;:32;;;;;-1:-1:-1;;2395:32:16;;;;;;;-1:-1:-1;2395:13:16;:32;::::1;;::::0;::::1;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;;;;;2319:115:::0;;:::o;478:28::-;;;-1:-1:-1;;;;;478:28:16;;:::o;3023:113::-;1280:12:1;:10;:12::i;:::-;1270:6;;-1:-1:-1;;;;;1270:6:1;;;:22;;;1262:67;;;;;-1:-1:-1;;;1262:67:1;;;;;;;;;;;;;-1:-1:-1;;;;;;;;;;;1262:67:1;;;;;;;;;;;;;;;3098:12:16::1;::::0;;:31:::1;::::0;;-1:-1:-1;;;3098:31:16;;-1:-1:-1;;;;;3098:31:16;;::::1;::::0;;::::1;::::0;;;;;;;;;;;;:12;;;::::1;::::0;:17:::1;::::0;:31;;;;;-1:-1:-1;;3098:31:16;;;;;;;;-1:-1:-1;3098:12:16;:31;::::1;;::::0;::::1;;;;::::0;::::1;1983:240:1::0;1280:12;:10;:12::i;:::-;1270:6;;-1:-1:-1;;;;;1270:6:1;;;:22;;;1262:67;;;;;-1:-1:-1;;;1262:67:1;;;;;;;;;;;;;-1:-1:-1;;;;;;;;;;;1262:67:1;;;;;;;;;;;;;;;-1:-1:-1;;;;;2071:22:1;::::1;2063:73;;;;-1:-1:-1::0;;;2063:73:1::1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2172:6;::::0;;2151:38:::1;::::0;-1:-1:-1;;;;;;;2151:38:1;;::::1;::::0;2172:6;::::1;::::0;;;;-1:-1:-1;;2172:6:1;-1:-1:-1;;;;;2151:38:1;::::1;2199:6;:17:::0;;-1:-1:-1;;;;;;2199:17:1::1;-1:-1:-1::0;;;;;2199:17:1;;;::::1;::::0;;;::::1;::::0;;1983:240::o;1886:192:16:-;1280:12:1;:10;:12::i;:::-;1270:6;;-1:-1:-1;;;;;1270:6:1;;;:22;;;1262:67;;;;;-1:-1:-1;;;1262:67:1;;;;;;;;;;;;;-1:-1:-1;;;;;;;;;;;1262:67:1;;;;;;;;;;;;;;;1964:11:16::1;::::0;:28:::1;::::0;;-1:-1:-1;;;1964:28:16;;-1:-1:-1;;;;;1964:28:16;;::::1;;::::0;::::1;::::0;;;;;;;;;:11;;;::::1;::::0;-1:-1:-1;;1964:28:16;;;;;-1:-1:-1;;1964:28:16;;;;;;;-1:-1:-1;1964:11:16;:28;::::1;;::::0;::::1;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;-1:-1:-1::0;;2002:13:16::1;::::0;:30:::1;::::0;;-1:-1:-1;;;2002:30:16;;-1:-1:-1;;;;;2002:30:16;;::::1;;::::0;::::1;::::0;;;;;;;;;:13;;;::::1;::::0;-1:-1:-1;;;;2002:30:16;;;;;-1:-1:-1;;2002:30:16;;;;;;;-1:-1:-1;2002:13:16;:30;::::1;;::::0;::::1;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;-1:-1:-1::0;;2042:12:16::1;::::0;;:29:::1;::::0;;-1:-1:-1;;;2042:29:16;;-1:-1:-1;;;;;2042:29:16;;::::1;::::0;;::::1;::::0;;;;;;;;;;;;:12;;;::::1;::::0;-1:-1:-1;;;;2042:29:16;;;;;-1:-1:-1;;2042:29:16;;;;;;;;-1:-1:-1;2042:12:16;:29;::::1;;::::0;::::1;;;;::::0;::::1;626:28:::0;;;-1:-1:-1;;;;;626:28:16;;:::o;2673:111::-;1280:12:1;:10;:12::i;:::-;1270:6;;-1:-1:-1;;;;;1270:6:1;;;:22;;;1262:67;;;;;-1:-1:-1;;;1262:67:1;;;;;;;;;;;;;-1:-1:-1;;;;;;;;;;;1262:67:1;;;;;;;;;;;;;;;2747:11:16::1;::::0;:30:::1;::::0;;-1:-1:-1;;;2747:30:16;;-1:-1:-1;;;;;2747:30:16;;::::1;;::::0;::::1;::::0;;;;;;;;;:11;;;::::1;::::0;:16:::1;::::0;:30;;;;;-1:-1:-1;;2747:30:16;;;;;;;-1:-1:-1;2747:11:16;:30;::::1;;::::0;::::1;;;;::::0;::::1;590:104:0::0;677:10;590:104;:::o",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "setMarketAddress",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "burnInvalid",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "burnNoLong",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "burnYesShort",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "invalidToken",
+      "outputs": [
+        {
+          "internalType": "contract Foresight",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "invalidTokenAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "marketAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "mintCompleteSets",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "noLongToken",
+      "outputs": [
+        {
+          "internalType": "contract Foresight",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "noLongTokenAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "yesShortToken",
+      "outputs": [
+        {
+          "internalType": "contract Foresight",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "yesShortTokenAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "ast": {
+    "absolutePath": "contracts/ForesightVault.sol",
+    "exportedSymbols": {
+      "ForesightVault": [
+        3373
+      ]
+    },
+    "id": 3374,
+    "license": "Unlicense",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3201,
+        "literals": [
+          "solidity",
+          "0.6",
+          ".12"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "39:23:16"
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/access/Ownable.sol",
+        "file": "@openzeppelin/contracts/access/Ownable.sol",
+        "id": 3202,
+        "nodeType": "ImportDirective",
+        "scope": 3374,
+        "sourceUnit": 132,
+        "src": "64:52:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "contracts/Foresight.sol",
+        "file": "./Foresight.sol",
+        "id": 3203,
+        "nodeType": "ImportDirective",
+        "scope": 3374,
+        "sourceUnit": 3200,
+        "src": "117:25:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 3205,
+              "name": "Ownable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 131,
+              "src": "392:7:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Ownable_$131",
+                "typeString": "contract Ownable"
+              }
+            },
+            "id": 3206,
+            "nodeType": "InheritanceSpecifier",
+            "src": "392:7:16"
+          }
+        ],
+        "contractDependencies": [
+          22,
+          131,
+          3199
+        ],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 3204,
+          "nodeType": "StructuredDocumentation",
+          "src": "145:220:16",
+          "text": "@title ForesightVault\n @notice Holds data to mint complete sets of Foresight tokens.\n @dev Foresight Tokens are ERC777 for hooks usage if necessary.\n      Contract can only be controlled by owning contract."
+        },
+        "fullyImplemented": true,
+        "id": 3373,
+        "linearizedBaseContracts": [
+          3373,
+          131,
+          22
+        ],
+        "name": "ForesightVault",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "documentation": {
+              "id": 3207,
+              "nodeType": "StructuredDocumentation",
+              "src": "406:67:16",
+              "text": "@notice Address of the market connected to the Foresight Vault."
+            },
+            "functionSelector": "95623641",
+            "id": 3209,
+            "mutability": "mutable",
+            "name": "marketAddress",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 3373,
+            "src": "478:28:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 3208,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "478:7:16",
+              "stateMutability": "nonpayable",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "documentation": {
+              "id": 3210,
+              "nodeType": "StructuredDocumentation",
+              "src": "512:35:16",
+              "text": "@notice YesShort token pointer."
+            },
+            "functionSelector": "38f4a5bf",
+            "id": 3212,
+            "mutability": "mutable",
+            "name": "yesShortToken",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 3373,
+            "src": "552:30:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_Foresight_$3199",
+              "typeString": "contract Foresight"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 3211,
+              "name": "Foresight",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3199,
+              "src": "552:9:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Foresight_$3199",
+                "typeString": "contract Foresight"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "documentation": {
+              "id": 3213,
+              "nodeType": "StructuredDocumentation",
+              "src": "588:33:16",
+              "text": "@notice NoLong token pointer."
+            },
+            "functionSelector": "f3297347",
+            "id": 3215,
+            "mutability": "mutable",
+            "name": "noLongToken",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 3373,
+            "src": "626:28:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_Foresight_$3199",
+              "typeString": "contract Foresight"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 3214,
+              "name": "Foresight",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3199,
+              "src": "626:9:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Foresight_$3199",
+                "typeString": "contract Foresight"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "documentation": {
+              "id": 3216,
+              "nodeType": "StructuredDocumentation",
+              "src": "660:34:16",
+              "text": "@notice Invalid token pointer."
+            },
+            "functionSelector": "65a2e2e8",
+            "id": 3218,
+            "mutability": "mutable",
+            "name": "invalidToken",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 3373,
+            "src": "699:29:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_Foresight_$3199",
+              "typeString": "contract Foresight"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 3217,
+              "name": "Foresight",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3199,
+              "src": "699:9:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Foresight_$3199",
+                "typeString": "contract Foresight"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "documentation": {
+              "id": 3219,
+              "nodeType": "StructuredDocumentation",
+              "src": "734:43:16",
+              "text": "@notice YesShort token address pointer."
+            },
+            "functionSelector": "0e49dd7e",
+            "id": 3221,
+            "mutability": "mutable",
+            "name": "yesShortTokenAddress",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 3373,
+            "src": "782:35:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 3220,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "782:7:16",
+              "stateMutability": "nonpayable",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "documentation": {
+              "id": 3222,
+              "nodeType": "StructuredDocumentation",
+              "src": "823:41:16",
+              "text": "@notice NoLong token address pointer."
+            },
+            "functionSelector": "15edaf8b",
+            "id": 3224,
+            "mutability": "mutable",
+            "name": "noLongTokenAddress",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 3373,
+            "src": "869:33:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 3223,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "869:7:16",
+              "stateMutability": "nonpayable",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "documentation": {
+              "id": 3225,
+              "nodeType": "StructuredDocumentation",
+              "src": "908:42:16",
+              "text": "@notice Invalid token address pointer."
+            },
+            "functionSelector": "1eb3dfcc",
+            "id": 3227,
+            "mutability": "mutable",
+            "name": "invalidTokenAddress",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 3373,
+            "src": "955:34:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 3226,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "955:7:16",
+              "stateMutability": "nonpayable",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3285,
+              "nodeType": "Block",
+              "src": "1195:469:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 3235,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 3233,
+                      "name": "marketAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3209,
+                      "src": "1205:13:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 3234,
+                      "name": "setMarketAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3230,
+                      "src": "1221:16:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1205:32:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 3236,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1205:32:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 3244,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 3237,
+                      "name": "yesShortToken",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3212,
+                      "src": "1247:13:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_Foresight_$3199",
+                        "typeString": "contract Foresight"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "hexValue": "466f72657369676874202d205965732f53686f7274",
+                          "id": 3240,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "string",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1277:23:16",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_stringliteral_ce4a7fbeb9a776f35047bcd0e97e1ed94f023b66916ff52b82fa8e39bf710065",
+                            "typeString": "literal_string \"Foresight - Yes/Short\""
+                          },
+                          "value": "Foresight - Yes/Short"
+                        },
+                        {
+                          "argumentTypes": null,
+                          "hexValue": "465953",
+                          "id": 3241,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "string",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1302:5:16",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_stringliteral_c1f3185cddcfd618f6d57e812c129643c29dc56bb4cc765ae4084bdc0bd42a0d",
+                            "typeString": "literal_string \"FYS\""
+                          },
+                          "value": "FYS"
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 3242,
+                          "name": "setMarketAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3230,
+                          "src": "1309:16:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_stringliteral_ce4a7fbeb9a776f35047bcd0e97e1ed94f023b66916ff52b82fa8e39bf710065",
+                            "typeString": "literal_string \"Foresight - Yes/Short\""
+                          },
+                          {
+                            "typeIdentifier": "t_stringliteral_c1f3185cddcfd618f6d57e812c129643c29dc56bb4cc765ae4084bdc0bd42a0d",
+                            "typeString": "literal_string \"FYS\""
+                          },
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 3239,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "NewExpression",
+                        "src": "1263:13:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_creation_nonpayable$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_address_$returns$_t_contract$_Foresight_$3199_$",
+                          "typeString": "function (string memory,string memory,address) returns (contract Foresight)"
+                        },
+                        "typeName": {
+                          "contractScope": null,
+                          "id": 3238,
+                          "name": "Foresight",
+                          "nodeType": "UserDefinedTypeName",
+                          "referencedDeclaration": 3199,
+                          "src": "1267:9:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_Foresight_$3199",
+                            "typeString": "contract Foresight"
+                          }
+                        }
+                      },
+                      "id": 3243,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1263:63:16",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_Foresight_$3199",
+                        "typeString": "contract Foresight"
+                      }
+                    },
+                    "src": "1247:79:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_Foresight_$3199",
+                      "typeString": "contract Foresight"
+                    }
+                  },
+                  "id": 3245,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1247:79:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 3253,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 3246,
+                      "name": "noLongToken",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3215,
+                      "src": "1336:11:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_Foresight_$3199",
+                        "typeString": "contract Foresight"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "hexValue": "466f72657369676874202d204e6f2f4c6f6e67",
+                          "id": 3249,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "string",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1364:21:16",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_stringliteral_1f5e22e239a31dc9361fa2bf060b9d9233576548e17967e4a1550d288446de03",
+                            "typeString": "literal_string \"Foresight - No/Long\""
+                          },
+                          "value": "Foresight - No/Long"
+                        },
+                        {
+                          "argumentTypes": null,
+                          "hexValue": "464e4c",
+                          "id": 3250,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "string",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1387:5:16",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_stringliteral_e233fdeea7390b03cbc8f90e145bede74b3272401c1659ce1559544f040b386d",
+                            "typeString": "literal_string \"FNL\""
+                          },
+                          "value": "FNL"
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 3251,
+                          "name": "setMarketAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3230,
+                          "src": "1394:16:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_stringliteral_1f5e22e239a31dc9361fa2bf060b9d9233576548e17967e4a1550d288446de03",
+                            "typeString": "literal_string \"Foresight - No/Long\""
+                          },
+                          {
+                            "typeIdentifier": "t_stringliteral_e233fdeea7390b03cbc8f90e145bede74b3272401c1659ce1559544f040b386d",
+                            "typeString": "literal_string \"FNL\""
+                          },
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 3248,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "NewExpression",
+                        "src": "1350:13:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_creation_nonpayable$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_address_$returns$_t_contract$_Foresight_$3199_$",
+                          "typeString": "function (string memory,string memory,address) returns (contract Foresight)"
+                        },
+                        "typeName": {
+                          "contractScope": null,
+                          "id": 3247,
+                          "name": "Foresight",
+                          "nodeType": "UserDefinedTypeName",
+                          "referencedDeclaration": 3199,
+                          "src": "1354:9:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_Foresight_$3199",
+                            "typeString": "contract Foresight"
+                          }
+                        }
+                      },
+                      "id": 3252,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1350:61:16",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_Foresight_$3199",
+                        "typeString": "contract Foresight"
+                      }
+                    },
+                    "src": "1336:75:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_Foresight_$3199",
+                      "typeString": "contract Foresight"
+                    }
+                  },
+                  "id": 3254,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1336:75:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 3262,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 3255,
+                      "name": "invalidToken",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3218,
+                      "src": "1421:12:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_Foresight_$3199",
+                        "typeString": "contract Foresight"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "hexValue": "466f72657369676874202d20496e76616c6964",
+                          "id": 3258,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "string",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1450:21:16",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_stringliteral_21730e8a6c8d0ab12c7a6b0d59e21ce30993c4306bc073e02eb37c792ab69222",
+                            "typeString": "literal_string \"Foresight - Invalid\""
+                          },
+                          "value": "Foresight - Invalid"
+                        },
+                        {
+                          "argumentTypes": null,
+                          "hexValue": "46494e56",
+                          "id": 3259,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "string",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1473:6:16",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_stringliteral_16a9d222c1aeda875694a332fe1d4c54a39778c3c7003991b9aad34ca3a17756",
+                            "typeString": "literal_string \"FINV\""
+                          },
+                          "value": "FINV"
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 3260,
+                          "name": "setMarketAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3230,
+                          "src": "1481:16:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_stringliteral_21730e8a6c8d0ab12c7a6b0d59e21ce30993c4306bc073e02eb37c792ab69222",
+                            "typeString": "literal_string \"Foresight - Invalid\""
+                          },
+                          {
+                            "typeIdentifier": "t_stringliteral_16a9d222c1aeda875694a332fe1d4c54a39778c3c7003991b9aad34ca3a17756",
+                            "typeString": "literal_string \"FINV\""
+                          },
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 3257,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "NewExpression",
+                        "src": "1436:13:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_creation_nonpayable$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_address_$returns$_t_contract$_Foresight_$3199_$",
+                          "typeString": "function (string memory,string memory,address) returns (contract Foresight)"
+                        },
+                        "typeName": {
+                          "contractScope": null,
+                          "id": 3256,
+                          "name": "Foresight",
+                          "nodeType": "UserDefinedTypeName",
+                          "referencedDeclaration": 3199,
+                          "src": "1440:9:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_Foresight_$3199",
+                            "typeString": "contract Foresight"
+                          }
+                        }
+                      },
+                      "id": 3261,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1436:62:16",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_Foresight_$3199",
+                        "typeString": "contract Foresight"
+                      }
+                    },
+                    "src": "1421:77:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_Foresight_$3199",
+                      "typeString": "contract Foresight"
+                    }
+                  },
+                  "id": 3263,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1421:77:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 3269,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 3264,
+                      "name": "yesShortTokenAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3221,
+                      "src": "1508:20:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 3267,
+                          "name": "yesShortToken",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3212,
+                          "src": "1539:13:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_Foresight_$3199",
+                            "typeString": "contract Foresight"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_contract$_Foresight_$3199",
+                            "typeString": "contract Foresight"
+                          }
+                        ],
+                        "id": 3266,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "lValueRequested": false,
+                        "nodeType": "ElementaryTypeNameExpression",
+                        "src": "1531:7:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_address_$",
+                          "typeString": "type(address)"
+                        },
+                        "typeName": {
+                          "id": 3265,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "1531:7:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": null,
+                            "typeString": null
+                          }
+                        }
+                      },
+                      "id": 3268,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1531:22:16",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1508:45:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 3270,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1508:45:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 3276,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 3271,
+                      "name": "noLongTokenAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3224,
+                      "src": "1563:18:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 3274,
+                          "name": "noLongToken",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3215,
+                          "src": "1592:11:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_Foresight_$3199",
+                            "typeString": "contract Foresight"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_contract$_Foresight_$3199",
+                            "typeString": "contract Foresight"
+                          }
+                        ],
+                        "id": 3273,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "lValueRequested": false,
+                        "nodeType": "ElementaryTypeNameExpression",
+                        "src": "1584:7:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_address_$",
+                          "typeString": "type(address)"
+                        },
+                        "typeName": {
+                          "id": 3272,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "1584:7:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": null,
+                            "typeString": null
+                          }
+                        }
+                      },
+                      "id": 3275,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1584:20:16",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1563:41:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 3277,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1563:41:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 3283,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 3278,
+                      "name": "invalidTokenAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3227,
+                      "src": "1614:19:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 3281,
+                          "name": "invalidToken",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3218,
+                          "src": "1644:12:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_Foresight_$3199",
+                            "typeString": "contract Foresight"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_contract$_Foresight_$3199",
+                            "typeString": "contract Foresight"
+                          }
+                        ],
+                        "id": 3280,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "lValueRequested": false,
+                        "nodeType": "ElementaryTypeNameExpression",
+                        "src": "1636:7:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_address_$",
+                          "typeString": "type(address)"
+                        },
+                        "typeName": {
+                          "id": 3279,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "1636:7:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": null,
+                            "typeString": null
+                          }
+                        }
+                      },
+                      "id": 3282,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1636:21:16",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1614:43:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 3284,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1614:43:16"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 3228,
+              "nodeType": "StructuredDocumentation",
+              "src": "996:149:16",
+              "text": "@notice Create a minter and store market address data.\n @param setMarketAddress Pointer to the market Address linking the Foresight token."
+            },
+            "id": 3286,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 3231,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3230,
+                  "mutability": "mutable",
+                  "name": "setMarketAddress",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3286,
+                  "src": "1162:24:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3229,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1162:7:16",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1161:26:16"
+            },
+            "returnParameters": {
+              "id": 3232,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1195:0:16"
+            },
+            "scope": 3373,
+            "src": "1150:514:16",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3317,
+              "nodeType": "Block",
+              "src": "1954:124:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 3299,
+                        "name": "to",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3289,
+                        "src": "1981:2:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 3300,
+                        "name": "amount",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3291,
+                        "src": "1985:6:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 3296,
+                        "name": "noLongToken",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3215,
+                        "src": "1964:11:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Foresight_$3199",
+                          "typeString": "contract Foresight"
+                        }
+                      },
+                      "id": 3298,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "mint",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3178,
+                      "src": "1964:16:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256) external"
+                      }
+                    },
+                    "id": 3301,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1964:28:16",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 3302,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1964:28:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 3306,
+                        "name": "to",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3289,
+                        "src": "2021:2:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 3307,
+                        "name": "amount",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3291,
+                        "src": "2025:6:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 3303,
+                        "name": "yesShortToken",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3212,
+                        "src": "2002:13:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Foresight_$3199",
+                          "typeString": "contract Foresight"
+                        }
+                      },
+                      "id": 3305,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "mint",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3178,
+                      "src": "2002:18:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256) external"
+                      }
+                    },
+                    "id": 3308,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2002:30:16",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 3309,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2002:30:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 3313,
+                        "name": "to",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3289,
+                        "src": "2060:2:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 3314,
+                        "name": "amount",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3291,
+                        "src": "2064:6:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 3310,
+                        "name": "invalidToken",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3218,
+                        "src": "2042:12:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Foresight_$3199",
+                          "typeString": "contract Foresight"
+                        }
+                      },
+                      "id": 3312,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "mint",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3178,
+                      "src": "2042:17:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256) external"
+                      }
+                    },
+                    "id": 3315,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2042:29:16",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 3316,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2042:29:16"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 3287,
+              "nodeType": "StructuredDocumentation",
+              "src": "1670:211:16",
+              "text": "@notice Mints a complete set of Foresight Tokens.\n @dev Only the owner of the contract can mint tokens.\n @param amount Amount of each token to mint.\n @param to Address to send tokens to."
+            },
+            "functionSelector": "f319d428",
+            "id": 3318,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 3294,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 3293,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 80,
+                  "src": "1944:9:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1944:9:16"
+              }
+            ],
+            "name": "mintCompleteSets",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 3292,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3289,
+                  "mutability": "mutable",
+                  "name": "to",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3318,
+                  "src": "1912:10:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3288,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1912:7:16",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3291,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3318,
+                  "src": "1924:11:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3290,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1924:4:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1911:25:16"
+            },
+            "returnParameters": {
+              "id": 3295,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1954:0:16"
+            },
+            "scope": 3373,
+            "src": "1886:192:16",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3335,
+              "nodeType": "Block",
+              "src": "2385:49:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 3331,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3321,
+                        "src": "2414:4:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 3332,
+                        "name": "amount",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3323,
+                        "src": "2420:6:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 3328,
+                        "name": "yesShortToken",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3212,
+                        "src": "2395:13:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Foresight_$3199",
+                          "typeString": "contract Foresight"
+                        }
+                      },
+                      "id": 3330,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "burn",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3198,
+                      "src": "2395:18:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256) external"
+                      }
+                    },
+                    "id": 3333,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2395:32:16",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 3334,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2395:32:16"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 3319,
+              "nodeType": "StructuredDocumentation",
+              "src": "2084:230:16",
+              "text": "@notice Burn the YesShort Foresight Token for the given address.\n @dev Only the owner of the contract can burn tokens.\n @param amount Amount of each token to mint.\n @param from Address to burn tokens from."
+            },
+            "functionSelector": "8fb4eff4",
+            "id": 3336,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 3326,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 3325,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 80,
+                  "src": "2375:9:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "2375:9:16"
+              }
+            ],
+            "name": "burnYesShort",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 3324,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3321,
+                  "mutability": "mutable",
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3336,
+                  "src": "2341:12:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3320,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2341:7:16",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3323,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3336,
+                  "src": "2355:11:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3322,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2355:4:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2340:27:16"
+            },
+            "returnParameters": {
+              "id": 3327,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2385:0:16"
+            },
+            "scope": 3373,
+            "src": "2319:115:16",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3353,
+              "nodeType": "Block",
+              "src": "2737:47:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 3349,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3339,
+                        "src": "2764:4:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 3350,
+                        "name": "amount",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3341,
+                        "src": "2770:6:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 3346,
+                        "name": "noLongToken",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3215,
+                        "src": "2747:11:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Foresight_$3199",
+                          "typeString": "contract Foresight"
+                        }
+                      },
+                      "id": 3348,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "burn",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3198,
+                      "src": "2747:16:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256) external"
+                      }
+                    },
+                    "id": 3351,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2747:30:16",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 3352,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2747:30:16"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 3337,
+              "nodeType": "StructuredDocumentation",
+              "src": "2440:228:16",
+              "text": "@notice Burn the NoLong Foresight Token for the given address.\n @dev Only the owner of the contract can burn tokens.\n @param amount Amount of each token to mint.\n @param from Address to burn tokens from."
+            },
+            "functionSelector": "f352ad0a",
+            "id": 3354,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 3344,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 3343,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 80,
+                  "src": "2727:9:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "2727:9:16"
+              }
+            ],
+            "name": "burnNoLong",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 3342,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3339,
+                  "mutability": "mutable",
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3354,
+                  "src": "2693:12:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3338,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2693:7:16",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3341,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3354,
+                  "src": "2707:11:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3340,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2707:4:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2692:27:16"
+            },
+            "returnParameters": {
+              "id": 3345,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2737:0:16"
+            },
+            "scope": 3373,
+            "src": "2673:111:16",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3371,
+              "nodeType": "Block",
+              "src": "3088:48:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 3367,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3357,
+                        "src": "3116:4:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 3368,
+                        "name": "amount",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3359,
+                        "src": "3122:6:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 3364,
+                        "name": "invalidToken",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3218,
+                        "src": "3098:12:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Foresight_$3199",
+                          "typeString": "contract Foresight"
+                        }
+                      },
+                      "id": 3366,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "burn",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3198,
+                      "src": "3098:17:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256) external"
+                      }
+                    },
+                    "id": 3369,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "3098:31:16",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 3370,
+                  "nodeType": "ExpressionStatement",
+                  "src": "3098:31:16"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 3355,
+              "nodeType": "StructuredDocumentation",
+              "src": "2790:228:16",
+              "text": "@notice Burn the NoLong Foresight Token for the given address.\n @dev Only the owner of the contract can burn tokens.\n @param amount Amount of each token to mint.\n @param from Address to burn tokens from."
+            },
+            "functionSelector": "a108501a",
+            "id": 3372,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 3362,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 3361,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 80,
+                  "src": "3078:9:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "3078:9:16"
+              }
+            ],
+            "name": "burnInvalid",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 3360,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3357,
+                  "mutability": "mutable",
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3372,
+                  "src": "3044:12:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3356,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3044:7:16",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3359,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3372,
+                  "src": "3058:11:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3358,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3058:4:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3043:27:16"
+            },
+            "returnParameters": {
+              "id": 3363,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3088:0:16"
+            },
+            "scope": 3373,
+            "src": "3023:113:16",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "scope": 3374,
+        "src": "365:2774:16"
+      }
+    ],
+    "src": "39:3101:16"
+  },
+  "bytecode": "0x608060405234801561001057600080fd5b5060405161355e38038061355e8339818101604052602081101561003357600080fd5b5051600061003f610331565b600080546001600160a01b0319166001600160a01b0383169081178255604051929350917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a350600180546001600160a01b0319166001600160a01b03831617905560405181906100b290610335565b6001600160a01b0390911660408083019190915260608083526015908301527f466f72657369676874202d205965732f53686f72740000000000000000000000608083015260a0602083018190526003908301527f465953000000000000000000000000000000000000000000000000000000000060c0830152519081900360e001906000f08015801561014a573d6000803e3d6000fd5b50600280546001600160a01b0319166001600160a01b0392909216919091179055604051819061017990610335565b6001600160a01b0390911660408083019190915260608083526013908301527f466f72657369676874202d204e6f2f4c6f6e6700000000000000000000000000608083015260a0602083018190526003908301527f464e4c000000000000000000000000000000000000000000000000000000000060c0830152519081900360e001906000f080158015610211573d6000803e3d6000fd5b50600380546001600160a01b0319166001600160a01b0392909216919091179055604051819061024090610335565b6001600160a01b0390911660408083019190915260608083526013908301527f466f72657369676874202d20496e76616c696400000000000000000000000000608083015260a0602083018190526004908301527f46494e560000000000000000000000000000000000000000000000000000000060c0830152519081900360e001906000f0801580156102d8573d6000803e3d6000fd5b50600480546001600160a01b039283166001600160a01b03199182161791829055600254600580548316918516919091179055600354600680548316918516919091179055600780549091169190921617905550610342565b3390565b6129d280610b8c83390190565b61083b806103516000396000f3fe608060405234801561001057600080fd5b50600436106100ba5760003560e01c80630e49dd7e146100bf57806315edaf8b146100e35780631eb3dfcc146100eb57806338f4a5bf146100f357806365a2e2e8146100fb578063715018a6146101035780638da5cb5b1461010d5780638fb4eff4146101155780639562364114610141578063a108501a14610149578063f2fde38b14610175578063f319d4281461019b578063f3297347146101c7578063f352ad0a146101cf575b600080fd5b6100c76101fb565b604080516001600160a01b039092168252519081900360200190f35b6100c761020a565b6100c7610219565b6100c7610228565b6100c7610237565b61010b610246565b005b6100c76102d6565b61010b6004803603604081101561012b57600080fd5b506001600160a01b0381351690602001356102e5565b6100c76103ae565b61010b6004803603604081101561015f57600080fd5b506001600160a01b0381351690602001356103bd565b61010b6004803603602081101561018b57600080fd5b50356001600160a01b031661046e565b61010b600480360360408110156101b157600080fd5b506001600160a01b038135169060200135610554565b6100c76106df565b61010b600480360360408110156101e557600080fd5b506001600160a01b0381351690602001356106ee565b6005546001600160a01b031681565b6006546001600160a01b031681565b6007546001600160a01b031681565b6002546001600160a01b031681565b6004546001600160a01b031681565b61024e61079b565b6000546001600160a01b0390811691161461029e576040805162461bcd60e51b815260206004820181905260248201526000805160206107c6833981519152604482015290519081900360640190fd5b600080546040516001600160a01b03909116906000805160206107e6833981519152908390a3600080546001600160a01b0319169055565b6000546001600160a01b031690565b6102ed61079b565b6000546001600160a01b0390811691161461033d576040805162461bcd60e51b815260206004820181905260248201526000805160206107c6833981519152604482015290519081900360640190fd5b60025460408051632770a7eb60e21b81526001600160a01b0385811660048301526024820185905291519190921691639dc29fac91604480830192600092919082900301818387803b15801561039257600080fd5b505af11580156103a6573d6000803e3d6000fd5b505050505050565b6001546001600160a01b031681565b6103c561079b565b6000546001600160a01b03908116911614610415576040805162461bcd60e51b815260206004820181905260248201526000805160206107c6833981519152604482015290519081900360640190fd5b6004805460408051632770a7eb60e21b81526001600160a01b03868116948201949094526024810185905290519290911691639dc29fac9160448082019260009290919082900301818387803b15801561039257600080fd5b61047661079b565b6000546001600160a01b039081169116146104c6576040805162461bcd60e51b815260206004820181905260248201526000805160206107c6833981519152604482015290519081900360640190fd5b6001600160a01b03811661050b5760405162461bcd60e51b81526004018080602001828103825260268152602001806107a06026913960400191505060405180910390fd5b600080546040516001600160a01b03808516939216916000805160206107e683398151915291a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b61055c61079b565b6000546001600160a01b039081169116146105ac576040805162461bcd60e51b815260206004820181905260248201526000805160206107c6833981519152604482015290519081900360640190fd5b600354604080516340c10f1960e01b81526001600160a01b03858116600483015260248201859052915191909216916340c10f1991604480830192600092919082900301818387803b15801561060157600080fd5b505af1158015610615573d6000803e3d6000fd5b5050600254604080516340c10f1960e01b81526001600160a01b0387811660048301526024820187905291519190921693506340c10f199250604480830192600092919082900301818387803b15801561066e57600080fd5b505af1158015610682573d6000803e3d6000fd5b505060048054604080516340c10f1960e01b81526001600160a01b03888116948201949094526024810187905290519290911693506340c10f19925060448082019260009290919082900301818387803b15801561039257600080fd5b6003546001600160a01b031681565b6106f661079b565b6000546001600160a01b03908116911614610746576040805162461bcd60e51b815260206004820181905260248201526000805160206107c6833981519152604482015290519081900360640190fd5b60035460408051632770a7eb60e21b81526001600160a01b0385811660048301526024820185905291519190921691639dc29fac91604480830192600092919082900301818387803b15801561039257600080fd5b339056fe4f776e61626c653a206e6577206f776e657220697320746865207a65726f20616464726573734f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65728be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0a2646970667358221220598cb88c267ee1cf293cad96b72d45f64dfa16e14918fe6a7980eec47d14992564736f6c634300060c003360806040523480156200001157600080fd5b50604051620029d2380380620029d2833981810160405260608110156200003757600080fd5b81019080805160405193929190846401000000008211156200005857600080fd5b9083019060208201858111156200006e57600080fd5b82516401000000008111828201881017156200008957600080fd5b82525081516020918201929091019080838360005b83811015620000b85781810151838201526020016200009e565b50505050905090810190601f168015620000e65780820380516001836020036101000a031916815260200191505b50604052602001805160405193929190846401000000008211156200010a57600080fd5b9083019060208201858111156200012057600080fd5b82516401000000008111828201881017156200013b57600080fd5b82525081516020918201929091019080838360005b838110156200016a57818101518382015260200162000150565b50505050905090810190601f168015620001985780820380516001836020036101000a031916815260200191505b5060408181526020928301516000835283830190915286519094508693508592620001c9916002918601906200044a565b508151620001df9060039060208501906200044a565b508051620001f5906004906020840190620004cf565b5060005b6004548110156200025557600160056000600484815481106200021857fe5b6000918252602080832091909101546001600160a01b031683528201929092526040019020805460ff1916911515919091179055600101620001f9565b50604080517f29965a1d00000000000000000000000000000000000000000000000000000000815230600482018190527fac7fbab5f54a3ca8194167523c6753bfeb96a445279294b6125b68cce2177054602483015260448201529051731820a4b7618bde71dce8cdc73aab6c95905fad24916329965a1d91606480830192600092919082900301818387803b158015620002ef57600080fd5b505af115801562000304573d6000803e3d6000fd5b5050604080517f29965a1d00000000000000000000000000000000000000000000000000000000815230600482018190527faea199e31a596269b42cdafd93407f14436db6e4cad65417994c2eb37381e05a602483015260448201529051731820a4b7618bde71dce8cdc73aab6c95905fad2493506329965a1d9250606480830192600092919082900301818387803b158015620003a157600080fd5b505af1158015620003b6573d6000803e3d6000fd5b505050505050506000620003cf6200044660201b60201c565b600980546001600160a01b0319166001600160a01b038316908117909155604051919250906000907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a350600a80546001600160a01b0319166001600160a01b0392909216919091179055506200056d9050565b3390565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106200048d57805160ff1916838001178555620004bd565b82800160010185558215620004bd579182015b82811115620004bd578251825591602001919060010190620004a0565b50620004cb92915062000535565b5090565b82805482825590600052602060002090810192821562000527579160200282015b828111156200052757825182546001600160a01b0319166001600160a01b03909116178255602090920191600190910190620004f0565b50620004cb9291506200054c565b5b80821115620004cb576000815560010162000536565b5b80821115620004cb5780546001600160a01b03191681556001016200054d565b612455806200057d6000396000f3fe608060405234801561001057600080fd5b50600436106101285760003560e01c806306e485381461012d57806306fdde0314610185578063095ea7b31461020257806318160ddd1461024257806323b872dd1461025c578063313ce5671461029257806340c10f19146102b0578063556f0dc7146102de57806362ad1b83146102e657806370a082311461042f578063715018a6146104555780638da5cb5b1461045d5780639562364114610481578063959b8c3f1461048957806395d89b41146104af5780639bd9bbc6146104b75780639dc29fac14610570578063a9059cbb1461059c578063d95b6371146105c8578063dd62ed3e146105f6578063f2fde38b14610624578063fad8b32a1461064a578063fc673c4f14610670578063fe9d9303146107ae575b600080fd5b610135610859565b60408051602080825283518183015283519192839290830191858101910280838360005b83811015610171578181015183820152602001610159565b505050509050019250505060405180910390f35b61018d6108bb565b6040805160208082528351818301528351919283929083019185019080838360005b838110156101c75781810151838201526020016101af565b50505050905090810190601f1680156101f45780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b61022e6004803603604081101561021857600080fd5b506001600160a01b038135169060200135610945565b604080519115158252519081900360200190f35b61024a610967565b60408051918252519081900360200190f35b61022e6004803603606081101561027257600080fd5b506001600160a01b0381358116916020810135909116906040013561096d565b61029a610aea565b6040805160ff9092168252519081900360200190f35b6102dc600480360360408110156102c657600080fd5b506001600160a01b038135169060200135610aef565b005b61024a610b75565b6102dc600480360360a08110156102fc57600080fd5b6001600160a01b03823581169260208101359091169160408201359190810190608081016060820135600160201b81111561033657600080fd5b82018360208201111561034857600080fd5b803590602001918460018302840111600160201b8311171561036957600080fd5b91908080601f0160208091040260200160405190810160405280939291908181526020018383808284376000920191909152509295949360208101935035915050600160201b8111156103bb57600080fd5b8201836020820111156103cd57600080fd5b803590602001918460018302840111600160201b831117156103ee57600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250929550610b7a945050505050565b61024a6004803603602081101561044557600080fd5b50356001600160a01b0316610bdc565b6102dc610bf7565b610465610c87565b604080516001600160a01b039092168252519081900360200190f35b610465610c96565b6102dc6004803603602081101561049f57600080fd5b50356001600160a01b0316610ca5565b61018d610df1565b6102dc600480360360608110156104cd57600080fd5b6001600160a01b0382351691602081013591810190606081016040820135600160201b8111156104fc57600080fd5b82018360208201111561050e57600080fd5b803590602001918460018302840111600160201b8311171561052f57600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250929550610e52945050505050565b6102dc6004803603604081101561058657600080fd5b506001600160a01b038135169060200135610e7c565b61022e600480360360408110156105b257600080fd5b506001600160a01b038135169060200135610efe565b61022e600480360360408110156105de57600080fd5b506001600160a01b0381358116916020013516610fd7565b61024a6004803603604081101561060c57600080fd5b506001600160a01b0381358116916020013516611079565b6102dc6004803603602081101561063a57600080fd5b50356001600160a01b03166110a4565b6102dc6004803603602081101561066057600080fd5b50356001600160a01b031661118b565b6102dc6004803603608081101561068657600080fd5b6001600160a01b0382351691602081013591810190606081016040820135600160201b8111156106b557600080fd5b8201836020820111156106c757600080fd5b803590602001918460018302840111600160201b831117156106e857600080fd5b91908080601f0160208091040260200160405190810160405280939291908181526020018383808284376000920191909152509295949360208101935035915050600160201b81111561073a57600080fd5b82018360208201111561074c57600080fd5b803590602001918460018302840111600160201b8311171561076d57600080fd5b91908080601f0160208091040260200160405190810160405280939291908181526020018383808284376000920191909152509295506112d7945050505050565b6102dc600480360360408110156107c457600080fd5b81359190810190604081016020820135600160201b8111156107e557600080fd5b8201836020820111156107f757600080fd5b803590602001918460018302840111600160201b8311171561081857600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250929550611335945050505050565b606060048054806020026020016040519081016040528092919081815260200182805480156108b157602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311610893575b5050505050905090565b60028054604080516020601f60001961010060018716150201909416859004938401819004810282018101909252828152606093909290918301828280156108b15780601f10610919576101008083540402835291602001916108b1565b820191906000526020600020905b81548152906001019060200180831161092757509395945050505050565b600080610950611357565b905061095d81858561135b565b5060019392505050565b60015490565b60006001600160a01b0383166109b45760405162461bcd60e51b815260040180806020018281038252602481526020018061231b6024913960400191505060405180910390fd5b6001600160a01b0384166109f95760405162461bcd60e51b81526004018080602001828103825260268152602001806123b46026913960400191505060405180910390fd5b6000610a03611357565b9050610a31818686866040518060200160405280600081525060405180602001604052806000815250611447565b610a5d818686866040518060200160405280600081525060405180602001604052806000815250611674565b610ab18582610aac8660405180606001604052806029815260200161238b602991396001600160a01b03808c166000908152600860209081526040808320938b1683529290522054919061187b565b61135b565b610adf8186868660405180602001604052806000815250604051806020016040528060008152506000611912565b506001949350505050565b601290565b610af7611357565b6009546001600160a01b03908116911614610b47576040805162461bcd60e51b8152602060048201819052602482015260008051602061228e833981519152604482015290519081900360640190fd5b610b7182826040518060200160405280600081525060405180602001604052806000815250611b97565b5050565b600190565b610b8b610b85611357565b86610fd7565b610bc65760405162461bcd60e51b815260040180806020018281038252602c81526020018061235f602c913960400191505060405180910390fd5b610bd585858585856001611dbd565b5050505050565b6001600160a01b031660009081526020819052604090205490565b610bff611357565b6009546001600160a01b03908116911614610c4f576040805162461bcd60e51b8152602060048201819052602482015260008051602061228e833981519152604482015290519081900360640190fd5b6009546040516000916001600160a01b0316906000805160206122ae833981519152908390a3600980546001600160a01b0319169055565b6009546001600160a01b031690565b600a546001600160a01b031681565b806001600160a01b0316610cb7611357565b6001600160a01b03161415610cfd5760405162461bcd60e51b81526004018080602001828103825260248152602001806122496024913960400191505060405180910390fd5b6001600160a01b03811660009081526005602052604090205460ff1615610d605760076000610d2a611357565b6001600160a01b03908116825260208083019390935260409182016000908120918516815292529020805460ff19169055610da7565b600160066000610d6e611357565b6001600160a01b03908116825260208083019390935260409182016000908120918616815292529020805460ff19169115159190911790555b610daf611357565b6001600160a01b0316816001600160a01b03167ff4caeb2d6ca8932a215a353d0703c326ec2d81fc68170f320eb2ab49e9df61f960405160405180910390a350565b60038054604080516020601f60026000196101006001881615020190951694909404938401819004810282018101909252828152606093909290918301828280156108b15780601f10610919576101008083540402835291602001916108b1565b610e77610e5d611357565b848484604051806020016040528060008152506001611dbd565b505050565b610e84611357565b6009546001600160a01b03908116911614610ed4576040805162461bcd60e51b8152602060048201819052602482015260008051602061228e833981519152604482015290519081900360640190fd5b610b7182826040518060200160405280600081525060405180602001604052806000815250611e94565b60006001600160a01b038316610f455760405162461bcd60e51b815260040180806020018281038252602481526020018061231b6024913960400191505060405180910390fd5b6000610f4f611357565b9050610f7d818286866040518060200160405280600081525060405180602001604052806000815250611447565b610fa9818286866040518060200160405280600081525060405180602001604052806000815250611674565b61095d8182868660405180602001604052806000815250604051806020016040528060008152506000611912565b6000816001600160a01b0316836001600160a01b0316148061104257506001600160a01b03831660009081526005602052604090205460ff16801561104257506001600160a01b0380831660009081526007602090815260408083209387168352929052205460ff16155b8061107257506001600160a01b0380831660009081526006602090815260408083209387168352929052205460ff165b9392505050565b6001600160a01b03918216600090815260086020908152604080832093909416825291909152205490565b6110ac611357565b6009546001600160a01b039081169116146110fc576040805162461bcd60e51b8152602060048201819052602482015260008051602061228e833981519152604482015290519081900360640190fd5b6001600160a01b0381166111415760405162461bcd60e51b81526004018080602001828103825260268152602001806122016026913960400191505060405180910390fd5b6009546040516001600160a01b038084169216906000805160206122ae83398151915290600090a3600980546001600160a01b0319166001600160a01b0392909216919091179055565b611193611357565b6001600160a01b0316816001600160a01b031614156111e35760405162461bcd60e51b815260040180806020018281038252602181526020018061226d6021913960400191505060405180910390fd5b6001600160a01b03811660009081526005602052604090205460ff161561124f57600160076000611212611357565b6001600160a01b03908116825260208083019390935260409182016000908120918616815292529020805460ff191691151591909117905561128d565b6006600061125b611357565b6001600160a01b03908116825260208083019390935260409182016000908120918516815292529020805460ff191690555b611295611357565b6001600160a01b0316816001600160a01b03167f50546e66e5f44d728365dc3908c63bc5cfeeab470722c1677e3073a6ac294aa160405160405180910390a350565b6112e86112e2611357565b85610fd7565b6113235760405162461bcd60e51b815260040180806020018281038252602c81526020018061235f602c913960400191505060405180910390fd5b61132f84848484611e94565b50505050565b610b71611340611357565b838360405180602001604052806000815250611e94565b3390565b6001600160a01b0383166113a05760405162461bcd60e51b81526004018080602001828103825260258152602001806121936025913960400191505060405180910390fd5b6001600160a01b0382166113e55760405162461bcd60e51b81526004018080602001828103825260238152602001806123fd6023913960400191505060405180910390fd5b6001600160a01b03808416600081815260086020908152604080832094871680845294825291829020859055815185815291517f8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b9259281900390910190a3505050565b6040805163555ddc6560e11b81526001600160a01b03871660048201527f29ddb589b1fb5fc7cf394961c1adf5f8c6454761adf795e67fe149f658abe89560248201529051600091731820a4b7618bde71dce8cdc73aab6c95905fad249163aabbb8ca91604480820192602092909190829003018186803b1580156114cb57600080fd5b505afa1580156114df573d6000803e3d6000fd5b505050506040513d60208110156114f557600080fd5b505190506001600160a01b0381161561166b57806001600160a01b03166375ab97828888888888886040518763ffffffff1660e01b815260040180876001600160a01b03168152602001866001600160a01b03168152602001856001600160a01b031681526020018481526020018060200180602001838103835285818151815260200191508051906020019080838360005b838110156115a0578181015183820152602001611588565b50505050905090810190601f1680156115cd5780820380516001836020036101000a031916815260200191505b50838103825284518152845160209182019186019080838360005b838110156116005781810151838201526020016115e8565b50505050905090810190601f16801561162d5780820380516001836020036101000a031916815260200191505b5098505050505050505050600060405180830381600087803b15801561165257600080fd5b505af1158015611666573d6000803e3d6000fd5b505050505b50505050505050565b6116808686868661132f565b6116bd836040518060600160405280602781526020016121da602791396001600160a01b038816600090815260208190526040902054919061187b565b6001600160a01b0380871660009081526020819052604080822093909355908616815220546116ec90846120bc565b600080866001600160a01b03166001600160a01b0316815260200190815260200160002081905550836001600160a01b0316856001600160a01b0316876001600160a01b03167f06b541ddaa720db2b10a4d0cdac39b8d360425fc073085fac19bc82614677987868686604051808481526020018060200180602001838103835285818151815260200191508051906020019080838360005b8381101561179d578181015183820152602001611785565b50505050905090810190601f1680156117ca5780820380516001836020036101000a031916815260200191505b50838103825284518152845160209182019186019080838360005b838110156117fd5781810151838201526020016117e5565b50505050905090810190601f16801561182a5780820380516001836020036101000a031916815260200191505b509550505050505060405180910390a4836001600160a01b0316856001600160a01b031660008051602061233f833981519152856040518082815260200191505060405180910390a3505050505050565b6000818484111561190a5760405162461bcd60e51b81526004018080602001828103825283818151815260200191508051906020019080838360005b838110156118cf5781810151838201526020016118b7565b50505050905090810190601f1680156118fc5780820380516001836020036101000a031916815260200191505b509250505060405180910390fd5b505050900390565b6040805163555ddc6560e11b81526001600160a01b03871660048201527fb281fc8c12954d22544db45de3159a39272895b169a852b314f9cc762e44c53b60248201529051600091731820a4b7618bde71dce8cdc73aab6c95905fad249163aabbb8ca91604480820192602092909190829003018186803b15801561199657600080fd5b505afa1580156119aa573d6000803e3d6000fd5b505050506040513d60208110156119c057600080fd5b505190506001600160a01b03811615611b3957806001600160a01b03166223de298989898989896040518763ffffffff1660e01b815260040180876001600160a01b03168152602001866001600160a01b03168152602001856001600160a01b031681526020018481526020018060200180602001838103835285818151815260200191508051906020019080838360005b83811015611a6a578181015183820152602001611a52565b50505050905090810190601f168015611a975780820380516001836020036101000a031916815260200191505b50838103825284518152845160209182019186019080838360005b83811015611aca578181015183820152602001611ab2565b50505050905090810190601f168015611af75780820380516001836020036101000a031916815260200191505b5098505050505050505050600060405180830381600087803b158015611b1c57600080fd5b505af1158015611b30573d6000803e3d6000fd5b50505050611b8d565b8115611b8d57611b51866001600160a01b0316612114565b15611b8d5760405162461bcd60e51b815260040180806020018281038252604d8152602001806122ce604d913960600191505060405180910390fd5b5050505050505050565b6001600160a01b038416611bf2576040805162461bcd60e51b815260206004820181905260248201527f4552433737373a206d696e7420746f20746865207a65726f2061646472657373604482015290519081900360640190fd5b6000611bfc611357565b9050611c0b816000878761132f565b600154611c1890856120bc565b6001556001600160a01b038516600090815260208190526040902054611c3e90856120bc565b6001600160a01b038616600090815260208190526040812091909155611c6b908290878787876001611912565b846001600160a01b0316816001600160a01b03167f2fe5be0146f74c5bce36c0b80911af6c7d86ff27e89d5cfa61fc681327954e5d868686604051808481526020018060200180602001838103835285818151815260200191508051906020019080838360005b83811015611cea578181015183820152602001611cd2565b50505050905090810190601f168015611d175780820380516001836020036101000a031916815260200191505b50838103825284518152845160209182019186019080838360005b83811015611d4a578181015183820152602001611d32565b50505050905090810190601f168015611d775780820380516001836020036101000a031916815260200191505b509550505050505060405180910390a36040805185815290516001600160a01b0387169160009160008051602061233f8339815191529181900360200190a35050505050565b6001600160a01b038616611e025760405162461bcd60e51b81526004018080602001828103825260228152602001806121b86022913960400191505060405180910390fd5b6001600160a01b038516611e5d576040805162461bcd60e51b815260206004820181905260248201527f4552433737373a2073656e6420746f20746865207a65726f2061646472657373604482015290519081900360640190fd5b6000611e67611357565b9050611e77818888888888611447565b611e85818888888888611674565b61166b81888888888888611912565b6001600160a01b038416611ed95760405162461bcd60e51b81526004018080602001828103825260228152602001806122276022913960400191505060405180910390fd5b6000611ee3611357565b9050611ef2818660008761132f565b611f0181866000878787611447565b611f3e846040518060600160405280602381526020016123da602391396001600160a01b038816600090815260208190526040902054919061187b565b6001600160a01b038616600090815260208190526040902055600154611f649085612150565b600181905550846001600160a01b0316816001600160a01b03167fa78a9be3a7b862d26933ad85fb11d80ef66b8f972d7cbba06621d583943a4098868686604051808481526020018060200180602001838103835285818151815260200191508051906020019080838360005b83811015611fe9578181015183820152602001611fd1565b50505050905090810190601f1680156120165780820380516001836020036101000a031916815260200191505b50838103825284518152845160209182019186019080838360005b83811015612049578181015183820152602001612031565b50505050905090810190601f1680156120765780820380516001836020036101000a031916815260200191505b509550505050505060405180910390a36040805185815290516000916001600160a01b0388169160008051602061233f8339815191529181900360200190a35050505050565b600082820183811015611072576040805162461bcd60e51b815260206004820152601b60248201527a536166654d6174683a206164646974696f6e206f766572666c6f7760281b604482015290519081900360640190fd5b6000813f7fc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a47081811480159061214857508115155b949350505050565b600061107283836040518060400160405280601e81526020017f536166654d6174683a207375627472616374696f6e206f766572666c6f77000081525061187b56fe4552433737373a20617070726f76652066726f6d20746865207a65726f20616464726573734552433737373a2073656e642066726f6d20746865207a65726f20616464726573734552433737373a207472616e7366657220616d6f756e7420657863656564732062616c616e63654f776e61626c653a206e6577206f776e657220697320746865207a65726f20616464726573734552433737373a206275726e2066726f6d20746865207a65726f20616464726573734552433737373a20617574686f72697a696e672073656c66206173206f70657261746f724552433737373a207265766f6b696e672073656c66206173206f70657261746f724f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65728be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e04552433737373a20746f6b656e20726563697069656e7420636f6e747261637420686173206e6f20696d706c656d656e74657220666f7220455243373737546f6b656e73526563697069656e744552433737373a207472616e7366657220746f20746865207a65726f2061646472657373ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef4552433737373a2063616c6c6572206973206e6f7420616e206f70657261746f7220666f7220686f6c6465724552433737373a207472616e7366657220616d6f756e74206578636565647320616c6c6f77616e63654552433737373a207472616e736665722066726f6d20746865207a65726f20616464726573734552433737373a206275726e20616d6f756e7420657863656564732062616c616e63654552433737373a20617070726f766520746f20746865207a65726f2061646472657373a2646970667358221220267ca9c3b51275c2eab95fa95a1979cb6c6e42027ad750f60c6a365a2605b3d064736f6c634300060c0033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100ba5760003560e01c80630e49dd7e146100bf57806315edaf8b146100e35780631eb3dfcc146100eb57806338f4a5bf146100f357806365a2e2e8146100fb578063715018a6146101035780638da5cb5b1461010d5780638fb4eff4146101155780639562364114610141578063a108501a14610149578063f2fde38b14610175578063f319d4281461019b578063f3297347146101c7578063f352ad0a146101cf575b600080fd5b6100c76101fb565b604080516001600160a01b039092168252519081900360200190f35b6100c761020a565b6100c7610219565b6100c7610228565b6100c7610237565b61010b610246565b005b6100c76102d6565b61010b6004803603604081101561012b57600080fd5b506001600160a01b0381351690602001356102e5565b6100c76103ae565b61010b6004803603604081101561015f57600080fd5b506001600160a01b0381351690602001356103bd565b61010b6004803603602081101561018b57600080fd5b50356001600160a01b031661046e565b61010b600480360360408110156101b157600080fd5b506001600160a01b038135169060200135610554565b6100c76106df565b61010b600480360360408110156101e557600080fd5b506001600160a01b0381351690602001356106ee565b6005546001600160a01b031681565b6006546001600160a01b031681565b6007546001600160a01b031681565b6002546001600160a01b031681565b6004546001600160a01b031681565b61024e61079b565b6000546001600160a01b0390811691161461029e576040805162461bcd60e51b815260206004820181905260248201526000805160206107c6833981519152604482015290519081900360640190fd5b600080546040516001600160a01b03909116906000805160206107e6833981519152908390a3600080546001600160a01b0319169055565b6000546001600160a01b031690565b6102ed61079b565b6000546001600160a01b0390811691161461033d576040805162461bcd60e51b815260206004820181905260248201526000805160206107c6833981519152604482015290519081900360640190fd5b60025460408051632770a7eb60e21b81526001600160a01b0385811660048301526024820185905291519190921691639dc29fac91604480830192600092919082900301818387803b15801561039257600080fd5b505af11580156103a6573d6000803e3d6000fd5b505050505050565b6001546001600160a01b031681565b6103c561079b565b6000546001600160a01b03908116911614610415576040805162461bcd60e51b815260206004820181905260248201526000805160206107c6833981519152604482015290519081900360640190fd5b6004805460408051632770a7eb60e21b81526001600160a01b03868116948201949094526024810185905290519290911691639dc29fac9160448082019260009290919082900301818387803b15801561039257600080fd5b61047661079b565b6000546001600160a01b039081169116146104c6576040805162461bcd60e51b815260206004820181905260248201526000805160206107c6833981519152604482015290519081900360640190fd5b6001600160a01b03811661050b5760405162461bcd60e51b81526004018080602001828103825260268152602001806107a06026913960400191505060405180910390fd5b600080546040516001600160a01b03808516939216916000805160206107e683398151915291a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b61055c61079b565b6000546001600160a01b039081169116146105ac576040805162461bcd60e51b815260206004820181905260248201526000805160206107c6833981519152604482015290519081900360640190fd5b600354604080516340c10f1960e01b81526001600160a01b03858116600483015260248201859052915191909216916340c10f1991604480830192600092919082900301818387803b15801561060157600080fd5b505af1158015610615573d6000803e3d6000fd5b5050600254604080516340c10f1960e01b81526001600160a01b0387811660048301526024820187905291519190921693506340c10f199250604480830192600092919082900301818387803b15801561066e57600080fd5b505af1158015610682573d6000803e3d6000fd5b505060048054604080516340c10f1960e01b81526001600160a01b03888116948201949094526024810187905290519290911693506340c10f19925060448082019260009290919082900301818387803b15801561039257600080fd5b6003546001600160a01b031681565b6106f661079b565b6000546001600160a01b03908116911614610746576040805162461bcd60e51b815260206004820181905260248201526000805160206107c6833981519152604482015290519081900360640190fd5b60035460408051632770a7eb60e21b81526001600160a01b0385811660048301526024820185905291519190921691639dc29fac91604480830192600092919082900301818387803b15801561039257600080fd5b339056fe4f776e61626c653a206e6577206f776e657220697320746865207a65726f20616464726573734f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65728be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0a2646970667358221220598cb88c267ee1cf293cad96b72d45f64dfa16e14918fe6a7980eec47d14992564736f6c634300060c0033",
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.12+commit.27d51765.Emscripten.clang",
+    "optimizer": {
+      "enabled": true,
+      "runs": 1
+    },
+    "evmVersion": "petersburg"
+  }
+}

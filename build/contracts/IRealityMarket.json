@@ -1,0 +1,144 @@
+{
+  "fileName": "IRealityMarket.sol",
+  "contractName": "IRealityMarket",
+  "source": "// SPDX-License-Identifier: Unlicense\n\npragma solidity 0.6.12;\n\n\n/// @title IRealityMarket\n/// @notice Generate a reality market and appropriate mint/burn tokens.\ninterface IRealityMarket {\n    /// @notice Return the winning outcome for a market.\n    function winningOutcome() external returns (int);\n}\n",
+  "sourcePath": "contracts/IRealityMarket.sol",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "winningOutcome",
+      "outputs": [
+        {
+          "internalType": "int256",
+          "name": "",
+          "type": "int256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "ast": {
+    "absolutePath": "contracts/IRealityMarket.sol",
+    "exportedSymbols": {
+      "IRealityMarket": [
+        3383
+      ]
+    },
+    "id": 3384,
+    "license": "Unlicense",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3375,
+        "literals": [
+          "solidity",
+          "0.6",
+          ".12"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "39:23:17"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 3376,
+          "nodeType": "StructuredDocumentation",
+          "src": "65:98:17",
+          "text": "@title IRealityMarket\n @notice Generate a reality market and appropriate mint/burn tokens."
+        },
+        "fullyImplemented": false,
+        "id": 3383,
+        "linearizedBaseContracts": [
+          3383
+        ],
+        "name": "IRealityMarket",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": {
+              "id": 3377,
+              "nodeType": "StructuredDocumentation",
+              "src": "194:52:17",
+              "text": "@notice Return the winning outcome for a market."
+            },
+            "functionSelector": "9b34ae03",
+            "id": 3382,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "winningOutcome",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 3378,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "274:2:17"
+            },
+            "returnParameters": {
+              "id": 3381,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3380,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3382,
+                  "src": "295:3:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_int256",
+                    "typeString": "int256"
+                  },
+                  "typeName": {
+                    "id": 3379,
+                    "name": "int",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "295:3:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_int256",
+                      "typeString": "int256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "294:5:17"
+            },
+            "scope": 3383,
+            "src": "251:49:17",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 3384,
+        "src": "163:139:17"
+      }
+    ],
+    "src": "39:264:17"
+  },
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.12+commit.27d51765.Emscripten.clang",
+    "optimizer": {
+      "enabled": true,
+      "runs": 1
+    },
+    "evmVersion": "petersburg"
+  }
+}

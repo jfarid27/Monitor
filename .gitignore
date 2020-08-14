@@ -1,0 +1,7 @@
+node_modules
+**.swp
+.openzeppelin
+dist/
+dist/!index.html
+
+.openzeppelin/.session

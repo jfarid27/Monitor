@@ -13,7 +13,6 @@ contract RealityMarketRegistry is Ownable {
     mapping(address => address) public ownerForMarket;
 
     /// @notice Create a market and register the given owner.
-    /// @param setMarketTypeBinary True if the market is binary. Otherwise Linear.
     /// @param setQuestion Question to set for the reality market.
     /// @param setEndTime End time for the reality market.
     /// @param setRangeStart If the market is linear, store the start of the range mapped from 0 to 1.
@@ -23,7 +22,6 @@ contract RealityMarketRegistry is Ownable {
     /// @param currencyAddress Address of the token used to create complete sets.
     /// @return Created market address.
     function createMarket(
-        bool setMarketTypeBinary,
         string memory setQuestion,
         uint setEndTime,
         string memory setRangeStart,
@@ -33,7 +31,6 @@ contract RealityMarketRegistry is Ownable {
         address currencyAddress
     ) public onlyOwner returns (address) {
         RealityMarket market = new RealityMarket(
-            setMarketTypeBinary,
             setQuestion,
             setEndTime,
             currencyAddress,

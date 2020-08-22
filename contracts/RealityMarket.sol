@@ -24,14 +24,12 @@ contract RealityMarket is ReentrancyGuard {
     address public visionAddress;
     /// @notice Vision token Instance.
     IERC20 public visionToken;
-    /// @notice The boolean representing if a market is binary. If not, it is scalar.
-    bool public marketTypeBinary;
     /// @notice Market Question.
     string public question;
     /// @dev Constant representing the YESSHORT option.
-    string private constant YESSHORT = "YESSHORT";
+    string private constant YESSHORT = "YES";
     /// @dev Constant representing the NOLONG option.
-    string private constant NOLONG = "NOLONG";
+    string private constant NOLONG = "NO";
     /// @dev Constant representing the INVALID option.
     string private constant INVALID = "INVALID";
 
@@ -51,7 +49,6 @@ contract RealityMarket is ReentrancyGuard {
     ForesightVault public foresightVault;
 
     /// @notice Sets all base values for the market and sets up Voting and Token Vault.
-    /// @param setMarketTypeBinary Signals if market is Binary or Scalar.
     /// @param setQuestion Determines market question.
     /// @param setVotingEndTime Sets the end of public voting on market outcomes.
     /// @param setCurrencyAddress Location of the currency used to mint Foresight.
@@ -59,7 +56,6 @@ contract RealityMarket is ReentrancyGuard {
     /// @param setRangeStart Least range endpoint. Necessary for reification of markets and UIs.
     /// @param setRangeEnd Maximum range endpoint. Necessary for reification of markets and UIs.
     constructor(
-        bool setMarketTypeBinary,
         string memory setQuestion,
         uint setVotingEndTime,
         address setCurrencyAddress,
@@ -68,7 +64,6 @@ contract RealityMarket is ReentrancyGuard {
         string memory setRangeEnd
     ) public {
         require(block.timestamp < setVotingEndTime, "end time must be after start");
-        marketTypeBinary = setMarketTypeBinary;
         votingEndTime = setVotingEndTime;
         question = setQuestion;
         currencyToken = IERC20(setCurrencyAddress);
@@ -78,7 +73,7 @@ contract RealityMarket is ReentrancyGuard {
         rangeStart = setRangeStart;
         rangeEnd = setRangeEnd;
         foresightVault = new ForesightVault(address(this));
-        voting = new MarketVoting(setMarketTypeBinary, setVotingEndTime, visionAddress);
+        voting = new MarketVoting(setVotingEndTime, visionAddress);
         votingAddress = address(voting);
     }
 
@@ -121,7 +116,6 @@ contract RealityMarket is ReentrancyGuard {
     /// @notice Withdraws winning token currency based on voting outcomes for binary market.
     /// @param amount Amount of currency to swap.
     function withdrawPayoutBinary(uint amount) public assertVotingCompleted nonReentrant {
-        require(marketTypeBinary, "wrong payout for binary market");
         // Case if voting was deemed invalid.
         if (voting.winningOutcome() == -1e18) {
             foresightVault.burnInvalid(msg.sender, amount);
@@ -138,28 +132,4 @@ contract RealityMarket is ReentrancyGuard {
         }
     }
 
-    /// @notice Computes the linear payout for Invalid tokens for the market.
-    /// @param amount Amount of currency to swap.
-    function withdrawPayoutLinearInvalid(uint amount) public assertVotingCompleted nonReentrant {
-        if (voting.winningOutcome() == -1e18) {
-            foresightVault.burnInvalid(msg.sender, amount);
-            currencyToken.transfer(msg.sender, 1e18);
-        }
-    }
-
-    /// @notice Computes the linear payout for YesShort tokens for the market.
-    /// @param amount Amount of currency to swap.
-    function withdrawPayoutLinearYesShort(uint amount) public assertVotingCompleted nonReentrant {
-        foresightVault.burnYesShort(msg.sender, amount);
-        uint res = SafeCast.toUint256(voting.winningOutcome());
-        currencyToken.transfer(msg.sender, 1e18 - res);
-    }
-
-    /// @notice Computes the linear payout for NoLong tokens for the market.
-    /// @param amount Amount of currency to swap.
-    function withdrawPayoutLinearNoLong(uint amount) public assertVotingCompleted nonReentrant {
-        foresightVault.burnNoLong(msg.sender, amount);
-        uint res = SafeCast.toUint256(voting.winningOutcome());
-        currencyToken.transfer(msg.sender, res);
-    }
 }

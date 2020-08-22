@@ -8,20 +8,14 @@ import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 
 
 /// @title MarketVoting
-/// @notice Defines a market where users may vote on int values between 1 and 0
-///         Ether, or -1 Ether, representing an invalid market. Voting requires
+/// @notice Defines a market where users may vote on int values. Voting requires
 ///         sending an equivalent amount of real StakeTokens. Losers are penalized by burning
 ///         their stake. User addresses may only vote for a single outcome.
-/// @dev Market voting for the Monitor platform has two possible types: binary and scalar.
-///      For binary markets, users may only vote for Outcomes 0, -1 or 1 Ether (Ether = 1e18).
-///      For scalar markets, users may vote for any Outcome value between 0 and 1 Ether inclusive,
-///      and -1.
+/// @dev Market voting for the Monitor platform has two possible outcomes. Users may only vote for Outcomes
+///      0, -1 or 1.
 contract MarketVoting {
     using SafeMath for uint;
     using SignedSafeMath for int;
-
-    /// @notice The boolean representing if a market is binary. If not, it is scalar.
-    bool public marketTypeBinary;
 
     /// @notice Address of the stakeToken backing votes.
     address public stakeAddress;
@@ -46,16 +40,12 @@ contract MarketVoting {
     int public realizedOutcome;
 
     /// @notice Sets market data for given vote.
-    /// @dev
-    /// @param setMarketTypeBinary Whether the market type is binary or not (scalar)
     /// @param setVotingEndTime Set the time when voting may stop.
     /// @param setStakeAddress Set the address of the ERC20 token used for staking votes.
     constructor(
-        bool setMarketTypeBinary,
         uint setVotingEndTime,
         address setStakeAddress
     ) public {
-        marketTypeBinary = setMarketTypeBinary;
         stakeAddress = setStakeAddress;
         stakeToken = IERC20(stakeAddress);
         votingEndTime = setVotingEndTime;
@@ -68,11 +58,7 @@ contract MarketVoting {
     function vote(int outcome, uint amount) public {
         require(block.timestamp < votingEndTime, "voting has ended");
         require(amount > 0, "Cannot vote with 0 stake.");
-        if (marketTypeBinary) {
-            voteBinary(outcome, amount);
-        } else {
-            voteScalar(outcome, amount);
-        }
+        voteBinary(outcome, amount);
     }
 
     /// @notice Returns the market's winning outcome.
@@ -122,27 +108,6 @@ contract MarketVoting {
             outcome == -1e18;
         require(voteOk, "Vote is not in correct Binary Vote Format.");
         _;
-    }
-
-    /// @notice Asserts given outcome is a valid scalar vote.
-    /// @dev Votes are scalar if they are either between 1e18 and 0 inclusive or -1e18.
-    /// @param outcome Specific outcome to check
-    modifier assertScalarVote(int outcome) {
-        bool voteOk =
-            outcome <= 1e18 ||
-            outcome >= 0 ||
-            outcome == -1e18;
-        require(voteOk, "Vote is not in correct Scalar Vote Format.");
-        _;
-    }
-
-    /// @notice Collects a users stakeToken and records a Scalar Market vote.
-    /// @dev Approve token amount before calling.
-    /// @param outcome Specific outcome to vote on.
-    /// @param amount Amount of tokens to stake on the vote. (Requires approval)
-    function voteScalar(int outcome, uint amount) private assertScalarVote(outcome) {
-        adjustVoteAccounting(outcome, amount);
-        stakeToken.transferFrom(msg.sender, address(this), amount);
     }
 
     /// @notice Collects a users stakeToken and records a Binary Market vote.

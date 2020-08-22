@@ -15,18 +15,21 @@ describe('Yield Offering', function() {
   beforeEach(async function() {
     const currentTime = await time.latest();
     const dt = 5000;
-    this.yieldRewardStakeToken = await MockWETH.new(10 * 10**18, { from: starter });
+    const initialWethSupply = new BN(`${10 * 10**18}`);
+    const initialHourlySupply = new BN(`${1000 * 10**18}`);
+
+    this.yieldRewardStakeToken = await MockWETH.new(initialWethSupply, { from: starter });
     this.yieldOffering = await YO.new(
-      currentTime,
-      currentTime + 2 * dt,
-      currentTime + 3 * dt,
-      currentTime + 4 * dt,
-      currentTime + 5 * dt,
-      currentTime + 6 * dt,
-      currentTime + 7 * dt,
-      currentTime + 8 * dt,
-      1000 * 10**18,
-      yieldRewardStakeToken,
+      new BN(`${currentTime}`),
+      new BN(`${currentTime + 2 * dt}`),
+      new BN(`${currentTime + 3 * dt}`),
+      new BN(`${currentTime + 4 * dt}`),
+      new BN(`${currentTime + 5 * dt}`),
+      new BN(`${currentTime + 6 * dt}`),
+      new BN(`${currentTime + 7 * dt}`),
+      new BN(`${currentTime + 8 * dt}`),
+      initialHourlySupply,
+      this.yieldRewardStakeToken.address,
     {
       from: starter
     });

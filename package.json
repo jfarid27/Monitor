@@ -7,8 +7,8 @@
     "test": "mocha --exit --recursive",
     "start": "npx http-server dist -p 80",
     "start:dev-server": "npx http-server dist",
-    "start:dev": "npx webpack --watch",
-    "build": "npx webpack --env.production",
+    "start:dev": "npx webpack --watch --config webpack.config.js",
+    "build": "npx webpack --env.production --config webpack.config.js",
     "compile": "npx oz compile --solc-version 0.6.12 --optimizer on --optimizer-runs 1"
   },
   "license": "Unlicense",
@@ -32,6 +32,8 @@
   },
   "dependencies": {
     "@openzeppelin/cli": "^2.8.2",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5",
     "bn.js": "^5.1.2",
     "bnc-notify": "^1.2.2",
     "bnc-onboard": "^1.10.0",
@@ -40,6 +42,9 @@
     "react": "^16.13.1",
     "react-bootstrap": "^1.2.2",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
+    "ts-loader": "^8.0.2",
+    "typescript": "^4.0.2",
     "web3": "^1.2.9"
   }
 }

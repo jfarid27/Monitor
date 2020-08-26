@@ -13,13 +13,13 @@ const MockWETH = contract.fromArtifact('MockWETH');
 
 describe('Yield Offering', function() {
   beforeEach(async function() {
+    const erc1820 = await singletons.ERC1820Registry(accounts[0]);
     const currentTime = await time.latest();
     const dt = new BN('5000');
-    const initialWethSupply = new BN(`${10 * 10**18}`);
-    const initialHourlySupply = new BN(`${1000 * 10**18}`);
+    const initialWethSupply = new BN(`${1 * 10**18}`);
+    const initialHourlySupply = new BN(`${1 * 10**18}`);
 
     this.yieldRewardStakeToken = await MockWETH.new(initialWethSupply, { from: starter });
-
     this.yieldOffering = await YO.new(
       currentTime,
       currentTime.add((new BN('1')).mul(dt)),
@@ -38,12 +38,13 @@ describe('Yield Offering', function() {
       }
     );
 
+
   });
 
   describe('initialization', function(){
     it('should properly initialize Stake Pools with a decay of 1 order of magnitude', async function() {
-      const result = await this.yieldOffering.method.pools(1);
-      expect(result).to.be.true;
+      const result = await this.yieldOffering.getPoolAddresses();
+      expect(result.length).to.equal(4);
     });
   });
 });

@@ -14,7 +14,13 @@ import "./StakePool.sol";
 contract YieldOffering is ReentrancyGuard {
     using SafeMath for uint;
     /// @notice Created staking pools.
-    StakePool[] public pools;
+    StakePool public pool1;
+    /// @notice Created staking pools.
+    StakePool public pool2;
+    /// @notice Created staking pools.
+    StakePool public pool3;
+    /// @notice Created staking pools.
+    StakePool public pool4;
     /// @notice Mapping of user balances.
     mapping(address => uint) public balances;
     /// @notice Created Yield token.
@@ -51,10 +57,15 @@ contract YieldOffering is ReentrancyGuard {
         stakeToken = setStakeToken;
         mainToken = new Vision();
         mainTokenAddress = address(mainToken);
-        pools[0] = new StakePool(address(this), setStakeToken, startTime1, endTime1, secondReward);
-        pools[1] = new StakePool(address(this), setStakeToken, startTime2, endTime2, secondReward.div(10));
-        pools[2] = new StakePool(address(this), setStakeToken, startTime3, endTime3, secondReward.div(100));
-        pools[3] = new StakePool(address(this), setStakeToken, startTime4, endTime4, secondReward.div(1000));
+        pool1 = new StakePool(address(this), setStakeToken, startTime1, endTime1, secondReward);
+        pool2 = new StakePool(address(this), setStakeToken, startTime2, endTime2, secondReward.div(10));
+        pool3 = new StakePool(address(this), setStakeToken, startTime3, endTime3, secondReward.div(100));
+        pool4 = new StakePool(address(this), setStakeToken, startTime4, endTime4, secondReward.div(1000));
+    }
+
+    /// @notice Retrieves pool addresses.
+    function getPoolAddresses() public view returns (address[4] memory) {
+        return [address(pool1), address(pool2), address(pool3), address(pool4)];
     }
 
     /// @notice Updates the balance of yield tokens for the given user.
@@ -62,10 +73,10 @@ contract YieldOffering is ReentrancyGuard {
     /// @param amount Amount of yield to update.
     function updateBalance(address toAddress, uint amount) public {
         bool updateAllowed =
-            msg.sender == address(pools[0]) ||
-            msg.sender == address(pools[1]) ||
-            msg.sender == address(pools[2]) ||
-            msg.sender == address(pools[3]);
+            msg.sender == address(pool1) ||
+            msg.sender == address(pool2) ||
+            msg.sender == address(pool3) ||
+            msg.sender == address(pool4);
         require(updateAllowed);
         balances[toAddress] = amount;
     }

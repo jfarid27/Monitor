@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --exit --recursive",
+    "test-compile": "npx oz compile --solc-version 0.6.12 --optimizer on --optimizer-runs 1 && mocha --exit --recursive",
     "start": "npx http-server dist -p 80",
     "start:dev-server": "npx http-server dist",
     "start:dev": "npx webpack --watch --config webpack.config.js",

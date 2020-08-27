@@ -81,6 +81,12 @@ contract YieldOffering is ReentrancyGuard {
         balances[toAddress] = amount;
     }
 
+    /// @notice Returns the yield balance of yield tokens for the given user.
+    /// @param toAddress User to update balance for.
+    function balanceOf(address toAddress) public view returns (uint) {
+        return balances[toAddress];
+    }
+
     /// @notice Redeem yield tokens.
     function redeem() public nonReentrant {
         uint balance = balances[msg.sender];

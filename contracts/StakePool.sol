@@ -54,7 +54,7 @@ contract StakePool is ReentrancyGuard {
     ///      since the last deposit, and updates the balance of deposited stake and
     ///      earned yield.
     /// @param amount Amount of stake token to stake.
-    function deposit(uint amount) public nonReentrant returns (uint) {
+    function deposit(uint amount) external nonReentrant returns (uint) {
         uint t = block.timestamp;
         require(t < endTime, "staking pool has closed");
         uint currYield = yieldOffering.balances(msg.sender);
@@ -70,7 +70,7 @@ contract StakePool is ReentrancyGuard {
     ///      since the last deposit, and updates the balance of deposited stake and
     ///      earned yield.
     /// @param amount Amount of stake token to return.
-    function withdraw(uint amount) public nonReentrant returns (uint) {
+    function withdraw(uint amount) external nonReentrant returns (uint) {
         uint currYield = yieldOffering.balances(msg.sender);
         uint currOwed = updateCurrentOwned();
         balances[msg.sender] = balances[msg.sender].sub(amount);
@@ -83,7 +83,7 @@ contract StakePool is ReentrancyGuard {
     /// @notice Computes the current owned generated yield since the last time of
     ///         stake, updating the time of stake.
     /// @dev Before start, maintains the current owed yield is 0. Otherwise updates.
-    function updateCurrentOwned() private nonReentrant returns (uint) {
+    function updateCurrentOwned() private returns (uint) {
         uint t = block.timestamp;
         uint currBalance = balances[msg.sender];
         uint prevStart = timeOfStake[msg.sender];

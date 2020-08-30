@@ -80,6 +80,17 @@ contract StakePool is ReentrancyGuard {
         return balances[msg.sender];
     }
 
+    /// @notice Getter for second reward.
+    function rewardPerSecond() external view returns (uint) {
+        return secondReward;
+    }
+
+    /// @notice Getter for specific address balance.
+    /// @param balanceAddress Address of the balance to check.
+    function balanceOf(address balanceAddress) external view returns (uint) {
+        return balances[balanceAddress];
+    }
+
     /// @notice Computes the current owned generated yield since the last time of
     ///         stake, updating the time of stake.
     /// @dev Before start, maintains the current owed yield is 0. Otherwise updates.

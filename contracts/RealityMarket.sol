@@ -12,7 +12,6 @@ import "./MarketVoting.sol";
 
 /// @title RealityMarket
 /// @notice Generate a reality market and appropriate mint/burn tokens.
-/// @dev
 contract RealityMarket is ReentrancyGuard {
     using SafeMath for uint;
     using SignedSafeMath for int;

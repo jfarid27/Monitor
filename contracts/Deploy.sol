@@ -29,7 +29,6 @@ contract Deploy {
     /// @param startTime4 Start time for pool.
     /// @param endTime4 End time for pool.
     /// @param secondReward Amount to start in the stake reward contracts.
-    /// @param monitorTradeToken Complete set minting token.
     /// @param yieldRewardStakeToken Token used to generate yield during staking.
     constructor(
         uint startTime1,
@@ -41,8 +40,7 @@ contract Deploy {
         uint startTime4,
         uint endTime4,
         uint secondReward,
-        address yieldRewardStakeToken,
-        address monitorTradeToken
+        address yieldRewardStakeToken
     ) public {
         yieldOffering = new YieldOffering(
             startTime1,
@@ -58,7 +56,7 @@ contract Deploy {
         );
         yieldOfferingAddress = address(yieldOffering);
 
-        monitor = new Monitor(yieldOffering.mainTokenAddress(), monitorTradeToken);
+        monitor = new Monitor(yieldOffering.mainTokenAddress(), yieldOffering.mainTokenAddress());
         monitorAddress = address(monitor);
     }
 }

@@ -420,31 +420,31 @@
     "absolutePath": "contracts/IVision.sol",
     "exportedSymbols": {
       "IVision": [
-        3454
+        3485
       ]
     },
-    "id": 3455,
+    "id": 3486,
     "license": "Unlicense",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3441,
+        "id": 3472,
         "literals": [
           "solidity",
           "0.6",
           ".12"
         ],
         "nodeType": "PragmaDirective",
-        "src": "39:23:19"
+        "src": "39:23:20"
       },
       {
         "absolutePath": "@openzeppelin/contracts/token/ERC777/IERC777.sol",
         "file": "@openzeppelin/contracts/token/ERC777/IERC777.sol",
-        "id": 3442,
+        "id": 3473,
         "nodeType": "ImportDirective",
-        "scope": 3455,
+        "scope": 3486,
         "sourceUnit": 2441,
-        "src": "64:58:19",
+        "src": "64:58:20",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -455,19 +455,19 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 3444,
+              "id": 3475,
               "name": "IERC777",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 2440,
-              "src": "204:7:19",
+              "src": "204:7:20",
               "typeDescriptions": {
                 "typeIdentifier": "t_contract$_IERC777_$2440",
                 "typeString": "contract IERC777"
               }
             },
-            "id": 3445,
+            "id": 3476,
             "nodeType": "InheritanceSpecifier",
-            "src": "204:7:19"
+            "src": "204:7:20"
           }
         ],
         "contractDependencies": [
@@ -475,15 +475,15 @@
         ],
         "contractKind": "interface",
         "documentation": {
-          "id": 3443,
+          "id": 3474,
           "nodeType": "StructuredDocumentation",
-          "src": "125:58:19",
+          "src": "125:58:20",
           "text": "@title Vision\n @notice ERC777 for the Vision token"
         },
         "fullyImplemented": false,
-        "id": 3454,
+        "id": 3485,
         "linearizedBaseContracts": [
-          3454,
+          3485,
           2440
         ],
         "name": "IVision",
@@ -492,13 +492,13 @@
           {
             "body": null,
             "documentation": {
-              "id": 3446,
+              "id": 3477,
               "nodeType": "StructuredDocumentation",
-              "src": "219:133:19",
+              "src": "219:133:20",
               "text": "@notice Mints tokens for the given address.\n @param toAddress Address to send token.\n @param amount Amount to mint."
             },
             "functionSelector": "40c10f19",
-            "id": 3453,
+            "id": 3484,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -506,18 +506,18 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 3451,
+              "id": 3482,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3448,
+                  "id": 3479,
                   "mutability": "mutable",
                   "name": "toAddress",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 3453,
-                  "src": "371:17:19",
+                  "scope": 3484,
+                  "src": "371:17:20",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -525,10 +525,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3447,
+                    "id": 3478,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "371:7:19",
+                    "src": "371:7:20",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -540,13 +540,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 3450,
+                  "id": 3481,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 3453,
-                  "src": "390:11:19",
+                  "scope": 3484,
+                  "src": "390:11:20",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -554,10 +554,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3449,
+                    "id": 3480,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "390:4:19",
+                    "src": "390:4:20",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -567,26 +567,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "370:32:19"
+              "src": "370:32:20"
             },
             "returnParameters": {
-              "id": 3452,
+              "id": 3483,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "411:0:19"
+              "src": "411:0:20"
             },
-            "scope": 3454,
-            "src": "357:55:19",
+            "scope": 3485,
+            "src": "357:55:20",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 3455,
-        "src": "183:231:19"
+        "scope": 3486,
+        "src": "183:231:20"
       }
     ],
-    "src": "39:376:19"
+    "src": "39:376:20"
   },
   "bytecode": "0x",
   "deployedBytecode": "0x",

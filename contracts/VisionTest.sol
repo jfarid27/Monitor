@@ -13,9 +13,8 @@ contract VisionTest is ERC777 {
     constructor() public ERC777("Vision", "VIS", new address[](0)) {}
 
     /// @notice Mints tokens for the given address.
-    /// @param toAddress Address to send token.
     /// @param amount Amount to mint.
-    function mint(address toAddress, uint amount) public {
-        super._mint(toAddress, amount, "", "");
+    function mint(uint amount) public {
+        super._mint(msg.sender, amount, "", "");
     }
 }

@@ -9,14 +9,16 @@ import "./RealityMarket.sol";
 /// @title Monitor
 /// @notice Code to create and stake for information markets.
 contract RealityMarketRegistry is Ownable {
+
     /// @notice Map from market address to it's owner;
     mapping(address => address) public ownerForMarket;
+
+    /// @notice Create a market registry.
+    constructor() public {}
 
     /// @notice Create a market and register the given owner.
     /// @param setQuestion Question to set for the reality market.
     /// @param setEndTime End time for the reality market.
-    /// @param setRangeStart If the market is linear, store the start of the range mapped from 0 to 1.
-    /// @param setRangeEnd If the market is linear, store the end of the range mapped from 0 to 1.
     /// @param ownerAddress Address of the market owner.
     /// @param stakeAddress Address of the stake token used to vote.
     /// @param currencyAddress Address of the token used to create complete sets.
@@ -24,8 +26,6 @@ contract RealityMarketRegistry is Ownable {
     function createMarket(
         string memory setQuestion,
         uint setEndTime,
-        string memory setRangeStart,
-        string memory setRangeEnd,
         address ownerAddress,
         address stakeAddress,
         address currencyAddress
@@ -34,12 +34,16 @@ contract RealityMarketRegistry is Ownable {
             setQuestion,
             setEndTime,
             currencyAddress,
-            stakeAddress,
-            setRangeStart,
-            setRangeEnd
+            stakeAddress
         );
         ownerForMarket[address(market)] = ownerAddress;
         return address(market);
+    }
+
+    /// @notice Gets the owner of the reality market.
+    /// @param marketAddress MarketAddress to check who is the owner for.
+    function getOwner(address marketAddress) public view returns (address) {
+        return ownerForMarket[marketAddress];
     }
 
 }

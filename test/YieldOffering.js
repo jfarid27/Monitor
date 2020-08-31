@@ -4,7 +4,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 
 const { accounts, contract } = require('@openzeppelin/test-environment');
-const { singletons, BN, time,expectRevert } = require('@openzeppelin/test-helpers');
+const { singletons, BN, time, expectRevert } = require('@openzeppelin/test-helpers');
 
 const [starter, staker1, staker2] = accounts;
 

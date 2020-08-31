@@ -32,13 +32,11 @@ contract RealityMarket is ReentrancyGuard {
     /// @dev Constant representing the INVALID option.
     string private constant INVALID = "INVALID";
 
-    /// @notice Least range endpoint. Necessary for reification of markets and UIs.
-    string public rangeStart;
-    /// @notice Maximum range endpoint. Necessary for reification of markets and UIs.
-    string public rangeEnd;
-    /// @notice Winning outcome after voting.
     /// @notice Close of public voting on market outcomes.
     uint public votingEndTime;
+
+    /// @notice State transition required to initialize a market.
+    uint public setup = 0;
 
     /// @notice Instance of the voting contract.
     MarketVoting public voting;
@@ -52,15 +50,12 @@ contract RealityMarket is ReentrancyGuard {
     /// @param setVotingEndTime Sets the end of public voting on market outcomes.
     /// @param setCurrencyAddress Location of the currency used to mint Foresight.
     /// @param setVisionAddress Location of the Voting currency used to determine market reification.
-    /// @param setRangeStart Least range endpoint. Necessary for reification of markets and UIs.
-    /// @param setRangeEnd Maximum range endpoint. Necessary for reification of markets and UIs.
+    /// @dev After called, user must call initializeVault then initializeVoting to complete market setup.
     constructor(
         string memory setQuestion,
         uint setVotingEndTime,
         address setCurrencyAddress,
-        address setVisionAddress,
-        string memory setRangeStart,
-        string memory setRangeEnd
+        address setVisionAddress
     ) public {
         require(block.timestamp < setVotingEndTime, "end time must be after start");
         votingEndTime = setVotingEndTime;
@@ -69,17 +64,29 @@ contract RealityMarket is ReentrancyGuard {
         currencyAddress = setCurrencyAddress;
         visionToken = IERC20(setVisionAddress);
         visionAddress = setVisionAddress;
-        rangeStart = setRangeStart;
-        rangeEnd = setRangeEnd;
+        setup = 1;
+    }
+
+    /// @notice Creates Foresight Tokens
+    function initializeVault() public {
+        require(setup == 1, 'Market not in constructed state.');
         foresightVault = new ForesightVault(address(this));
-        voting = new MarketVoting(setVotingEndTime, visionAddress);
+        setup = 2;
+    }
+
+    /// @notice Creates Foresight Tokens and Market Voting
+    function initializeVoting() public {
+        require(setup == 2, 'Market not in foresight state.');
+        voting = new MarketVoting(votingEndTime, visionAddress);
         votingAddress = address(voting);
+        setup = 3;
     }
 
     /// @notice Create a complete set of tokens using the currencyToken 1 to 1 and store it.
     /// @dev Requires currency token approval.
     /// @param amount Amount of currency to take and number of shares to mint.
     function mintCompleteSets(uint amount) public {
+        require(setup == 3, 'Market setup not complete');
         currencyToken.transferFrom(msg.sender, address(this), amount);
         foresightVault.mintCompleteSets(msg.sender, amount);
     }

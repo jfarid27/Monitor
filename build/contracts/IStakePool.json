@@ -126,42 +126,42 @@
     "absolutePath": "contracts/IStakePool.sol",
     "exportedSymbols": {
       "IStakePool": [
-        3470
+        3439
       ]
     },
-    "id": 3471,
+    "id": 3440,
     "license": "Unlicense",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3416,
+        "id": 3385,
         "literals": [
           "solidity",
           "0.6",
           ".12"
         ],
         "nodeType": "PragmaDirective",
-        "src": "39:23:19"
+        "src": "39:23:18"
       },
       {
         "absolutePath": "contracts/IYieldOffering.sol",
         "file": "./IYieldOffering.sol",
-        "id": 3417,
+        "id": 3386,
         "nodeType": "ImportDirective",
-        "scope": 3471,
-        "sourceUnit": 3505,
-        "src": "64:30:19",
+        "scope": 3440,
+        "sourceUnit": 3474,
+        "src": "64:30:18",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
         "file": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-        "id": 3418,
+        "id": 3387,
         "nodeType": "ImportDirective",
-        "scope": 3471,
+        "scope": 3440,
         "sourceUnit": 1182,
-        "src": "95:56:19",
+        "src": "95:56:18",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -171,15 +171,15 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 3419,
+          "id": 3388,
           "nodeType": "StructuredDocumentation",
-          "src": "154:103:19",
+          "src": "154:103:18",
           "text": "@title StakePool\n @notice Creates a stake pool that generates yield with a given staking token."
         },
         "fullyImplemented": false,
-        "id": 3470,
+        "id": 3439,
         "linearizedBaseContracts": [
-          3470
+          3439
         ],
         "name": "IStakePool",
         "nodeType": "ContractDefinition",
@@ -187,13 +187,13 @@
           {
             "body": null,
             "documentation": {
-              "id": 3420,
+              "id": 3389,
               "nodeType": "StructuredDocumentation",
-              "src": "285:119:19",
+              "src": "285:119:18",
               "text": "@notice Returns the start of the user's staking at current amount.\n @param a Amount of stake token to stake."
             },
             "functionSelector": "0c98b5da",
-            "id": 3427,
+            "id": 3396,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -201,18 +201,18 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 3423,
+              "id": 3392,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3422,
+                  "id": 3391,
                   "mutability": "mutable",
                   "name": "a",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 3427,
-                  "src": "430:9:19",
+                  "scope": 3396,
+                  "src": "430:9:18",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -220,10 +220,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3421,
+                    "id": 3390,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "430:7:19",
+                    "src": "430:7:18",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -234,9 +234,348 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "429:11:19"
+              "src": "429:11:18"
             },
             "returnParameters": {
+              "id": 3395,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3394,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3396,
+                  "src": "459:4:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3393,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "459:4:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "458:6:18"
+            },
+            "scope": 3439,
+            "src": "409:56:18",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": {
+              "id": 3397,
+              "nodeType": "StructuredDocumentation",
+              "src": "471:104:18",
+              "text": "@notice Returns the current amount of user's stake.\n @param a Amount of stake token to stake."
+            },
+            "functionSelector": "27e235e3",
+            "id": 3404,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "balances",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 3400,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3399,
+                  "mutability": "mutable",
+                  "name": "a",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3404,
+                  "src": "598:9:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3398,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "598:7:18",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "597:11:18"
+            },
+            "returnParameters": {
+              "id": 3403,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3402,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3404,
+                  "src": "627:4:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3401,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "627:4:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "626:6:18"
+            },
+            "scope": 3439,
+            "src": "580:53:18",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": {
+              "id": 3405,
+              "nodeType": "StructuredDocumentation",
+              "src": "639:265:18",
+              "text": "@notice Deposits stake token into the pool with the given amount.\n @dev Fetches the yield offering balance, computes the amount of yield earned\n      since the last deposit, and updates the balance of deposited stake and\n      earned yield."
+            },
+            "functionSelector": "78e97925",
+            "id": 3410,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "startTime",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 3406,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "927:2:18"
+            },
+            "returnParameters": {
+              "id": 3409,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3408,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3410,
+                  "src": "948:4:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3407,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "948:4:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "947:6:18"
+            },
+            "scope": 3439,
+            "src": "909:45:18",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": {
+              "id": 3411,
+              "nodeType": "StructuredDocumentation",
+              "src": "960:265:18",
+              "text": "@notice Deposits stake token into the pool with the given amount.\n @dev Fetches the yield offering balance, computes the amount of yield earned\n      since the last deposit, and updates the balance of deposited stake and\n      earned yield."
+            },
+            "functionSelector": "3197cbb6",
+            "id": 3416,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "endTime",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 3412,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1246:2:18"
+            },
+            "returnParameters": {
+              "id": 3415,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3414,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3416,
+                  "src": "1267:4:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3413,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1267:4:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1266:6:18"
+            },
+            "scope": 3439,
+            "src": "1230:43:18",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": {
+              "id": 3417,
+              "nodeType": "StructuredDocumentation",
+              "src": "1279:265:18",
+              "text": "@notice Deposits stake token into the pool with the given amount.\n @dev Fetches the yield offering balance, computes the amount of yield earned\n      since the last deposit, and updates the balance of deposited stake and\n      earned yield."
+            },
+            "functionSelector": "fec94ad1",
+            "id": 3422,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "secondReward",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 3418,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1570:2:18"
+            },
+            "returnParameters": {
+              "id": 3421,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3420,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3422,
+                  "src": "1591:4:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3419,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1591:4:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1590:6:18"
+            },
+            "scope": 3439,
+            "src": "1549:48:18",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": {
+              "id": 3423,
+              "nodeType": "StructuredDocumentation",
+              "src": "1604:319:18",
+              "text": "@notice Deposits stake token into the pool with the given amount.\n @dev Fetches the yield offering balance, computes the amount of yield earned\n      since the last deposit, and updates the balance of deposited stake and\n      earned yield.\n @param amount Amount of stake token to stake."
+            },
+            "functionSelector": "b6b55f25",
+            "id": 3430,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "deposit",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
               "id": 3426,
               "nodeType": "ParameterList",
               "parameters": [
@@ -244,11 +583,11 @@
                   "constant": false,
                   "id": 3425,
                   "mutability": "mutable",
-                  "name": "",
+                  "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 3427,
-                  "src": "459:4:19",
+                  "scope": 3430,
+                  "src": "1945:11:18",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -259,7 +598,7 @@
                     "id": 3424,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "459:4:19",
+                    "src": "1945:4:18",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -269,10 +608,45 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "458:6:19"
+              "src": "1944:13:18"
             },
-            "scope": 3470,
-            "src": "409:56:19",
+            "returnParameters": {
+              "id": 3429,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3428,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 3430,
+                  "src": "1976:4:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3427,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1976:4:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1975:6:18"
+            },
+            "scope": 3439,
+            "src": "1928:54:18",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
@@ -280,56 +654,20 @@
           {
             "body": null,
             "documentation": {
-              "id": 3428,
+              "id": 3431,
               "nodeType": "StructuredDocumentation",
-              "src": "471:104:19",
-              "text": "@notice Returns the current amount of user's stake.\n @param a Amount of stake token to stake."
+              "src": "1988:321:18",
+              "text": "@notice Withdraws the given amount of stake token out of the pool.\n @dev Fetches the yield offering balance, computes the amount of yield earned\n      since the last deposit, and updates the balance of deposited stake and\n      earned yield.\n @param amount Amount of stake token to return."
             },
-            "functionSelector": "27e235e3",
-            "id": 3435,
+            "functionSelector": "2e1a7d4d",
+            "id": 3438,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "balances",
+            "name": "withdraw",
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 3431,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 3430,
-                  "mutability": "mutable",
-                  "name": "a",
-                  "nodeType": "VariableDeclaration",
-                  "overrides": null,
-                  "scope": 3435,
-                  "src": "598:9:19",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 3429,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "598:7:19",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "597:11:19"
-            },
-            "returnParameters": {
               "id": 3434,
               "nodeType": "ParameterList",
               "parameters": [
@@ -337,11 +675,11 @@
                   "constant": false,
                   "id": 3433,
                   "mutability": "mutable",
-                  "name": "",
+                  "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 3435,
-                  "src": "627:4:19",
+                  "scope": 3438,
+                  "src": "2332:11:18",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -352,7 +690,7 @@
                     "id": 3432,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "627:4:19",
+                    "src": "2332:4:18",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -362,49 +700,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "626:6:19"
+              "src": "2331:13:18"
             },
-            "scope": 3470,
-            "src": "580:53:19",
-            "stateMutability": "nonpayable",
-            "virtual": false,
-            "visibility": "external"
-          },
-          {
-            "body": null,
-            "documentation": {
-              "id": 3436,
-              "nodeType": "StructuredDocumentation",
-              "src": "639:265:19",
-              "text": "@notice Deposits stake token into the pool with the given amount.\n @dev Fetches the yield offering balance, computes the amount of yield earned\n      since the last deposit, and updates the balance of deposited stake and\n      earned yield."
-            },
-            "functionSelector": "78e97925",
-            "id": 3441,
-            "implemented": false,
-            "kind": "function",
-            "modifiers": [],
-            "name": "startTime",
-            "nodeType": "FunctionDefinition",
-            "overrides": null,
-            "parameters": {
+            "returnParameters": {
               "id": 3437,
               "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "927:2:19"
-            },
-            "returnParameters": {
-              "id": 3440,
-              "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3439,
+                  "id": 3436,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 3441,
-                  "src": "948:4:19",
+                  "scope": 3438,
+                  "src": "2363:4:18",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -412,10 +722,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3438,
+                    "id": 3435,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "948:4:19",
+                    "src": "2363:4:18",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -425,330 +735,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "947:6:19"
+              "src": "2362:6:18"
             },
-            "scope": 3470,
-            "src": "909:45:19",
-            "stateMutability": "nonpayable",
-            "virtual": false,
-            "visibility": "external"
-          },
-          {
-            "body": null,
-            "documentation": {
-              "id": 3442,
-              "nodeType": "StructuredDocumentation",
-              "src": "960:265:19",
-              "text": "@notice Deposits stake token into the pool with the given amount.\n @dev Fetches the yield offering balance, computes the amount of yield earned\n      since the last deposit, and updates the balance of deposited stake and\n      earned yield."
-            },
-            "functionSelector": "3197cbb6",
-            "id": 3447,
-            "implemented": false,
-            "kind": "function",
-            "modifiers": [],
-            "name": "endTime",
-            "nodeType": "FunctionDefinition",
-            "overrides": null,
-            "parameters": {
-              "id": 3443,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "1246:2:19"
-            },
-            "returnParameters": {
-              "id": 3446,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 3445,
-                  "mutability": "mutable",
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "overrides": null,
-                  "scope": 3447,
-                  "src": "1267:4:19",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 3444,
-                    "name": "uint",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1267:4:19",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "1266:6:19"
-            },
-            "scope": 3470,
-            "src": "1230:43:19",
-            "stateMutability": "nonpayable",
-            "virtual": false,
-            "visibility": "external"
-          },
-          {
-            "body": null,
-            "documentation": {
-              "id": 3448,
-              "nodeType": "StructuredDocumentation",
-              "src": "1279:265:19",
-              "text": "@notice Deposits stake token into the pool with the given amount.\n @dev Fetches the yield offering balance, computes the amount of yield earned\n      since the last deposit, and updates the balance of deposited stake and\n      earned yield."
-            },
-            "functionSelector": "fec94ad1",
-            "id": 3453,
-            "implemented": false,
-            "kind": "function",
-            "modifiers": [],
-            "name": "secondReward",
-            "nodeType": "FunctionDefinition",
-            "overrides": null,
-            "parameters": {
-              "id": 3449,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "1570:2:19"
-            },
-            "returnParameters": {
-              "id": 3452,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 3451,
-                  "mutability": "mutable",
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "overrides": null,
-                  "scope": 3453,
-                  "src": "1591:4:19",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 3450,
-                    "name": "uint",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1591:4:19",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "1590:6:19"
-            },
-            "scope": 3470,
-            "src": "1549:48:19",
-            "stateMutability": "nonpayable",
-            "virtual": false,
-            "visibility": "external"
-          },
-          {
-            "body": null,
-            "documentation": {
-              "id": 3454,
-              "nodeType": "StructuredDocumentation",
-              "src": "1604:319:19",
-              "text": "@notice Deposits stake token into the pool with the given amount.\n @dev Fetches the yield offering balance, computes the amount of yield earned\n      since the last deposit, and updates the balance of deposited stake and\n      earned yield.\n @param amount Amount of stake token to stake."
-            },
-            "functionSelector": "b6b55f25",
-            "id": 3461,
-            "implemented": false,
-            "kind": "function",
-            "modifiers": [],
-            "name": "deposit",
-            "nodeType": "FunctionDefinition",
-            "overrides": null,
-            "parameters": {
-              "id": 3457,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 3456,
-                  "mutability": "mutable",
-                  "name": "amount",
-                  "nodeType": "VariableDeclaration",
-                  "overrides": null,
-                  "scope": 3461,
-                  "src": "1945:11:19",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 3455,
-                    "name": "uint",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1945:4:19",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "1944:13:19"
-            },
-            "returnParameters": {
-              "id": 3460,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 3459,
-                  "mutability": "mutable",
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "overrides": null,
-                  "scope": 3461,
-                  "src": "1976:4:19",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 3458,
-                    "name": "uint",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1976:4:19",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "1975:6:19"
-            },
-            "scope": 3470,
-            "src": "1928:54:19",
-            "stateMutability": "nonpayable",
-            "virtual": false,
-            "visibility": "external"
-          },
-          {
-            "body": null,
-            "documentation": {
-              "id": 3462,
-              "nodeType": "StructuredDocumentation",
-              "src": "1988:321:19",
-              "text": "@notice Withdraws the given amount of stake token out of the pool.\n @dev Fetches the yield offering balance, computes the amount of yield earned\n      since the last deposit, and updates the balance of deposited stake and\n      earned yield.\n @param amount Amount of stake token to return."
-            },
-            "functionSelector": "2e1a7d4d",
-            "id": 3469,
-            "implemented": false,
-            "kind": "function",
-            "modifiers": [],
-            "name": "withdraw",
-            "nodeType": "FunctionDefinition",
-            "overrides": null,
-            "parameters": {
-              "id": 3465,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 3464,
-                  "mutability": "mutable",
-                  "name": "amount",
-                  "nodeType": "VariableDeclaration",
-                  "overrides": null,
-                  "scope": 3469,
-                  "src": "2332:11:19",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 3463,
-                    "name": "uint",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "2332:4:19",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "2331:13:19"
-            },
-            "returnParameters": {
-              "id": 3468,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 3467,
-                  "mutability": "mutable",
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "overrides": null,
-                  "scope": 3469,
-                  "src": "2363:4:19",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 3466,
-                    "name": "uint",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "2363:4:19",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "2362:6:19"
-            },
-            "scope": 3470,
-            "src": "2314:55:19",
+            "scope": 3439,
+            "src": "2314:55:18",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 3471,
-        "src": "257:2115:19"
+        "scope": 3440,
+        "src": "257:2115:18"
       }
     ],
-    "src": "39:2334:19"
+    "src": "39:2334:18"
   },
   "bytecode": "0x",
   "deployedBytecode": "0x",

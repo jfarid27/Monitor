@@ -23,7 +23,11 @@ contract Monitor is ReentrancyGuard {
     /// @notice Vision token instance.
     IERC20 public visionToken;
 
+    /// @notice instance of the Market Registry.
     RealityMarketRegistry public markets;
+
+    /// @notice address of the Market Registry.
+    address public marketRegistry;
 
     /// @notice Initializes the Monitor.
     /// @param setVisionAddress Address for the vision token.
@@ -36,6 +40,12 @@ contract Monitor is ReentrancyGuard {
         visionToken = IERC20(visionAddress);
         currencyAddress = setCurrencyAddress;
         markets = new RealityMarketRegistry();
+        marketRegistry = address(markets);
+    }
+
+    /// @notice getter for the market registry.
+    function getMarketRegistry() public view returns (address) {
+        return marketRegistry;
     }
 
     /// @notice Create a market and stake the set amount of vision token.
@@ -43,23 +53,17 @@ contract Monitor is ReentrancyGuard {
     ///      new market each time.
     /// @param setQuestion Question to set for the reality market.
     /// @param setEndTime End time for the reality market.
-    /// @param setRangeStart If the market is linear, store the start of the range mapped from 0 to 1.
-    /// @param setRangeEnd If the market is linear, store the end of the range mapped from 0 to 1.
     /// @param stake Amount of Vision to stake on the market.
     /// @return Created market address.
     function createMarket(
         string memory setQuestion,
         uint setEndTime,
-        string memory setRangeStart,
-        string memory setRangeEnd,
         uint stake
     ) public nonReentrant returns (address) {
         address marketAddress = markets.createMarket(
             setQuestion,
             setEndTime,
-            setRangeStart,
-            setRangeEnd,
-            address(msg.sender),
+            msg.sender,
             visionAddress,
             currencyAddress
         );

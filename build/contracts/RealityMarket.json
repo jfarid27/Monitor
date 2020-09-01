@@ -251,15 +251,15 @@
     "absolutePath": "contracts/RealityMarket.sol",
     "exportedSymbols": {
       "RealityMarket": [
-        4388
+        4393
       ]
     },
-    "id": 4389,
+    "id": 4394,
     "license": "Unlicense",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4018,
+        "id": 4023,
         "literals": [
           "solidity",
           "0.6",
@@ -271,9 +271,9 @@
       {
         "absolutePath": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
         "file": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-        "id": 4019,
+        "id": 4024,
         "nodeType": "ImportDirective",
-        "scope": 4389,
+        "scope": 4394,
         "sourceUnit": 1182,
         "src": "64:56:24",
         "symbolAliases": [],
@@ -282,9 +282,9 @@
       {
         "absolutePath": "@openzeppelin/contracts/math/SafeMath.sol",
         "file": "@openzeppelin/contracts/math/SafeMath.sol",
-        "id": 4020,
+        "id": 4025,
         "nodeType": "ImportDirective",
-        "scope": 4389,
+        "scope": 4394,
         "sourceUnit": 418,
         "src": "121:51:24",
         "symbolAliases": [],
@@ -293,9 +293,9 @@
       {
         "absolutePath": "@openzeppelin/contracts/math/SignedSafeMath.sol",
         "file": "@openzeppelin/contracts/math/SignedSafeMath.sol",
-        "id": 4021,
+        "id": 4026,
         "nodeType": "ImportDirective",
-        "scope": 4389,
+        "scope": 4394,
         "sourceUnit": 597,
         "src": "173:57:24",
         "symbolAliases": [],
@@ -304,9 +304,9 @@
       {
         "absolutePath": "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
         "file": "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
-        "id": 4022,
+        "id": 4027,
         "nodeType": "ImportDirective",
-        "scope": 4389,
+        "scope": 4394,
         "sourceUnit": 2725,
         "src": "231:59:24",
         "symbolAliases": [],
@@ -315,9 +315,9 @@
       {
         "absolutePath": "@openzeppelin/contracts/utils/SafeCast.sol",
         "file": "@openzeppelin/contracts/utils/SafeCast.sol",
-        "id": 4023,
+        "id": 4028,
         "nodeType": "ImportDirective",
-        "scope": 4389,
+        "scope": 4394,
         "sourceUnit": 3038,
         "src": "291:52:24",
         "symbolAliases": [],
@@ -326,9 +326,9 @@
       {
         "absolutePath": "contracts/ForesightVault.sol",
         "file": "./ForesightVault.sol",
-        "id": 4024,
+        "id": 4029,
         "nodeType": "ImportDirective",
-        "scope": 4389,
+        "scope": 4394,
         "sourceUnit": 3374,
         "src": "344:30:24",
         "symbolAliases": [],
@@ -337,9 +337,9 @@
       {
         "absolutePath": "contracts/MarketVoting.sol",
         "file": "./MarketVoting.sol",
-        "id": 4025,
+        "id": 4030,
         "nodeType": "ImportDirective",
-        "scope": 4389,
+        "scope": 4394,
         "sourceUnit": 3802,
         "src": "375:28:24",
         "symbolAliases": [],
@@ -352,7 +352,7 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 4027,
+              "id": 4032,
               "name": "ReentrancyGuard",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 2724,
@@ -362,7 +362,7 @@
                 "typeString": "contract ReentrancyGuard"
               }
             },
-            "id": 4028,
+            "id": 4033,
             "nodeType": "InheritanceSpecifier",
             "src": "528:15:24"
           }
@@ -374,25 +374,25 @@
         ],
         "contractKind": "contract",
         "documentation": {
-          "id": 4026,
+          "id": 4031,
           "nodeType": "StructuredDocumentation",
           "src": "405:97:24",
           "text": "@title RealityMarket\n @notice Generate a reality market and appropriate mint/burn tokens."
         },
         "fullyImplemented": true,
-        "id": 4388,
+        "id": 4393,
         "linearizedBaseContracts": [
-          4388,
+          4393,
           2724
         ],
         "name": "RealityMarket",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 4031,
+            "id": 4036,
             "libraryName": {
               "contractScope": null,
-              "id": 4029,
+              "id": 4034,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 417,
@@ -405,7 +405,7 @@
             "nodeType": "UsingForDirective",
             "src": "550:24:24",
             "typeName": {
-              "id": 4030,
+              "id": 4035,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
               "src": "569:4:24",
@@ -416,10 +416,10 @@
             }
           },
           {
-            "id": 4034,
+            "id": 4039,
             "libraryName": {
               "contractScope": null,
-              "id": 4032,
+              "id": 4037,
               "name": "SignedSafeMath",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 596,
@@ -432,7 +432,7 @@
             "nodeType": "UsingForDirective",
             "src": "579:29:24",
             "typeName": {
-              "id": 4033,
+              "id": 4038,
               "name": "int",
               "nodeType": "ElementaryTypeName",
               "src": "604:3:24",
@@ -445,18 +445,18 @@
           {
             "constant": false,
             "documentation": {
-              "id": 4035,
+              "id": 4040,
               "nodeType": "StructuredDocumentation",
               "src": "613:63:24",
               "text": "@notice Base currency token address used to mint Foresight."
             },
             "functionSelector": "1c1cb323",
-            "id": 4037,
+            "id": 4042,
             "mutability": "mutable",
             "name": "currencyAddress",
             "nodeType": "VariableDeclaration",
             "overrides": null,
-            "scope": 4388,
+            "scope": 4393,
             "src": "681:30:24",
             "stateVariable": true,
             "storageLocation": "default",
@@ -465,7 +465,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 4036,
+              "id": 4041,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "681:7:24",
@@ -481,18 +481,18 @@
           {
             "constant": false,
             "documentation": {
-              "id": 4038,
+              "id": 4043,
               "nodeType": "StructuredDocumentation",
               "src": "717:55:24",
               "text": "@notice Base currency token used to mint Foresight."
             },
             "functionSelector": "6b2fa374",
-            "id": 4040,
+            "id": 4045,
             "mutability": "mutable",
             "name": "currencyToken",
             "nodeType": "VariableDeclaration",
             "overrides": null,
-            "scope": 4388,
+            "scope": 4393,
             "src": "777:27:24",
             "stateVariable": true,
             "storageLocation": "default",
@@ -502,7 +502,7 @@
             },
             "typeName": {
               "contractScope": null,
-              "id": 4039,
+              "id": 4044,
               "name": "IERC20",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 1181,
@@ -518,18 +518,18 @@
           {
             "constant": false,
             "documentation": {
-              "id": 4041,
+              "id": 4046,
               "nodeType": "StructuredDocumentation",
               "src": "810:41:24",
               "text": "@notice Address for the Vision token."
             },
             "functionSelector": "6279cb27",
-            "id": 4043,
+            "id": 4048,
             "mutability": "mutable",
             "name": "visionAddress",
             "nodeType": "VariableDeclaration",
             "overrides": null,
-            "scope": 4388,
+            "scope": 4393,
             "src": "856:28:24",
             "stateVariable": true,
             "storageLocation": "default",
@@ -538,7 +538,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 4042,
+              "id": 4047,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "856:7:24",
@@ -554,18 +554,18 @@
           {
             "constant": false,
             "documentation": {
-              "id": 4044,
+              "id": 4049,
               "nodeType": "StructuredDocumentation",
               "src": "890:34:24",
               "text": "@notice Vision token Instance."
             },
             "functionSelector": "f2fd83e0",
-            "id": 4046,
+            "id": 4051,
             "mutability": "mutable",
             "name": "visionToken",
             "nodeType": "VariableDeclaration",
             "overrides": null,
-            "scope": 4388,
+            "scope": 4393,
             "src": "929:25:24",
             "stateVariable": true,
             "storageLocation": "default",
@@ -575,7 +575,7 @@
             },
             "typeName": {
               "contractScope": null,
-              "id": 4045,
+              "id": 4050,
               "name": "IERC20",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 1181,
@@ -591,18 +591,18 @@
           {
             "constant": false,
             "documentation": {
-              "id": 4047,
+              "id": 4052,
               "nodeType": "StructuredDocumentation",
               "src": "960:28:24",
               "text": "@notice Market Question."
             },
             "functionSelector": "3fad9ae0",
-            "id": 4049,
+            "id": 4054,
             "mutability": "mutable",
             "name": "question",
             "nodeType": "VariableDeclaration",
             "overrides": null,
-            "scope": 4388,
+            "scope": 4393,
             "src": "993:22:24",
             "stateVariable": true,
             "storageLocation": "default",
@@ -611,7 +611,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 4048,
+              "id": 4053,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "993:6:24",
@@ -626,17 +626,17 @@
           {
             "constant": true,
             "documentation": {
-              "id": 4050,
+              "id": 4055,
               "nodeType": "StructuredDocumentation",
               "src": "1021:51:24",
               "text": "@dev Constant representing the YESSHORT option."
             },
-            "id": 4053,
+            "id": 4058,
             "mutability": "constant",
             "name": "YESSHORT",
             "nodeType": "VariableDeclaration",
             "overrides": null,
-            "scope": 4388,
+            "scope": 4393,
             "src": "1077:40:24",
             "stateVariable": true,
             "storageLocation": "default",
@@ -645,7 +645,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 4051,
+              "id": 4056,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "1077:6:24",
@@ -657,7 +657,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "594553",
-              "id": 4052,
+              "id": 4057,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -677,17 +677,17 @@
           {
             "constant": true,
             "documentation": {
-              "id": 4054,
+              "id": 4059,
               "nodeType": "StructuredDocumentation",
               "src": "1123:49:24",
               "text": "@dev Constant representing the NOLONG option."
             },
-            "id": 4057,
+            "id": 4062,
             "mutability": "constant",
             "name": "NOLONG",
             "nodeType": "VariableDeclaration",
             "overrides": null,
-            "scope": 4388,
+            "scope": 4393,
             "src": "1177:37:24",
             "stateVariable": true,
             "storageLocation": "default",
@@ -696,7 +696,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 4055,
+              "id": 4060,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "1177:6:24",
@@ -708,7 +708,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "4e4f",
-              "id": 4056,
+              "id": 4061,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -728,17 +728,17 @@
           {
             "constant": true,
             "documentation": {
-              "id": 4058,
+              "id": 4063,
               "nodeType": "StructuredDocumentation",
               "src": "1220:50:24",
               "text": "@dev Constant representing the INVALID option."
             },
-            "id": 4061,
+            "id": 4066,
             "mutability": "constant",
             "name": "INVALID",
             "nodeType": "VariableDeclaration",
             "overrides": null,
-            "scope": 4388,
+            "scope": 4393,
             "src": "1275:43:24",
             "stateVariable": true,
             "storageLocation": "default",
@@ -747,7 +747,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 4059,
+              "id": 4064,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "1275:6:24",
@@ -759,7 +759,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "494e56414c4944",
-              "id": 4060,
+              "id": 4065,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -779,18 +779,18 @@
           {
             "constant": false,
             "documentation": {
-              "id": 4062,
+              "id": 4067,
               "nodeType": "StructuredDocumentation",
               "src": "1325:54:24",
               "text": "@notice Close of public voting on market outcomes."
             },
             "functionSelector": "1ea736e0",
-            "id": 4064,
+            "id": 4069,
             "mutability": "mutable",
             "name": "votingEndTime",
             "nodeType": "VariableDeclaration",
             "overrides": null,
-            "scope": 4388,
+            "scope": 4393,
             "src": "1384:25:24",
             "stateVariable": true,
             "storageLocation": "default",
@@ -799,7 +799,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 4063,
+              "id": 4068,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
               "src": "1384:4:24",
@@ -814,18 +814,18 @@
           {
             "constant": false,
             "documentation": {
-              "id": 4065,
+              "id": 4070,
               "nodeType": "StructuredDocumentation",
               "src": "1416:61:24",
               "text": "@notice State transition required to initialize a market."
             },
             "functionSelector": "ba0bba40",
-            "id": 4068,
+            "id": 4073,
             "mutability": "mutable",
             "name": "setup",
             "nodeType": "VariableDeclaration",
             "overrides": null,
-            "scope": 4388,
+            "scope": 4393,
             "src": "1482:21:24",
             "stateVariable": true,
             "storageLocation": "default",
@@ -834,7 +834,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 4066,
+              "id": 4071,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
               "src": "1482:4:24",
@@ -846,7 +846,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "30",
-              "id": 4067,
+              "id": 4072,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -866,18 +866,18 @@
           {
             "constant": false,
             "documentation": {
-              "id": 4069,
+              "id": 4074,
               "nodeType": "StructuredDocumentation",
               "src": "1510:44:24",
               "text": "@notice Instance of the voting contract."
             },
             "functionSelector": "fce1ccca",
-            "id": 4071,
+            "id": 4076,
             "mutability": "mutable",
             "name": "voting",
             "nodeType": "VariableDeclaration",
             "overrides": null,
-            "scope": 4388,
+            "scope": 4393,
             "src": "1559:26:24",
             "stateVariable": true,
             "storageLocation": "default",
@@ -887,7 +887,7 @@
             },
             "typeName": {
               "contractScope": null,
-              "id": 4070,
+              "id": 4075,
               "name": "MarketVoting",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 3801,
@@ -903,18 +903,18 @@
           {
             "constant": false,
             "documentation": {
-              "id": 4072,
+              "id": 4077,
               "nodeType": "StructuredDocumentation",
               "src": "1591:44:24",
               "text": "@notice Address for the Voting contract."
             },
             "functionSelector": "d2fa7170",
-            "id": 4074,
+            "id": 4079,
             "mutability": "mutable",
             "name": "votingAddress",
             "nodeType": "VariableDeclaration",
             "overrides": null,
-            "scope": 4388,
+            "scope": 4393,
             "src": "1640:28:24",
             "stateVariable": true,
             "storageLocation": "default",
@@ -923,7 +923,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 4073,
+              "id": 4078,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "1640:7:24",
@@ -939,18 +939,18 @@
           {
             "constant": false,
             "documentation": {
-              "id": 4075,
+              "id": 4080,
               "nodeType": "StructuredDocumentation",
               "src": "1674:53:24",
               "text": "@notice Instance of the Foresight Vault contract."
             },
             "functionSelector": "1a973c84",
-            "id": 4077,
+            "id": 4082,
             "mutability": "mutable",
             "name": "foresightVault",
             "nodeType": "VariableDeclaration",
             "overrides": null,
-            "scope": 4388,
+            "scope": 4393,
             "src": "1732:36:24",
             "stateVariable": true,
             "storageLocation": "default",
@@ -960,7 +960,7 @@
             },
             "typeName": {
               "contractScope": null,
-              "id": 4076,
+              "id": 4081,
               "name": "ForesightVault",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 3373,
@@ -975,7 +975,7 @@
           },
           {
             "body": {
-              "id": 4129,
+              "id": 4134,
               "nodeType": "Block",
               "src": "2452:373:24",
               "statements": [
@@ -989,7 +989,7 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 4093,
+                        "id": 4098,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -998,7 +998,7 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 4090,
+                            "id": 4095,
                             "name": "block",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -1009,7 +1009,7 @@
                               "typeString": "block"
                             }
                           },
-                          "id": 4091,
+                          "id": 4096,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1027,11 +1027,11 @@
                         "operator": "<",
                         "rightExpression": {
                           "argumentTypes": null,
-                          "id": 4092,
+                          "id": 4097,
                           "name": "setVotingEndTime",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4082,
+                          "referencedDeclaration": 4087,
                           "src": "2488:16:24",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1047,7 +1047,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "656e642074696d65206d757374206265206166746572207374617274",
-                        "id": 4094,
+                        "id": 4099,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1074,7 +1074,7 @@
                           "typeString": "literal_string \"end time must be after start\""
                         }
                       ],
-                      "id": 4089,
+                      "id": 4094,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -1088,7 +1088,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 4095,
+                    "id": 4100,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1103,25 +1103,25 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4096,
+                  "id": 4101,
                   "nodeType": "ExpressionStatement",
                   "src": "2462:75:24"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4099,
+                    "id": 4104,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4097,
+                      "id": 4102,
                       "name": "votingEndTime",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4064,
+                      "referencedDeclaration": 4069,
                       "src": "2547:13:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1132,11 +1132,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 4098,
+                      "id": 4103,
                       "name": "setVotingEndTime",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4082,
+                      "referencedDeclaration": 4087,
                       "src": "2563:16:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1149,25 +1149,25 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 4100,
+                  "id": 4105,
                   "nodeType": "ExpressionStatement",
                   "src": "2547:32:24"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4103,
+                    "id": 4108,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4101,
+                      "id": 4106,
                       "name": "question",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4049,
+                      "referencedDeclaration": 4054,
                       "src": "2589:8:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_storage",
@@ -1178,11 +1178,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 4102,
+                      "id": 4107,
                       "name": "setQuestion",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4080,
+                      "referencedDeclaration": 4085,
                       "src": "2600:11:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_memory_ptr",
@@ -1195,25 +1195,25 @@
                       "typeString": "string storage ref"
                     }
                   },
-                  "id": 4104,
+                  "id": 4109,
                   "nodeType": "ExpressionStatement",
                   "src": "2589:22:24"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4109,
+                    "id": 4114,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4105,
+                      "id": 4110,
                       "name": "currencyToken",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4040,
+                      "referencedDeclaration": 4045,
                       "src": "2621:13:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_contract$_IERC20_$1181",
@@ -1227,11 +1227,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 4107,
+                          "id": 4112,
                           "name": "setCurrencyAddress",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4084,
+                          "referencedDeclaration": 4089,
                           "src": "2644:18:24",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -1246,7 +1246,7 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 4106,
+                        "id": 4111,
                         "name": "IERC20",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
@@ -1257,7 +1257,7 @@
                           "typeString": "type(contract IERC20)"
                         }
                       },
-                      "id": 4108,
+                      "id": 4113,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1278,25 +1278,25 @@
                       "typeString": "contract IERC20"
                     }
                   },
-                  "id": 4110,
+                  "id": 4115,
                   "nodeType": "ExpressionStatement",
                   "src": "2621:42:24"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4113,
+                    "id": 4118,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4111,
+                      "id": 4116,
                       "name": "currencyAddress",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4037,
+                      "referencedDeclaration": 4042,
                       "src": "2673:15:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1307,11 +1307,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 4112,
+                      "id": 4117,
                       "name": "setCurrencyAddress",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4084,
+                      "referencedDeclaration": 4089,
                       "src": "2691:18:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1324,25 +1324,25 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 4114,
+                  "id": 4119,
                   "nodeType": "ExpressionStatement",
                   "src": "2673:36:24"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4119,
+                    "id": 4124,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4115,
+                      "id": 4120,
                       "name": "visionToken",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4046,
+                      "referencedDeclaration": 4051,
                       "src": "2719:11:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_contract$_IERC20_$1181",
@@ -1356,11 +1356,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 4117,
+                          "id": 4122,
                           "name": "setVisionAddress",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4086,
+                          "referencedDeclaration": 4091,
                           "src": "2740:16:24",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -1375,7 +1375,7 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 4116,
+                        "id": 4121,
                         "name": "IERC20",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
@@ -1386,7 +1386,7 @@
                           "typeString": "type(contract IERC20)"
                         }
                       },
-                      "id": 4118,
+                      "id": 4123,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1407,25 +1407,25 @@
                       "typeString": "contract IERC20"
                     }
                   },
-                  "id": 4120,
+                  "id": 4125,
                   "nodeType": "ExpressionStatement",
                   "src": "2719:38:24"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4123,
+                    "id": 4128,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4121,
+                      "id": 4126,
                       "name": "visionAddress",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4043,
+                      "referencedDeclaration": 4048,
                       "src": "2767:13:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1436,11 +1436,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 4122,
+                      "id": 4127,
                       "name": "setVisionAddress",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4086,
+                      "referencedDeclaration": 4091,
                       "src": "2783:16:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1453,25 +1453,25 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 4124,
+                  "id": 4129,
                   "nodeType": "ExpressionStatement",
                   "src": "2767:32:24"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4127,
+                    "id": 4132,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4125,
+                      "id": 4130,
                       "name": "setup",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4068,
+                      "referencedDeclaration": 4073,
                       "src": "2809:5:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1483,7 +1483,7 @@
                     "rightHandSide": {
                       "argumentTypes": null,
                       "hexValue": "31",
-                      "id": 4126,
+                      "id": 4131,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -1504,19 +1504,19 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 4128,
+                  "id": 4133,
                   "nodeType": "ExpressionStatement",
                   "src": "2809:9:24"
                 }
               ]
             },
             "documentation": {
-              "id": 4078,
+              "id": 4083,
               "nodeType": "StructuredDocumentation",
               "src": "1775:511:24",
               "text": "@notice Sets all base values for the market and sets up Voting and Token Vault.\n @param setQuestion Determines market question.\n @param setVotingEndTime Sets the end of public voting on market outcomes.\n @param setCurrencyAddress Location of the currency used to mint Foresight.\n @param setVisionAddress Location of the Voting currency used to determine market reification.\n @dev After called, user must call initializeVault then initializeVoting to complete market setup."
             },
-            "id": 4130,
+            "id": 4135,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
@@ -1524,17 +1524,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 4087,
+              "id": 4092,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4080,
+                  "id": 4085,
                   "mutability": "mutable",
                   "name": "setQuestion",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 4130,
+                  "scope": 4135,
                   "src": "2312:25:24",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -1543,7 +1543,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 4079,
+                    "id": 4084,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "2312:6:24",
@@ -1557,12 +1557,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 4082,
+                  "id": 4087,
                   "mutability": "mutable",
                   "name": "setVotingEndTime",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 4130,
+                  "scope": 4135,
                   "src": "2347:21:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1571,7 +1571,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4081,
+                    "id": 4086,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "2347:4:24",
@@ -1585,12 +1585,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 4084,
+                  "id": 4089,
                   "mutability": "mutable",
                   "name": "setCurrencyAddress",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 4130,
+                  "scope": 4135,
                   "src": "2378:26:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1599,7 +1599,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4083,
+                    "id": 4088,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "2378:7:24",
@@ -1614,12 +1614,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 4086,
+                  "id": 4091,
                   "mutability": "mutable",
                   "name": "setVisionAddress",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 4130,
+                  "scope": 4135,
                   "src": "2414:24:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1628,7 +1628,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4085,
+                    "id": 4090,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "2414:7:24",
@@ -1645,12 +1645,12 @@
               "src": "2302:142:24"
             },
             "returnParameters": {
-              "id": 4088,
+              "id": 4093,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2452:0:24"
             },
-            "scope": 4388,
+            "scope": 4393,
             "src": "2291:534:24",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -1658,7 +1658,7 @@
           },
           {
             "body": {
-              "id": 4155,
+              "id": 4160,
               "nodeType": "Block",
               "src": "2906:151:24",
               "statements": [
@@ -1672,18 +1672,18 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 4137,
+                        "id": 4142,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 4135,
+                          "id": 4140,
                           "name": "setup",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4068,
+                          "referencedDeclaration": 4073,
                           "src": "2924:5:24",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1695,7 +1695,7 @@
                         "rightExpression": {
                           "argumentTypes": null,
                           "hexValue": "31",
-                          "id": 4136,
+                          "id": 4141,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1719,7 +1719,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "4d61726b6574206e6f7420696e20636f6e73747275637465642073746174652e",
-                        "id": 4138,
+                        "id": 4143,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1746,7 +1746,7 @@
                           "typeString": "literal_string \"Market not in constructed state.\""
                         }
                       ],
-                      "id": 4134,
+                      "id": 4139,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -1760,7 +1760,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 4139,
+                    "id": 4144,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1775,25 +1775,25 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4140,
+                  "id": 4145,
                   "nodeType": "ExpressionStatement",
                   "src": "2916:55:24"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4149,
+                    "id": 4154,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4141,
+                      "id": 4146,
                       "name": "foresightVault",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4077,
+                      "referencedDeclaration": 4082,
                       "src": "2981:14:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_contract$_ForesightVault_$3373",
@@ -1810,14 +1810,14 @@
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 4146,
+                              "id": 4151,
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
                               "referencedDeclaration": -28,
                               "src": "3025:4:24",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_RealityMarket_$4388",
+                                "typeIdentifier": "t_contract$_RealityMarket_$4393",
                                 "typeString": "contract RealityMarket"
                               }
                             }
@@ -1825,11 +1825,11 @@
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_RealityMarket_$4388",
+                                "typeIdentifier": "t_contract$_RealityMarket_$4393",
                                 "typeString": "contract RealityMarket"
                               }
                             ],
-                            "id": 4145,
+                            "id": 4150,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -1841,7 +1841,7 @@
                               "typeString": "type(address)"
                             },
                             "typeName": {
-                              "id": 4144,
+                              "id": 4149,
                               "name": "address",
                               "nodeType": "ElementaryTypeName",
                               "src": "3017:7:24",
@@ -1851,7 +1851,7 @@
                               }
                             }
                           },
-                          "id": 4147,
+                          "id": 4152,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1874,7 +1874,7 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 4143,
+                        "id": 4148,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1887,7 +1887,7 @@
                         },
                         "typeName": {
                           "contractScope": null,
-                          "id": 4142,
+                          "id": 4147,
                           "name": "ForesightVault",
                           "nodeType": "UserDefinedTypeName",
                           "referencedDeclaration": 3373,
@@ -1898,7 +1898,7 @@
                           }
                         }
                       },
-                      "id": 4148,
+                      "id": 4153,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1919,25 +1919,25 @@
                       "typeString": "contract ForesightVault"
                     }
                   },
-                  "id": 4150,
+                  "id": 4155,
                   "nodeType": "ExpressionStatement",
                   "src": "2981:50:24"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4153,
+                    "id": 4158,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4151,
+                      "id": 4156,
                       "name": "setup",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4068,
+                      "referencedDeclaration": 4073,
                       "src": "3041:5:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1949,7 +1949,7 @@
                     "rightHandSide": {
                       "argumentTypes": null,
                       "hexValue": "32",
-                      "id": 4152,
+                      "id": 4157,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -1970,20 +1970,20 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 4154,
+                  "id": 4159,
                   "nodeType": "ExpressionStatement",
                   "src": "3041:9:24"
                 }
               ]
             },
             "documentation": {
-              "id": 4131,
+              "id": 4136,
               "nodeType": "StructuredDocumentation",
               "src": "2831:36:24",
               "text": "@notice Creates Foresight Tokens"
             },
             "functionSelector": "a85195b6",
-            "id": 4156,
+            "id": 4161,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -1991,18 +1991,18 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 4132,
+              "id": 4137,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2896:2:24"
             },
             "returnParameters": {
-              "id": 4133,
+              "id": 4138,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2906:0:24"
             },
-            "scope": 4388,
+            "scope": 4393,
             "src": "2872:185:24",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -2010,7 +2010,7 @@
           },
           {
             "body": {
-              "id": 4186,
+              "id": 4191,
               "nodeType": "Block",
               "src": "3157:195:24",
               "statements": [
@@ -2024,18 +2024,18 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 4163,
+                        "id": 4168,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 4161,
+                          "id": 4166,
                           "name": "setup",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4068,
+                          "referencedDeclaration": 4073,
                           "src": "3175:5:24",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2047,7 +2047,7 @@
                         "rightExpression": {
                           "argumentTypes": null,
                           "hexValue": "32",
-                          "id": 4162,
+                          "id": 4167,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2071,7 +2071,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "4d61726b6574206e6f7420696e20666f726573696768742073746174652e",
-                        "id": 4164,
+                        "id": 4169,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2098,7 +2098,7 @@
                           "typeString": "literal_string \"Market not in foresight state.\""
                         }
                       ],
-                      "id": 4160,
+                      "id": 4165,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -2112,7 +2112,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 4165,
+                    "id": 4170,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2127,25 +2127,25 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4166,
+                  "id": 4171,
                   "nodeType": "ExpressionStatement",
                   "src": "3167:53:24"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4173,
+                    "id": 4178,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4167,
+                      "id": 4172,
                       "name": "voting",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4071,
+                      "referencedDeclaration": 4076,
                       "src": "3230:6:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_contract$_MarketVoting_$3801",
@@ -2159,11 +2159,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 4170,
+                          "id": 4175,
                           "name": "votingEndTime",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4064,
+                          "referencedDeclaration": 4069,
                           "src": "3256:13:24",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2172,11 +2172,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 4171,
+                          "id": 4176,
                           "name": "visionAddress",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4043,
+                          "referencedDeclaration": 4048,
                           "src": "3271:13:24",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -2195,7 +2195,7 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 4169,
+                        "id": 4174,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2208,7 +2208,7 @@
                         },
                         "typeName": {
                           "contractScope": null,
-                          "id": 4168,
+                          "id": 4173,
                           "name": "MarketVoting",
                           "nodeType": "UserDefinedTypeName",
                           "referencedDeclaration": 3801,
@@ -2219,7 +2219,7 @@
                           }
                         }
                       },
-                      "id": 4172,
+                      "id": 4177,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2240,25 +2240,25 @@
                       "typeString": "contract MarketVoting"
                     }
                   },
-                  "id": 4174,
+                  "id": 4179,
                   "nodeType": "ExpressionStatement",
                   "src": "3230:55:24"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4180,
+                    "id": 4185,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4175,
+                      "id": 4180,
                       "name": "votingAddress",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4074,
+                      "referencedDeclaration": 4079,
                       "src": "3295:13:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -2272,11 +2272,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 4178,
+                          "id": 4183,
                           "name": "voting",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4071,
+                          "referencedDeclaration": 4076,
                           "src": "3319:6:24",
                           "typeDescriptions": {
                             "typeIdentifier": "t_contract$_MarketVoting_$3801",
@@ -2291,7 +2291,7 @@
                             "typeString": "contract MarketVoting"
                           }
                         ],
-                        "id": 4177,
+                        "id": 4182,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2303,7 +2303,7 @@
                           "typeString": "type(address)"
                         },
                         "typeName": {
-                          "id": 4176,
+                          "id": 4181,
                           "name": "address",
                           "nodeType": "ElementaryTypeName",
                           "src": "3311:7:24",
@@ -2313,7 +2313,7 @@
                           }
                         }
                       },
-                      "id": 4179,
+                      "id": 4184,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2334,25 +2334,25 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 4181,
+                  "id": 4186,
                   "nodeType": "ExpressionStatement",
                   "src": "3295:31:24"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4184,
+                    "id": 4189,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4182,
+                      "id": 4187,
                       "name": "setup",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4068,
+                      "referencedDeclaration": 4073,
                       "src": "3336:5:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2364,7 +2364,7 @@
                     "rightHandSide": {
                       "argumentTypes": null,
                       "hexValue": "33",
-                      "id": 4183,
+                      "id": 4188,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -2385,20 +2385,20 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 4185,
+                  "id": 4190,
                   "nodeType": "ExpressionStatement",
                   "src": "3336:9:24"
                 }
               ]
             },
             "documentation": {
-              "id": 4157,
+              "id": 4162,
               "nodeType": "StructuredDocumentation",
               "src": "3063:54:24",
               "text": "@notice Creates Foresight Tokens and Market Voting"
             },
             "functionSelector": "6d04aae2",
-            "id": 4187,
+            "id": 4192,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -2406,18 +2406,18 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 4158,
+              "id": 4163,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3147:2:24"
             },
             "returnParameters": {
-              "id": 4159,
+              "id": 4164,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3157:0:24"
             },
-            "scope": 4388,
+            "scope": 4393,
             "src": "3122:230:24",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -2425,7 +2425,7 @@
           },
           {
             "body": {
-              "id": 4220,
+              "id": 4225,
               "nodeType": "Block",
               "src": "3623:197:24",
               "statements": [
@@ -2439,18 +2439,18 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 4196,
+                        "id": 4201,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 4194,
+                          "id": 4199,
                           "name": "setup",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4068,
+                          "referencedDeclaration": 4073,
                           "src": "3641:5:24",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2462,7 +2462,7 @@
                         "rightExpression": {
                           "argumentTypes": null,
                           "hexValue": "33",
-                          "id": 4195,
+                          "id": 4200,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2486,7 +2486,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "4d61726b6574207365747570206e6f7420636f6d706c657465",
-                        "id": 4197,
+                        "id": 4202,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2513,7 +2513,7 @@
                           "typeString": "literal_string \"Market setup not complete\""
                         }
                       ],
-                      "id": 4193,
+                      "id": 4198,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -2527,7 +2527,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 4198,
+                    "id": 4203,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2542,7 +2542,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4199,
+                  "id": 4204,
                   "nodeType": "ExpressionStatement",
                   "src": "3633:48:24"
                 },
@@ -2554,7 +2554,7 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 4203,
+                          "id": 4208,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -2565,7 +2565,7 @@
                             "typeString": "msg"
                           }
                         },
-                        "id": 4204,
+                        "id": 4209,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2584,14 +2584,14 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 4207,
+                            "id": 4212,
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": -28,
                             "src": "3738:4:24",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_RealityMarket_$4388",
+                              "typeIdentifier": "t_contract$_RealityMarket_$4393",
                               "typeString": "contract RealityMarket"
                             }
                           }
@@ -2599,11 +2599,11 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_RealityMarket_$4388",
+                              "typeIdentifier": "t_contract$_RealityMarket_$4393",
                               "typeString": "contract RealityMarket"
                             }
                           ],
-                          "id": 4206,
+                          "id": 4211,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2615,7 +2615,7 @@
                             "typeString": "type(address)"
                           },
                           "typeName": {
-                            "id": 4205,
+                            "id": 4210,
                             "name": "address",
                             "nodeType": "ElementaryTypeName",
                             "src": "3730:7:24",
@@ -2625,7 +2625,7 @@
                             }
                           }
                         },
-                        "id": 4208,
+                        "id": 4213,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2642,11 +2642,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4209,
+                        "id": 4214,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4190,
+                        "referencedDeclaration": 4195,
                         "src": "3745:6:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -2671,18 +2671,18 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 4200,
+                        "id": 4205,
                         "name": "currencyToken",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4040,
+                        "referencedDeclaration": 4045,
                         "src": "3691:13:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_IERC20_$1181",
                           "typeString": "contract IERC20"
                         }
                       },
-                      "id": 4202,
+                      "id": 4207,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2696,7 +2696,7 @@
                         "typeString": "function (address,address,uint256) external returns (bool)"
                       }
                     },
-                    "id": 4210,
+                    "id": 4215,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2711,7 +2711,7 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 4211,
+                  "id": 4216,
                   "nodeType": "ExpressionStatement",
                   "src": "3691:61:24"
                 },
@@ -2723,7 +2723,7 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 4215,
+                          "id": 4220,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -2734,7 +2734,7 @@
                             "typeString": "msg"
                           }
                         },
-                        "id": 4216,
+                        "id": 4221,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2750,11 +2750,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4217,
+                        "id": 4222,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4190,
+                        "referencedDeclaration": 4195,
                         "src": "3806:6:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -2775,18 +2775,18 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 4212,
+                        "id": 4217,
                         "name": "foresightVault",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4077,
+                        "referencedDeclaration": 4082,
                         "src": "3762:14:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_ForesightVault_$3373",
                           "typeString": "contract ForesightVault"
                         }
                       },
-                      "id": 4214,
+                      "id": 4219,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2800,7 +2800,7 @@
                         "typeString": "function (address,uint256) external"
                       }
                     },
-                    "id": 4218,
+                    "id": 4223,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2815,20 +2815,20 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4219,
+                  "id": 4224,
                   "nodeType": "ExpressionStatement",
                   "src": "3762:51:24"
                 }
               ]
             },
             "documentation": {
-              "id": 4188,
+              "id": 4193,
               "nodeType": "StructuredDocumentation",
               "src": "3358:214:24",
               "text": "@notice Create a complete set of tokens using the currencyToken 1 to 1 and store it.\n @dev Requires currency token approval.\n @param amount Amount of currency to take and number of shares to mint."
             },
             "functionSelector": "ebb01e65",
-            "id": 4221,
+            "id": 4226,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -2836,17 +2836,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 4191,
+              "id": 4196,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4190,
+                  "id": 4195,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 4221,
+                  "scope": 4226,
                   "src": "3603:11:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2855,7 +2855,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4189,
+                    "id": 4194,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "3603:4:24",
@@ -2871,12 +2871,12 @@
               "src": "3602:13:24"
             },
             "returnParameters": {
-              "id": 4192,
+              "id": 4197,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3623:0:24"
             },
-            "scope": 4388,
+            "scope": 4393,
             "src": "3577:243:24",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -2884,7 +2884,7 @@
           },
           {
             "body": {
-              "id": 4265,
+              "id": 4270,
               "nodeType": "Block",
               "src": "4050:246:24",
               "statements": [
@@ -2896,7 +2896,7 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 4232,
+                          "id": 4237,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -2907,7 +2907,7 @@
                             "typeString": "msg"
                           }
                         },
-                        "id": 4233,
+                        "id": 4238,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2923,11 +2923,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4234,
+                        "id": 4239,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4224,
+                        "referencedDeclaration": 4229,
                         "src": "4100:6:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -2948,18 +2948,18 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 4229,
+                        "id": 4234,
                         "name": "foresightVault",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4077,
+                        "referencedDeclaration": 4082,
                         "src": "4060:14:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_ForesightVault_$3373",
                           "typeString": "contract ForesightVault"
                         }
                       },
-                      "id": 4231,
+                      "id": 4236,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2973,7 +2973,7 @@
                         "typeString": "function (address,uint256) external"
                       }
                     },
-                    "id": 4235,
+                    "id": 4240,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2988,7 +2988,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4236,
+                  "id": 4241,
                   "nodeType": "ExpressionStatement",
                   "src": "4060:47:24"
                 },
@@ -3000,7 +3000,7 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 4240,
+                          "id": 4245,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -3011,7 +3011,7 @@
                             "typeString": "msg"
                           }
                         },
-                        "id": 4241,
+                        "id": 4246,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3027,11 +3027,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4242,
+                        "id": 4247,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4224,
+                        "referencedDeclaration": 4229,
                         "src": "4155:6:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3052,18 +3052,18 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 4237,
+                        "id": 4242,
                         "name": "foresightVault",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4077,
+                        "referencedDeclaration": 4082,
                         "src": "4117:14:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_ForesightVault_$3373",
                           "typeString": "contract ForesightVault"
                         }
                       },
-                      "id": 4239,
+                      "id": 4244,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3077,7 +3077,7 @@
                         "typeString": "function (address,uint256) external"
                       }
                     },
-                    "id": 4243,
+                    "id": 4248,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3092,7 +3092,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4244,
+                  "id": 4249,
                   "nodeType": "ExpressionStatement",
                   "src": "4117:45:24"
                 },
@@ -3104,7 +3104,7 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 4248,
+                          "id": 4253,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -3115,7 +3115,7 @@
                             "typeString": "msg"
                           }
                         },
-                        "id": 4249,
+                        "id": 4254,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3131,11 +3131,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4250,
+                        "id": 4255,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4224,
+                        "referencedDeclaration": 4229,
                         "src": "4211:6:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3156,18 +3156,18 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 4245,
+                        "id": 4250,
                         "name": "foresightVault",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4077,
+                        "referencedDeclaration": 4082,
                         "src": "4172:14:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_ForesightVault_$3373",
                           "typeString": "contract ForesightVault"
                         }
                       },
-                      "id": 4247,
+                      "id": 4252,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3181,7 +3181,7 @@
                         "typeString": "function (address,uint256) external"
                       }
                     },
-                    "id": 4251,
+                    "id": 4256,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3196,7 +3196,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4252,
+                  "id": 4257,
                   "nodeType": "ExpressionStatement",
                   "src": "4172:46:24"
                 },
@@ -3209,14 +3209,14 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 4258,
+                            "id": 4263,
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": -28,
                             "src": "4263:4:24",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_RealityMarket_$4388",
+                              "typeIdentifier": "t_contract$_RealityMarket_$4393",
                               "typeString": "contract RealityMarket"
                             }
                           }
@@ -3224,11 +3224,11 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_RealityMarket_$4388",
+                              "typeIdentifier": "t_contract$_RealityMarket_$4393",
                               "typeString": "contract RealityMarket"
                             }
                           ],
-                          "id": 4257,
+                          "id": 4262,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -3240,7 +3240,7 @@
                             "typeString": "type(address)"
                           },
                           "typeName": {
-                            "id": 4256,
+                            "id": 4261,
                             "name": "address",
                             "nodeType": "ElementaryTypeName",
                             "src": "4255:7:24",
@@ -3250,7 +3250,7 @@
                             }
                           }
                         },
-                        "id": 4259,
+                        "id": 4264,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3269,7 +3269,7 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 4260,
+                          "id": 4265,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -3280,7 +3280,7 @@
                             "typeString": "msg"
                           }
                         },
-                        "id": 4261,
+                        "id": 4266,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3296,11 +3296,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4262,
+                        "id": 4267,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4224,
+                        "referencedDeclaration": 4229,
                         "src": "4282:6:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3325,18 +3325,18 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 4253,
+                        "id": 4258,
                         "name": "currencyToken",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4040,
+                        "referencedDeclaration": 4045,
                         "src": "4228:13:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_IERC20_$1181",
                           "typeString": "contract IERC20"
                         }
                       },
-                      "id": 4255,
+                      "id": 4260,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3350,7 +3350,7 @@
                         "typeString": "function (address,address,uint256) external returns (bool)"
                       }
                     },
-                    "id": 4263,
+                    "id": 4268,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3365,29 +3365,29 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 4264,
+                  "id": 4269,
                   "nodeType": "ExpressionStatement",
                   "src": "4228:61:24"
                 }
               ]
             },
             "documentation": {
-              "id": 4222,
+              "id": 4227,
               "nodeType": "StructuredDocumentation",
               "src": "3826:160:24",
               "text": "@notice Burns a complete set of Foresight tokens for the given amount and returns currency.\n @param amount Amount of Foresight of each token to burn."
             },
             "functionSelector": "f3a8a232",
-            "id": 4266,
+            "id": 4271,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
                 "arguments": null,
-                "id": 4227,
+                "id": 4232,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 4226,
+                  "id": 4231,
                   "name": "nonReentrant",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
@@ -3406,17 +3406,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 4225,
+              "id": 4230,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4224,
+                  "id": 4229,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 4266,
+                  "scope": 4271,
                   "src": "4017:11:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3425,7 +3425,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4223,
+                    "id": 4228,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "4017:4:24",
@@ -3441,12 +3441,12 @@
               "src": "4016:13:24"
             },
             "returnParameters": {
-              "id": 4228,
+              "id": 4233,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "4050:0:24"
             },
-            "scope": 4388,
+            "scope": 4393,
             "src": "3991:305:24",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -3454,7 +3454,7 @@
           },
           {
             "body": {
-              "id": 4281,
+              "id": 4286,
               "nodeType": "Block",
               "src": "4510:45:24",
               "statements": [
@@ -3464,11 +3464,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 4277,
+                        "id": 4282,
                         "name": "outcome",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4269,
+                        "referencedDeclaration": 4274,
                         "src": "4532:7:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_int256",
@@ -3477,11 +3477,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4278,
+                        "id": 4283,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4271,
+                        "referencedDeclaration": 4276,
                         "src": "4541:6:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3502,18 +3502,18 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 4274,
+                        "id": 4279,
                         "name": "voting",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4071,
+                        "referencedDeclaration": 4076,
                         "src": "4520:6:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_MarketVoting_$3801",
                           "typeString": "contract MarketVoting"
                         }
                       },
-                      "id": 4276,
+                      "id": 4281,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3527,7 +3527,7 @@
                         "typeString": "function (int256,uint256) external"
                       }
                     },
-                    "id": 4279,
+                    "id": 4284,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3542,20 +3542,20 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4280,
+                  "id": 4285,
                   "nodeType": "ExpressionStatement",
                   "src": "4520:28:24"
                 }
               ]
             },
             "documentation": {
-              "id": 4267,
+              "id": 4272,
               "nodeType": "StructuredDocumentation",
               "src": "4302:156:24",
               "text": "@notice Passes vote to the voting construct.\n @param outcome Outcome to vote on.\n @param amount Amount of Vision token to stake on a vote."
             },
             "functionSelector": "3d402f7e",
-            "id": 4282,
+            "id": 4287,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -3563,17 +3563,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 4272,
+              "id": 4277,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4269,
+                  "id": 4274,
                   "mutability": "mutable",
                   "name": "outcome",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 4282,
+                  "scope": 4287,
                   "src": "4477:11:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3582,7 +3582,7 @@
                     "typeString": "int256"
                   },
                   "typeName": {
-                    "id": 4268,
+                    "id": 4273,
                     "name": "int",
                     "nodeType": "ElementaryTypeName",
                     "src": "4477:3:24",
@@ -3596,12 +3596,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 4271,
+                  "id": 4276,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 4282,
+                  "scope": 4287,
                   "src": "4490:11:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3610,7 +3610,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4270,
+                    "id": 4275,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "4490:4:24",
@@ -3626,12 +3626,12 @@
               "src": "4476:26:24"
             },
             "returnParameters": {
-              "id": 4273,
+              "id": 4278,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "4510:0:24"
             },
-            "scope": 4388,
+            "scope": 4393,
             "src": "4463:92:24",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -3639,7 +3639,7 @@
           },
           {
             "body": {
-              "id": 4292,
+              "id": 4297,
               "nodeType": "Block",
               "src": "4656:47:24",
               "statements": [
@@ -3651,18 +3651,18 @@
                       "argumentTypes": [],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 4288,
+                        "id": 4293,
                         "name": "voting",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4071,
+                        "referencedDeclaration": 4076,
                         "src": "4673:6:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_MarketVoting_$3801",
                           "typeString": "contract MarketVoting"
                         }
                       },
-                      "id": 4289,
+                      "id": 4294,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3676,7 +3676,7 @@
                         "typeString": "function () external returns (int256)"
                       }
                     },
-                    "id": 4290,
+                    "id": 4295,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3691,21 +3691,21 @@
                       "typeString": "int256"
                     }
                   },
-                  "functionReturnParameters": 4287,
-                  "id": 4291,
+                  "functionReturnParameters": 4292,
+                  "id": 4296,
                   "nodeType": "Return",
                   "src": "4666:30:24"
                 }
               ]
             },
             "documentation": {
-              "id": 4283,
+              "id": 4288,
               "nodeType": "StructuredDocumentation",
               "src": "4561:43:24",
               "text": "@notice returns voting winning outcome."
             },
             "functionSelector": "9b34ae03",
-            "id": 4293,
+            "id": 4298,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -3713,23 +3713,23 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 4284,
+              "id": 4289,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "4632:2:24"
             },
             "returnParameters": {
-              "id": 4287,
+              "id": 4292,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4286,
+                  "id": 4291,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 4293,
+                  "scope": 4298,
                   "src": "4651:3:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3738,7 +3738,7 @@
                     "typeString": "int256"
                   },
                   "typeName": {
-                    "id": 4285,
+                    "id": 4290,
                     "name": "int",
                     "nodeType": "ElementaryTypeName",
                     "src": "4651:3:24",
@@ -3753,7 +3753,7 @@
               ],
               "src": "4650:5:24"
             },
-            "scope": 4388,
+            "scope": 4393,
             "src": "4609:94:24",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -3761,7 +3761,7 @@
           },
           {
             "body": {
-              "id": 4305,
+              "id": 4310,
               "nodeType": "Block",
               "src": "4865:97:24",
               "statements": [
@@ -3775,7 +3775,7 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 4300,
+                        "id": 4305,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3784,7 +3784,7 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 4297,
+                            "id": 4302,
                             "name": "block",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -3795,7 +3795,7 @@
                               "typeString": "block"
                             }
                           },
-                          "id": 4298,
+                          "id": 4303,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3813,11 +3813,11 @@
                         "operator": ">",
                         "rightExpression": {
                           "argumentTypes": null,
-                          "id": 4299,
+                          "id": 4304,
                           "name": "votingEndTime",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4064,
+                          "referencedDeclaration": 4069,
                           "src": "4901:13:24",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3833,7 +3833,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "566f7465206973206e6f742079657420636f6d706c65746564",
-                        "id": 4301,
+                        "id": 4306,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -3860,7 +3860,7 @@
                           "typeString": "literal_string \"Vote is not yet completed\""
                         }
                       ],
-                      "id": 4296,
+                      "id": 4301,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -3874,7 +3874,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 4302,
+                    "id": 4307,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3889,29 +3889,29 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4303,
+                  "id": 4308,
                   "nodeType": "ExpressionStatement",
                   "src": "4875:69:24"
                 },
                 {
-                  "id": 4304,
+                  "id": 4309,
                   "nodeType": "PlaceholderStatement",
                   "src": "4954:1:24"
                 }
               ]
             },
             "documentation": {
-              "id": 4294,
+              "id": 4299,
               "nodeType": "StructuredDocumentation",
               "src": "4709:120:24",
               "text": "@notice Asserts voting is completed.\n @dev Votes are completed when the timestamp is after the votingEndTime."
             },
-            "id": 4306,
+            "id": 4311,
             "name": "assertVotingCompleted",
             "nodeType": "ModifierDefinition",
             "overrides": null,
             "parameters": {
-              "id": 4295,
+              "id": 4300,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "4865:0:24"
@@ -3922,7 +3922,7 @@
           },
           {
             "body": {
-              "id": 4386,
+              "id": 4391,
               "nodeType": "Block",
               "src": "5196:579:24",
               "statements": [
@@ -3933,7 +3933,7 @@
                       "typeIdentifier": "t_int256",
                       "typeString": "int256"
                     },
-                    "id": 4321,
+                    "id": 4326,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3945,18 +3945,18 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 4316,
+                          "id": 4321,
                           "name": "voting",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4071,
+                          "referencedDeclaration": 4076,
                           "src": "5256:6:24",
                           "typeDescriptions": {
                             "typeIdentifier": "t_contract$_MarketVoting_$3801",
                             "typeString": "contract MarketVoting"
                           }
                         },
-                        "id": 4317,
+                        "id": 4322,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3970,7 +3970,7 @@
                           "typeString": "function () external returns (int256)"
                         }
                       },
-                      "id": 4318,
+                      "id": 4323,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3989,7 +3989,7 @@
                     "operator": "==",
                     "rightExpression": {
                       "argumentTypes": null,
-                      "id": 4320,
+                      "id": 4325,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -4001,7 +4001,7 @@
                       "subExpression": {
                         "argumentTypes": null,
                         "hexValue": "31653138",
-                        "id": 4319,
+                        "id": 4324,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -4028,11 +4028,11 @@
                     }
                   },
                   "falseBody": null,
-                  "id": 4339,
+                  "id": 4344,
                   "nodeType": "IfStatement",
                   "src": "5252:163:24",
                   "trueBody": {
-                    "id": 4338,
+                    "id": 4343,
                     "nodeType": "Block",
                     "src": "5290:125:24",
                     "statements": [
@@ -4044,7 +4044,7 @@
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 4325,
+                                "id": 4330,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -4055,7 +4055,7 @@
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 4326,
+                              "id": 4331,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -4071,11 +4071,11 @@
                             },
                             {
                               "argumentTypes": null,
-                              "id": 4327,
+                              "id": 4332,
                               "name": "amount",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4309,
+                              "referencedDeclaration": 4314,
                               "src": "5343:6:24",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -4096,18 +4096,18 @@
                             ],
                             "expression": {
                               "argumentTypes": null,
-                              "id": 4322,
+                              "id": 4327,
                               "name": "foresightVault",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4077,
+                              "referencedDeclaration": 4082,
                               "src": "5304:14:24",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_ForesightVault_$3373",
                                 "typeString": "contract ForesightVault"
                               }
                             },
-                            "id": 4324,
+                            "id": 4329,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -4121,7 +4121,7 @@
                               "typeString": "function (address,uint256) external"
                             }
                           },
-                          "id": 4328,
+                          "id": 4333,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -4136,7 +4136,7 @@
                             "typeString": "tuple()"
                           }
                         },
-                        "id": 4329,
+                        "id": 4334,
                         "nodeType": "ExpressionStatement",
                         "src": "5304:46:24"
                       },
@@ -4148,7 +4148,7 @@
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 4333,
+                                "id": 4338,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -4159,7 +4159,7 @@
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 4334,
+                              "id": 4339,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -4176,7 +4176,7 @@
                             {
                               "argumentTypes": null,
                               "hexValue": "31653138",
-                              "id": 4335,
+                              "id": 4340,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -4205,18 +4205,18 @@
                             ],
                             "expression": {
                               "argumentTypes": null,
-                              "id": 4330,
+                              "id": 4335,
                               "name": "currencyToken",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4040,
+                              "referencedDeclaration": 4045,
                               "src": "5364:13:24",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_IERC20_$1181",
                                 "typeString": "contract IERC20"
                               }
                             },
-                            "id": 4332,
+                            "id": 4337,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -4230,7 +4230,7 @@
                               "typeString": "function (address,uint256) external returns (bool)"
                             }
                           },
-                          "id": 4336,
+                          "id": 4341,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -4245,7 +4245,7 @@
                             "typeString": "bool"
                           }
                         },
-                        "id": 4337,
+                        "id": 4342,
                         "nodeType": "ExpressionStatement",
                         "src": "5364:40:24"
                       }
@@ -4259,7 +4259,7 @@
                       "typeIdentifier": "t_int256",
                       "typeString": "int256"
                     },
-                    "id": 4344,
+                    "id": 4349,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -4271,18 +4271,18 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 4340,
+                          "id": 4345,
                           "name": "voting",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4071,
+                          "referencedDeclaration": 4076,
                           "src": "5446:6:24",
                           "typeDescriptions": {
                             "typeIdentifier": "t_contract$_MarketVoting_$3801",
                             "typeString": "contract MarketVoting"
                           }
                         },
-                        "id": 4341,
+                        "id": 4346,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -4296,7 +4296,7 @@
                           "typeString": "function () external returns (int256)"
                         }
                       },
-                      "id": 4342,
+                      "id": 4347,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -4316,7 +4316,7 @@
                     "rightExpression": {
                       "argumentTypes": null,
                       "hexValue": "31653138",
-                      "id": 4343,
+                      "id": 4348,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -4338,11 +4338,11 @@
                     }
                   },
                   "falseBody": null,
-                  "id": 4362,
+                  "id": 4367,
                   "nodeType": "IfStatement",
                   "src": "5442:163:24",
                   "trueBody": {
-                    "id": 4361,
+                    "id": 4366,
                     "nodeType": "Block",
                     "src": "5479:126:24",
                     "statements": [
@@ -4354,7 +4354,7 @@
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 4348,
+                                "id": 4353,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -4365,7 +4365,7 @@
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 4349,
+                              "id": 4354,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -4381,11 +4381,11 @@
                             },
                             {
                               "argumentTypes": null,
-                              "id": 4350,
+                              "id": 4355,
                               "name": "amount",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4309,
+                              "referencedDeclaration": 4314,
                               "src": "5533:6:24",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -4406,18 +4406,18 @@
                             ],
                             "expression": {
                               "argumentTypes": null,
-                              "id": 4345,
+                              "id": 4350,
                               "name": "foresightVault",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4077,
+                              "referencedDeclaration": 4082,
                               "src": "5493:14:24",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_ForesightVault_$3373",
                                 "typeString": "contract ForesightVault"
                               }
                             },
-                            "id": 4347,
+                            "id": 4352,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -4431,7 +4431,7 @@
                               "typeString": "function (address,uint256) external"
                             }
                           },
-                          "id": 4351,
+                          "id": 4356,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -4446,7 +4446,7 @@
                             "typeString": "tuple()"
                           }
                         },
-                        "id": 4352,
+                        "id": 4357,
                         "nodeType": "ExpressionStatement",
                         "src": "5493:47:24"
                       },
@@ -4458,7 +4458,7 @@
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 4356,
+                                "id": 4361,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -4469,7 +4469,7 @@
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 4357,
+                              "id": 4362,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -4486,7 +4486,7 @@
                             {
                               "argumentTypes": null,
                               "hexValue": "31653138",
-                              "id": 4358,
+                              "id": 4363,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -4515,18 +4515,18 @@
                             ],
                             "expression": {
                               "argumentTypes": null,
-                              "id": 4353,
+                              "id": 4358,
                               "name": "currencyToken",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4040,
+                              "referencedDeclaration": 4045,
                               "src": "5554:13:24",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_IERC20_$1181",
                                 "typeString": "contract IERC20"
                               }
                             },
-                            "id": 4355,
+                            "id": 4360,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -4540,7 +4540,7 @@
                               "typeString": "function (address,uint256) external returns (bool)"
                             }
                           },
-                          "id": 4359,
+                          "id": 4364,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -4555,7 +4555,7 @@
                             "typeString": "bool"
                           }
                         },
-                        "id": 4360,
+                        "id": 4365,
                         "nodeType": "ExpressionStatement",
                         "src": "5554:40:24"
                       }
@@ -4569,7 +4569,7 @@
                       "typeIdentifier": "t_int256",
                       "typeString": "int256"
                     },
-                    "id": 4367,
+                    "id": 4372,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -4581,18 +4581,18 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 4363,
+                          "id": 4368,
                           "name": "voting",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4071,
+                          "referencedDeclaration": 4076,
                           "src": "5618:6:24",
                           "typeDescriptions": {
                             "typeIdentifier": "t_contract$_MarketVoting_$3801",
                             "typeString": "contract MarketVoting"
                           }
                         },
-                        "id": 4364,
+                        "id": 4369,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -4606,7 +4606,7 @@
                           "typeString": "function () external returns (int256)"
                         }
                       },
-                      "id": 4365,
+                      "id": 4370,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -4626,7 +4626,7 @@
                     "rightExpression": {
                       "argumentTypes": null,
                       "hexValue": "30",
-                      "id": 4366,
+                      "id": 4371,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -4648,11 +4648,11 @@
                     }
                   },
                   "falseBody": null,
-                  "id": 4385,
+                  "id": 4390,
                   "nodeType": "IfStatement",
                   "src": "5614:155:24",
                   "trueBody": {
-                    "id": 4384,
+                    "id": 4389,
                     "nodeType": "Block",
                     "src": "5648:121:24",
                     "statements": [
@@ -4664,7 +4664,7 @@
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 4371,
+                                "id": 4376,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -4675,7 +4675,7 @@
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 4372,
+                              "id": 4377,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -4691,11 +4691,11 @@
                             },
                             {
                               "argumentTypes": null,
-                              "id": 4373,
+                              "id": 4378,
                               "name": "amount",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4309,
+                              "referencedDeclaration": 4314,
                               "src": "5700:6:24",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -4716,18 +4716,18 @@
                             ],
                             "expression": {
                               "argumentTypes": null,
-                              "id": 4368,
+                              "id": 4373,
                               "name": "foresightVault",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4077,
+                              "referencedDeclaration": 4082,
                               "src": "5662:14:24",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_ForesightVault_$3373",
                                 "typeString": "contract ForesightVault"
                               }
                             },
-                            "id": 4370,
+                            "id": 4375,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -4741,7 +4741,7 @@
                               "typeString": "function (address,uint256) external"
                             }
                           },
-                          "id": 4374,
+                          "id": 4379,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -4756,7 +4756,7 @@
                             "typeString": "tuple()"
                           }
                         },
-                        "id": 4375,
+                        "id": 4380,
                         "nodeType": "ExpressionStatement",
                         "src": "5662:45:24"
                       },
@@ -4768,7 +4768,7 @@
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 4379,
+                                "id": 4384,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -4779,7 +4779,7 @@
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 4380,
+                              "id": 4385,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -4796,7 +4796,7 @@
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 4381,
+                              "id": 4386,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -4825,18 +4825,18 @@
                             ],
                             "expression": {
                               "argumentTypes": null,
-                              "id": 4376,
+                              "id": 4381,
                               "name": "currencyToken",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4040,
+                              "referencedDeclaration": 4045,
                               "src": "5721:13:24",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_IERC20_$1181",
                                 "typeString": "contract IERC20"
                               }
                             },
-                            "id": 4378,
+                            "id": 4383,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -4850,7 +4850,7 @@
                               "typeString": "function (address,uint256) external returns (bool)"
                             }
                           },
-                          "id": 4382,
+                          "id": 4387,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -4865,7 +4865,7 @@
                             "typeString": "bool"
                           }
                         },
-                        "id": 4383,
+                        "id": 4388,
                         "nodeType": "ExpressionStatement",
                         "src": "5721:37:24"
                       }
@@ -4875,26 +4875,26 @@
               ]
             },
             "documentation": {
-              "id": 4307,
+              "id": 4312,
               "nodeType": "StructuredDocumentation",
               "src": "4968:138:24",
               "text": "@notice Withdraws winning token currency based on voting outcomes for binary market.\n @param amount Amount of currency to swap."
             },
             "functionSelector": "0b8a5c46",
-            "id": 4387,
+            "id": 4392,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
                 "arguments": null,
-                "id": 4312,
+                "id": 4317,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 4311,
+                  "id": 4316,
                   "name": "assertVotingCompleted",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4306,
+                  "referencedDeclaration": 4311,
                   "src": "5161:21:24",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -4906,10 +4906,10 @@
               },
               {
                 "arguments": null,
-                "id": 4314,
+                "id": 4319,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 4313,
+                  "id": 4318,
                   "name": "nonReentrant",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
@@ -4928,17 +4928,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 4310,
+              "id": 4315,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4309,
+                  "id": 4314,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 4387,
+                  "scope": 4392,
                   "src": "5141:11:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4947,7 +4947,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4308,
+                    "id": 4313,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "5141:4:24",
@@ -4963,19 +4963,19 @@
               "src": "5140:13:24"
             },
             "returnParameters": {
-              "id": 4315,
+              "id": 4320,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "5196:0:24"
             },
-            "scope": 4388,
+            "scope": 4393,
             "src": "5111:664:24",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 4389,
+        "scope": 4394,
         "src": "502:5276:24"
       }
     ],

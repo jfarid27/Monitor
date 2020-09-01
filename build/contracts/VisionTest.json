@@ -584,15 +584,15 @@
     "absolutePath": "contracts/VisionTest.sol",
     "exportedSymbols": {
       "VisionTest": [
-        4855
+        4860
       ]
     },
-    "id": 4856,
+    "id": 4861,
     "license": "Unlicense",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4819,
+        "id": 4824,
         "literals": [
           "solidity",
           "0.6",
@@ -604,9 +604,9 @@
       {
         "absolutePath": "@openzeppelin/contracts/token/ERC777/ERC777.sol",
         "file": "@openzeppelin/contracts/token/ERC777/ERC777.sol",
-        "id": 4820,
+        "id": 4825,
         "nodeType": "ImportDirective",
-        "scope": 4856,
+        "scope": 4861,
         "sourceUnit": 2282,
         "src": "64:57:28",
         "symbolAliases": [],
@@ -619,7 +619,7 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 4822,
+              "id": 4827,
               "name": "ERC777",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 2281,
@@ -629,7 +629,7 @@
                 "typeString": "contract ERC777"
               }
             },
-            "id": 4823,
+            "id": 4828,
             "nodeType": "InheritanceSpecifier",
             "src": "239:6:28"
           }
@@ -642,15 +642,15 @@
         ],
         "contractKind": "contract",
         "documentation": {
-          "id": 4821,
+          "id": 4826,
           "nodeType": "StructuredDocumentation",
           "src": "124:92:28",
           "text": "@title VisionTest\n @notice Test ERC777 for the Vision token with open mint function."
         },
         "fullyImplemented": true,
-        "id": 4855,
+        "id": 4860,
         "linearizedBaseContracts": [
-          4855,
+          4860,
           2281,
           1181,
           2440,
@@ -661,18 +661,18 @@
         "nodes": [
           {
             "body": {
-              "id": 4836,
+              "id": 4841,
               "nodeType": "Block",
               "src": "351:2:28",
               "statements": []
             },
             "documentation": {
-              "id": 4824,
+              "id": 4829,
               "nodeType": "StructuredDocumentation",
               "src": "253:30:28",
               "text": "@notice Sets up the token."
             },
-            "id": 4837,
+            "id": 4842,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [
@@ -681,7 +681,7 @@
                   {
                     "argumentTypes": null,
                     "hexValue": "566973696f6e",
-                    "id": 4827,
+                    "id": 4832,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -699,7 +699,7 @@
                   {
                     "argumentTypes": null,
                     "hexValue": "564953",
-                    "id": 4828,
+                    "id": 4833,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -720,7 +720,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 4832,
+                        "id": 4837,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -743,7 +743,7 @@
                           "typeString": "int_const 0"
                         }
                       ],
-                      "id": 4831,
+                      "id": 4836,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -756,7 +756,7 @@
                       },
                       "typeName": {
                         "baseType": {
-                          "id": 4829,
+                          "id": 4834,
                           "name": "address",
                           "nodeType": "ElementaryTypeName",
                           "src": "337:7:28",
@@ -766,7 +766,7 @@
                             "typeString": "address"
                           }
                         },
-                        "id": 4830,
+                        "id": 4835,
                         "length": null,
                         "nodeType": "ArrayTypeName",
                         "src": "337:9:28",
@@ -776,7 +776,7 @@
                         }
                       }
                     },
-                    "id": 4833,
+                    "id": 4838,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -792,10 +792,10 @@
                     }
                   }
                 ],
-                "id": 4834,
+                "id": 4839,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 4826,
+                  "id": 4831,
                   "name": "ERC777",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
@@ -814,18 +814,18 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 4825,
+              "id": 4830,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "299:2:28"
             },
             "returnParameters": {
-              "id": 4835,
+              "id": 4840,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "351:0:28"
             },
-            "scope": 4855,
+            "scope": 4860,
             "src": "288:65:28",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -833,7 +833,7 @@
           },
           {
             "body": {
-              "id": 4853,
+              "id": 4858,
               "nodeType": "Block",
               "src": "483:56:28",
               "statements": [
@@ -845,7 +845,7 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 4846,
+                          "id": 4851,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -856,7 +856,7 @@
                             "typeString": "msg"
                           }
                         },
-                        "id": 4847,
+                        "id": 4852,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -872,11 +872,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4848,
+                        "id": 4853,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4840,
+                        "referencedDeclaration": 4845,
                         "src": "517:6:28",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -886,7 +886,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "",
-                        "id": 4849,
+                        "id": 4854,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -904,7 +904,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "",
-                        "id": 4850,
+                        "id": 4855,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -941,18 +941,18 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 4843,
+                        "id": 4848,
                         "name": "super",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": -25,
                         "src": "493:5:28",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_super$_VisionTest_$4855",
+                          "typeIdentifier": "t_super$_VisionTest_$4860",
                           "typeString": "contract super VisionTest"
                         }
                       },
-                      "id": 4845,
+                      "id": 4850,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -966,7 +966,7 @@
                         "typeString": "function (address,uint256,bytes memory,bytes memory)"
                       }
                     },
-                    "id": 4851,
+                    "id": 4856,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -981,20 +981,20 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4852,
+                  "id": 4857,
                   "nodeType": "ExpressionStatement",
                   "src": "493:39:28"
                 }
               ]
             },
             "documentation": {
-              "id": 4838,
+              "id": 4843,
               "nodeType": "StructuredDocumentation",
               "src": "359:85:28",
               "text": "@notice Mints tokens for the given address.\n @param amount Amount to mint."
             },
             "functionSelector": "a0712d68",
-            "id": 4854,
+            "id": 4859,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -1002,17 +1002,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 4841,
+              "id": 4846,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4840,
+                  "id": 4845,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 4854,
+                  "scope": 4859,
                   "src": "463:11:28",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1021,7 +1021,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4839,
+                    "id": 4844,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "463:4:28",
@@ -1037,19 +1037,19 @@
               "src": "462:13:28"
             },
             "returnParameters": {
-              "id": 4842,
+              "id": 4847,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "483:0:28"
             },
-            "scope": 4855,
+            "scope": 4860,
             "src": "449:90:28",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 4856,
+        "scope": 4861,
         "src": "216:325:28"
       }
     ],

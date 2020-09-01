@@ -23,6 +23,9 @@ contract Monitor is ReentrancyGuard {
     /// @notice Vision token instance.
     IERC20 public visionToken;
 
+    /// @notice Market creation envent
+    event MarketCreatedEvent(address created);
+
     /// @notice instance of the Market Registry.
     RealityMarketRegistry public markets;
 
@@ -54,12 +57,11 @@ contract Monitor is ReentrancyGuard {
     /// @param setQuestion Question to set for the reality market.
     /// @param setEndTime End time for the reality market.
     /// @param stake Amount of Vision to stake on the market.
-    /// @return Created market address.
     function createMarket(
         string memory setQuestion,
         uint setEndTime,
         uint stake
-    ) public nonReentrant returns (address) {
+    ) public nonReentrant {
         address marketAddress = markets.createMarket(
             setQuestion,
             setEndTime,
@@ -70,7 +72,7 @@ contract Monitor is ReentrancyGuard {
         stakeForMarket[marketAddress] = stake;
         ownerForMarket[marketAddress] = address(msg.sender);
         visionToken.transferFrom(msg.sender, address(this), stake);
-        return marketAddress;
+        emit MarketCreatedEvent(marketAddress);
     }
 
     /// @notice Withdraws stake from a given market.
@@ -78,6 +80,7 @@ contract Monitor is ReentrancyGuard {
     function withdrawStake(address marketAddress) public nonReentrant {
         require(stakeForMarket[marketAddress] > 0, "No stake to withdraw");
         IRealityMarket market = IRealityMarket(marketAddress);
+        //require(0 > 1, "Hit");
         require(market.winningOutcome() != -1e18, "Market was deemed invalid. Stake lost");
         uint owedStake = stakeForMarket[marketAddress];
         stakeForMarket[marketAddress] = 0;

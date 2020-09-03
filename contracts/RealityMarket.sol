@@ -44,6 +44,8 @@ contract RealityMarket is ReentrancyGuard {
     address public votingAddress;
     /// @notice Instance of the Foresight Vault contract.
     ForesightVault public foresightVault;
+    /// @notice Address of the Foresight Vault contract.
+    address public foresightVaultAddress;
 
     /// @notice Sets all base values for the market and sets up Voting and Token Vault.
     /// @param setQuestion Determines market question.
@@ -69,14 +71,15 @@ contract RealityMarket is ReentrancyGuard {
 
     /// @notice Creates Foresight Tokens
     function initializeVault() public {
-        require(setup == 1, 'Market not in constructed state.');
+        require(setup == 1, "Market not in constructed state.");
         foresightVault = new ForesightVault(address(this));
+        foresightVaultAddress = address(foresightVault);
         setup = 2;
     }
 
     /// @notice Creates Foresight Tokens and Market Voting
     function initializeVoting() public {
-        require(setup == 2, 'Market not in foresight state.');
+        require(setup == 2, "Market not in foresight state.");
         voting = new MarketVoting(votingEndTime, visionAddress);
         votingAddress = address(voting);
         setup = 3;

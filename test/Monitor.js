@@ -10,6 +10,9 @@ const [ from, other ] = accounts;
 
 const Vision = contract.fromArtifact('VisionTest');
 const Monitor = contract.fromArtifact('Monitor');
+const RealityMarket = contract.fromArtifact('RealityMarket');
+const ForesightVault = contract.fromArtifact('ForesightVault');
+const Foresight = contract.fromArtifact('Foresight');
 
 describe('Monitor', function() {
   beforeEach(async function() {
@@ -34,7 +37,17 @@ describe('Monitor', function() {
         { from, gasLimit: 10000000 }
       );
       this.marketAddress = this.marketTransaction.receipt.logs[0].args.created;
-
+      this.market = await RealityMarket.at(this.marketAddress);
+      await this.market.initializeVault({ from, gasLimit: 12000000 });
+      await this.market.initializeVoting({ from });
+      const foresightVaultAddress = await this.market.foresightVaultAddress();
+      this.foresightVault = await ForesightVault.at(foresightVaultAddress);
+      await this.foresightVault.createYes({ from });
+      await this.foresightVault.createNo({ from });
+      await this.foresightVault.createInvalid({ from });
+      this.yesToken = await this.foresightVault.yesShortTokenAddress().then(Foresight.at);
+      this.noToken = await this.foresightVault.noLongTokenAddress().then(Foresight.at);
+      this.invToken = await this.foresightVault.invalidTokenAddress().then(Foresight.at);
     });
     it('should properly store market stake', async function() {
       const stake = await this.monitor.stakeForMarket.call(this.marketAddress);
@@ -52,5 +65,23 @@ describe('Monitor', function() {
     it('should not allow market creators to remove their stake until market is completed', async function() {
       await expectRevert.unspecified(this.monitor.withdrawStake(this.marketAddress));
     });
+    describe('market functions', function() {
+      it('should allow users to mint foresight tokens');
+      it('should allow users to stake on outcomes');
+      it('should not allow users to withdraw outcome stake');
+      it('should not allow users to withdraw foresight');
+    });
+    describe('when market is completed and not invalid', function() {
+      it('should allow users to convert foresight to mint stake');
+      it('should allow withdraws for correct outcomes');
+      it('should not allow withrdraws on incorrect outcomes');
+      it('should allow market creator to remove their stake');
+    })
+    describe('when market is completed and invalid', function() {
+      it('should allow users to convert foresight to mint stake');
+      it('should allow withdraws for correct outcomes');
+      it('should not allow withrdraws on incorrect outcomes');
+      it('should not allow market creator to remove their stake');
+    })
   });
 });

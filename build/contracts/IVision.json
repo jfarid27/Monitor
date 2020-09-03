@@ -420,15 +420,15 @@
     "absolutePath": "contracts/IVision.sol",
     "exportedSymbols": {
       "IVision": [
-        3454
+        3517
       ]
     },
-    "id": 3455,
+    "id": 3518,
     "license": "Unlicense",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3441,
+        "id": 3504,
         "literals": [
           "solidity",
           "0.6",
@@ -440,9 +440,9 @@
       {
         "absolutePath": "@openzeppelin/contracts/token/ERC777/IERC777.sol",
         "file": "@openzeppelin/contracts/token/ERC777/IERC777.sol",
-        "id": 3442,
+        "id": 3505,
         "nodeType": "ImportDirective",
-        "scope": 3455,
+        "scope": 3518,
         "sourceUnit": 2441,
         "src": "64:58:19",
         "symbolAliases": [],
@@ -455,7 +455,7 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 3444,
+              "id": 3507,
               "name": "IERC777",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 2440,
@@ -465,7 +465,7 @@
                 "typeString": "contract IERC777"
               }
             },
-            "id": 3445,
+            "id": 3508,
             "nodeType": "InheritanceSpecifier",
             "src": "204:7:19"
           }
@@ -475,15 +475,15 @@
         ],
         "contractKind": "interface",
         "documentation": {
-          "id": 3443,
+          "id": 3506,
           "nodeType": "StructuredDocumentation",
           "src": "125:58:19",
           "text": "@title Vision\n @notice ERC777 for the Vision token"
         },
         "fullyImplemented": false,
-        "id": 3454,
+        "id": 3517,
         "linearizedBaseContracts": [
-          3454,
+          3517,
           2440
         ],
         "name": "IVision",
@@ -492,13 +492,13 @@
           {
             "body": null,
             "documentation": {
-              "id": 3446,
+              "id": 3509,
               "nodeType": "StructuredDocumentation",
               "src": "219:133:19",
               "text": "@notice Mints tokens for the given address.\n @param toAddress Address to send token.\n @param amount Amount to mint."
             },
             "functionSelector": "40c10f19",
-            "id": 3453,
+            "id": 3516,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -506,17 +506,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 3451,
+              "id": 3514,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3448,
+                  "id": 3511,
                   "mutability": "mutable",
                   "name": "toAddress",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 3453,
+                  "scope": 3516,
                   "src": "371:17:19",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -525,7 +525,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3447,
+                    "id": 3510,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "371:7:19",
@@ -540,12 +540,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 3450,
+                  "id": 3513,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 3453,
+                  "scope": 3516,
                   "src": "390:11:19",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -554,7 +554,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3449,
+                    "id": 3512,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "390:4:19",
@@ -570,19 +570,19 @@
               "src": "370:32:19"
             },
             "returnParameters": {
-              "id": 3452,
+              "id": 3515,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "411:0:19"
             },
-            "scope": 3454,
+            "scope": 3517,
             "src": "357:55:19",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 3455,
+        "scope": 3518,
         "src": "183:231:19"
       }
     ],

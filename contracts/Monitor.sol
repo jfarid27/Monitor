@@ -80,8 +80,7 @@ contract Monitor is ReentrancyGuard {
     function withdrawStake(address marketAddress) public nonReentrant {
         require(stakeForMarket[marketAddress] > 0, "No stake to withdraw");
         IRealityMarket market = IRealityMarket(marketAddress);
-        //require(0 > 1, "Hit");
-        require(market.winningOutcome() != -1e18, "Market was deemed invalid. Stake lost");
+        require(market.winningOutcome() != -1, "Market was deemed invalid. Stake lost");
         uint owedStake = stakeForMarket[marketAddress];
         stakeForMarket[marketAddress] = 0;
         visionToken.transfer(ownerForMarket[marketAddress], owedStake);

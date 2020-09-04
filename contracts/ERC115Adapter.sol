@@ -2,7 +2,8 @@
 
 pragma solidity 0.6.12;
 
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "./ERC1155.sol";
+import "@openzeppelin/contracts/introspection/ERC165.sol";
 
 
 contract ERC1155withAdapter is ERC1155 {
@@ -14,7 +15,7 @@ contract ERC1155withAdapter is ERC1155 {
 
     event NewAdapter(uint256 indexed id, address indexed adapter);
 
-    constructor() public {
+    constructor(string memory uri) public ERC1155(uri) {
         template = address(new ERC20Adapter());
     }
 
@@ -31,8 +32,8 @@ contract ERC1155withAdapter is ERC1155 {
 
         // SafeMath will throw with insuficient funds _from
         // or if _id is not valid (balance will be 0)
-        balances[_id][_from] = balances[_id][_from].sub(_value);
-        balances[_id][_to] = value.add(balances[_id][_to]);
+        _balances[_id][_from] = _balances[_id][_from].sub(_value);
+        _balances[_id][_to] = _value.add(_balances[_id][_to]);
 
         bytes memory _data;
 
@@ -118,15 +119,8 @@ contract ERC20Adapter {
         return true;
     }
 
-    /**
-     * @dev Returns the remaining number of tokens that `spender` will be
-     * allowed to spend on behalf of `owner` through `transferFrom`. This is
-     * zero by default.
-     *
-     * This value changes when `approve` or `transferFrom` are called.
-     */
-    function allowance(address owner, address spender) external view returns (uint256) {
-        return allowed[owner][spender];
+    function totalSupply() external view returns (uint256) {
+        return entity.totalSupply(id);
     }
 
     /**
@@ -136,8 +130,15 @@ contract ERC20Adapter {
         return entity.balanceOf(account, id);
     }
 
-    function totalSupply() external view returns (uint256) {
-        return entity.totalSupply(id);
+    /**
+     * @dev Returns the remaining number of tokens that `spender` will be
+     * allowed to spend on behalf of `owner` through `transferFrom`. This is
+     * zero by default.
+     *
+     * This value changes when `approve` or `transferFrom` are called.
+     */
+    function allowance(address owner, address spender) external view returns (uint256) {
+        return allowed[owner][spender];
     }
 
     /**
@@ -151,4 +152,5 @@ contract ERC20Adapter {
         symbol = _symbol;
         decimals = _decimals;
     }
+
 }

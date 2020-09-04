@@ -24,22 +24,22 @@
     "absolutePath": "contracts/IRealityMarket.sol",
     "exportedSymbols": {
       "IRealityMarket": [
-        3446
+        5149
       ]
     },
-    "id": 3447,
+    "id": 5150,
     "license": "Unlicense",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3438,
+        "id": 5141,
         "literals": [
           "solidity",
           "0.6",
           ".12"
         ],
         "nodeType": "PragmaDirective",
-        "src": "39:23:17"
+        "src": "39:23:24"
       },
       {
         "abstract": false,
@@ -47,15 +47,15 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 3439,
+          "id": 5142,
           "nodeType": "StructuredDocumentation",
-          "src": "65:98:17",
+          "src": "65:98:24",
           "text": "@title IRealityMarket\n @notice Generate a reality market and appropriate mint/burn tokens."
         },
         "fullyImplemented": false,
-        "id": 3446,
+        "id": 5149,
         "linearizedBaseContracts": [
-          3446
+          5149
         ],
         "name": "IRealityMarket",
         "nodeType": "ContractDefinition",
@@ -63,13 +63,13 @@
           {
             "body": null,
             "documentation": {
-              "id": 3440,
+              "id": 5143,
               "nodeType": "StructuredDocumentation",
-              "src": "194:52:17",
+              "src": "194:52:24",
               "text": "@notice Return the winning outcome for a market."
             },
             "functionSelector": "9b34ae03",
-            "id": 3445,
+            "id": 5148,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -77,24 +77,24 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 3441,
+              "id": 5144,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "274:2:17"
+              "src": "274:2:24"
             },
             "returnParameters": {
-              "id": 3444,
+              "id": 5147,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3443,
+                  "id": 5146,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 3445,
-                  "src": "295:3:17",
+                  "scope": 5148,
+                  "src": "295:3:24",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -102,10 +102,10 @@
                     "typeString": "int256"
                   },
                   "typeName": {
-                    "id": 3442,
+                    "id": 5145,
                     "name": "int",
                     "nodeType": "ElementaryTypeName",
-                    "src": "295:3:17",
+                    "src": "295:3:24",
                     "typeDescriptions": {
                       "typeIdentifier": "t_int256",
                       "typeString": "int256"
@@ -115,20 +115,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "294:5:17"
+              "src": "294:5:24"
             },
-            "scope": 3446,
-            "src": "251:49:17",
+            "scope": 5149,
+            "src": "251:49:24",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 3447,
-        "src": "163:139:17"
+        "scope": 5150,
+        "src": "163:139:24"
       }
     ],
-    "src": "39:264:17"
+    "src": "39:264:24"
   },
   "bytecode": "0x",
   "deployedBytecode": "0x",

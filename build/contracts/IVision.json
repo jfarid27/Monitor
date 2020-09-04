@@ -420,31 +420,31 @@
     "absolutePath": "contracts/IVision.sol",
     "exportedSymbols": {
       "IVision": [
-        3517
+        5220
       ]
     },
-    "id": 3518,
+    "id": 5221,
     "license": "Unlicense",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3504,
+        "id": 5207,
         "literals": [
           "solidity",
           "0.6",
           ".12"
         ],
         "nodeType": "PragmaDirective",
-        "src": "39:23:19"
+        "src": "39:23:26"
       },
       {
         "absolutePath": "@openzeppelin/contracts/token/ERC777/IERC777.sol",
         "file": "@openzeppelin/contracts/token/ERC777/IERC777.sol",
-        "id": 3505,
+        "id": 5208,
         "nodeType": "ImportDirective",
-        "scope": 3518,
-        "sourceUnit": 2441,
-        "src": "64:58:19",
+        "scope": 5221,
+        "sourceUnit": 2688,
+        "src": "64:58:26",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -455,36 +455,36 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 3507,
+              "id": 5210,
               "name": "IERC777",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2440,
-              "src": "204:7:19",
+              "referencedDeclaration": 2687,
+              "src": "204:7:26",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IERC777_$2440",
+                "typeIdentifier": "t_contract$_IERC777_$2687",
                 "typeString": "contract IERC777"
               }
             },
-            "id": 3508,
+            "id": 5211,
             "nodeType": "InheritanceSpecifier",
-            "src": "204:7:19"
+            "src": "204:7:26"
           }
         ],
         "contractDependencies": [
-          2440
+          2687
         ],
         "contractKind": "interface",
         "documentation": {
-          "id": 3506,
+          "id": 5209,
           "nodeType": "StructuredDocumentation",
-          "src": "125:58:19",
+          "src": "125:58:26",
           "text": "@title Vision\n @notice ERC777 for the Vision token"
         },
         "fullyImplemented": false,
-        "id": 3517,
+        "id": 5220,
         "linearizedBaseContracts": [
-          3517,
-          2440
+          5220,
+          2687
         ],
         "name": "IVision",
         "nodeType": "ContractDefinition",
@@ -492,13 +492,13 @@
           {
             "body": null,
             "documentation": {
-              "id": 3509,
+              "id": 5212,
               "nodeType": "StructuredDocumentation",
-              "src": "219:133:19",
+              "src": "219:133:26",
               "text": "@notice Mints tokens for the given address.\n @param toAddress Address to send token.\n @param amount Amount to mint."
             },
             "functionSelector": "40c10f19",
-            "id": 3516,
+            "id": 5219,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -506,18 +506,18 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 3514,
+              "id": 5217,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3511,
+                  "id": 5214,
                   "mutability": "mutable",
                   "name": "toAddress",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 3516,
-                  "src": "371:17:19",
+                  "scope": 5219,
+                  "src": "371:17:26",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -525,10 +525,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3510,
+                    "id": 5213,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "371:7:19",
+                    "src": "371:7:26",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -540,13 +540,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 3513,
+                  "id": 5216,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 3516,
-                  "src": "390:11:19",
+                  "scope": 5219,
+                  "src": "390:11:26",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -554,10 +554,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3512,
+                    "id": 5215,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "390:4:19",
+                    "src": "390:4:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -567,26 +567,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "370:32:19"
+              "src": "370:32:26"
             },
             "returnParameters": {
-              "id": 3515,
+              "id": 5218,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "411:0:19"
+              "src": "411:0:26"
             },
-            "scope": 3517,
-            "src": "357:55:19",
+            "scope": 5220,
+            "src": "357:55:26",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 3518,
-        "src": "183:231:19"
+        "scope": 5221,
+        "src": "183:231:26"
       }
     ],
-    "src": "39:376:19"
+    "src": "39:376:26"
   },
   "bytecode": "0x",
   "deployedBytecode": "0x",

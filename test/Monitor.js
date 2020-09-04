@@ -13,6 +13,7 @@ const Monitor = contract.fromArtifact('Monitor');
 const RealityMarket = contract.fromArtifact('RealityMarket');
 const ForesightVault = contract.fromArtifact('ForesightVault');
 const Foresight = contract.fromArtifact('Foresight');
+const Voting = contract.fromArtifact('MarketVoting');
 
 describe('Monitor', function() {
   beforeEach(async function() {
@@ -41,6 +42,8 @@ describe('Monitor', function() {
       await this.market.initializeVault({ from, gasLimit: 12000000 });
       await this.market.initializeVoting({ from });
       const foresightVaultAddress = await this.market.foresightVaultAddress();
+      this.votingAddress = await this.market.votingAddress.call();
+      this.voting = await Voting.at(this.votingAddress);
       this.foresightVault = await ForesightVault.at(foresightVaultAddress);
       await this.foresightVault.createYes({ from });
       await this.foresightVault.createNo({ from });
@@ -66,10 +69,56 @@ describe('Monitor', function() {
       await expectRevert.unspecified(this.monitor.withdrawStake(this.marketAddress));
     });
     describe('market functions', function() {
-      it('should allow users to mint foresight tokens');
-      it('should allow users to stake on outcomes');
-      it('should not allow users to withdraw outcome stake');
-      it('should not allow users to withdraw foresight');
+      describe('when minting', function() {
+        beforeEach(async function() {
+          this.amount = new BN("2000");
+          await this.vision.approve(this.marketAddress, this.amount, { from });
+          this.transaction = await this.market.mintCompleteSets(this.amount, { from });
+          this.user_bal = await this.vision.balanceOf.call(from);
+          this.contract_bal = await this.vision.balanceOf.call(this.marketAddress);
+        });
+        it('should properly stake vision', async function() {
+          const address = this.transaction.receipt.logs[0].args.from;
+          const mint_amount = this.transaction.receipt.logs[0].args.amount;
+          expect(this.user_bal.eq(this.userBalance.sub(this.amount).sub(this.stakeAmount))).to.be.ok;
+          expect(this.contract_bal.eq(this.amount)).to.be.ok;
+          expect(address).to.eql(from);
+          expect(this.amount.eq(mint_amount)).to.be.ok;
+        });
+        it('should properly mint foresight', async function() {
+          const yesAmount = await this.yesToken.balanceOf.call(from);
+          const noAmount = await this.noToken.balanceOf.call(from);
+          const invAmount = await this.invToken.balanceOf.call(from);
+          expect(yesAmount.eq(this.amount)).to.be.ok;
+          expect(noAmount.eq(this.amount)).to.be.ok;
+          expect(invAmount.eq(this.amount)).to.be.ok;
+        });
+        it('should not allow users to withdraw foresight', async function() {
+          await expectRevert(
+            this.market.withdrawPayoutBinary(this.amount, { from }),
+            'Vote is not yet completed'
+          );
+        });
+      });
+      describe('when staking', async function() {
+        beforeEach(async function() {
+          this.amount = new BN("2000");
+          this.outcome = new BN("-1");
+          this.user_bal = await this.vision.balanceOf.call(from);
+          await this.vision.approve(this.votingAddress, this.amount, { from });
+          await this.voting.vote(this.outcome, this.amount, { from });
+        })
+        it('should allow users to stake on outcomes', async function() {
+          const votes = await this.voting.getTotalVotesForOutcome.call(this.outcome);
+          expect(votes.eq(this.amount)).to.be.ok;
+        });
+        it('should not allow users to withdraw outcome stake', async function() {
+          await expectRevert(
+            this.voting.withdraw(from, { from }),
+            'Vote is not yet completed'
+          );
+        });
+      });
     });
     describe('when market is completed and not invalid', function() {
       it('should allow users to convert foresight to mint stake');

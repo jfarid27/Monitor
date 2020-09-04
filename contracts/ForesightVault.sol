@@ -26,7 +26,7 @@ contract ForesightVault is Ownable {
     /// @notice Invalid token address pointer.
     address public invalidTokenAddress;
     /// @notice setup stages
-    uint stage = 0;
+    uint public stage = 0;
 
     /// @notice Create a minter and store market address data.
     /// @param setMarketAddress Pointer to the market Address linking the Foresight token.

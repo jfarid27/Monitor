@@ -31,13 +31,10 @@ contract RealityMarket is ReentrancyGuard {
     string private constant NOLONG = "NO";
     /// @dev Constant representing the INVALID option.
     string private constant INVALID = "INVALID";
-
     /// @notice Close of public voting on market outcomes.
     uint public votingEndTime;
-
     /// @notice State transition required to initialize a market.
     uint public setup = 0;
-
     /// @notice Instance of the voting contract.
     MarketVoting public voting;
     /// @notice Address for the Voting contract.
@@ -46,6 +43,8 @@ contract RealityMarket is ReentrancyGuard {
     ForesightVault public foresightVault;
     /// @notice Address of the Foresight Vault contract.
     address public foresightVaultAddress;
+    /// @notice Market creation envent
+    event MintedTokensEvent(address from, uint amount);
 
     /// @notice Sets all base values for the market and sets up Voting and Token Vault.
     /// @param setQuestion Determines market question.
@@ -89,9 +88,10 @@ contract RealityMarket is ReentrancyGuard {
     /// @dev Requires currency token approval.
     /// @param amount Amount of currency to take and number of shares to mint.
     function mintCompleteSets(uint amount) public {
-        require(setup == 3, 'Market setup not complete');
+        require(setup == 3, "Market setup not complete");
         currencyToken.transferFrom(msg.sender, address(this), amount);
         foresightVault.mintCompleteSets(msg.sender, amount);
+        emit MintedTokensEvent(msg.sender, amount);
     }
 
     /// @notice Burns a complete set of Foresight tokens for the given amount and returns currency.
@@ -101,13 +101,6 @@ contract RealityMarket is ReentrancyGuard {
         foresightVault.burnNoLong(msg.sender, amount);
         foresightVault.burnInvalid(msg.sender, amount);
         currencyToken.transferFrom(address(this), msg.sender, amount);
-    }
-
-    /// @notice Passes vote to the voting construct.
-    /// @param outcome Outcome to vote on.
-    /// @param amount Amount of Vision token to stake on a vote.
-    function vote(int outcome, uint amount) public {
-        voting.vote(outcome, amount);
     }
 
     /// @notice returns voting winning outcome.
@@ -126,12 +119,12 @@ contract RealityMarket is ReentrancyGuard {
     /// @param amount Amount of currency to swap.
     function withdrawPayoutBinary(uint amount) public assertVotingCompleted nonReentrant {
         // Case if voting was deemed invalid.
-        if (voting.winningOutcome() == -1e18) {
+        if (voting.winningOutcome() == -1) {
             foresightVault.burnInvalid(msg.sender, amount);
             currencyToken.transfer(msg.sender, 1e18);
         }
         //Case if
-        if (voting.winningOutcome() == 1e18) {
+        if (voting.winningOutcome() == 1) {
             foresightVault.burnYesShort(msg.sender, amount);
             currencyToken.transfer(msg.sender, 1e18);
         }

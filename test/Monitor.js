@@ -86,8 +86,8 @@ describe('Monitor', function() {
           this.other_user_bal = await this.vision.balanceOf.call(from);
           await this.vision.approve(this.votingAddress, this.amount, { from });
           await this.voting.vote(this.outcome, this.amount, { from });
-          await this.vision.approve(this.votingAddress, this.amount, { other });
-          await this.voting.vote(this.outcome_bad, this.bad_amount, { other });
+          await this.vision.approve(this.votingAddress, this.amount, { from: other });
+          await this.voting.vote(this.outcome_bad, this.bad_amount, { from: other });
         };
         this.voteOnValidNo = async function() {
           this.amount = new BN("1999");
@@ -98,8 +98,8 @@ describe('Monitor', function() {
           this.other_user_bal = await this.vision.balanceOf.call(from);
           await this.vision.approve(this.votingAddress, this.amount, { from });
           await this.voting.vote(this.outcome, this.amount, { from });
-          await this.vision.approve(this.votingAddress, this.amount, { other });
-          await this.voting.vote(this.outcome_bad, this.bad_amount, { other });
+          await this.vision.approve(this.votingAddress, this.amount, { from: other });
+          await this.voting.vote(this.outcome_bad, this.bad_amount, { from: other });
         };
       })
       describe('when minting', function() {
@@ -109,7 +109,7 @@ describe('Monitor', function() {
         it('should properly stake vision', async function() {
           const address = this.transaction.receipt.logs[0].args.from;
           const mint_amount = this.transaction.receipt.logs[0].args.amount;
-          expect(this.from_user_bal.eq(this.userBalance.sub(this.amount).sub(this.stakeAmount))).to.be.ok;
+          expect(this.user_bal.eq(this.userBalance.sub(this.amount).sub(this.stakeAmount))).to.be.ok;
           expect(this.contract_bal.eq(this.amount)).to.be.ok;
           expect(address).to.eql(from);
           expect(this.amount.eq(mint_amount)).to.be.ok;
@@ -151,7 +151,14 @@ describe('Monitor', function() {
         it('should allow market creator to remove their stake');
       })
       describe('when market is completed and invalid', function() {
-        it('should allow users to convert foresight to mint stake');
+        beforeEach(async function() {
+          await this.mintTokens();
+          await this.voteOnInvalid();
+          await time.increase(this.currentTime.add(this.dt));
+        });
+        it('should allow users to convert foresight to mint stake', function() {
+          this.market
+        });
         it('should allow withdraws for correct outcomes');
         it('should not allow withrdraws on incorrect outcomes');
         it('should not allow market creator to remove their stake');

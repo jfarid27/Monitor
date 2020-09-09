@@ -12,7 +12,7 @@ import "./MarketVoting.sol";
 
 /// @title RealityMarket
 /// @notice Generate a reality market and appropriate mint/burn tokens.
-contract RealityMarket is ReentrancyGuard {
+contract RealityMarkets is ReentrancyGuard {
     using SafeMath for uint;
     using SignedSafeMath for int;
     /// @notice Base currency token address used to mint Foresight.
@@ -121,7 +121,7 @@ contract RealityMarket is ReentrancyGuard {
         // Case if voting was deemed invalid.
         if (voting.winningOutcome() == -1) {
             foresightVault.burnInvalid(msg.sender, amount);
-            currencyToken.transfer(msg.sender, 1e18);
+            currencyToken.transfer(msg.sender, amount);
         }
         //Case if
         if (voting.winningOutcome() == 1) {

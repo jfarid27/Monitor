@@ -157,7 +157,7 @@ describe('Monitor', function() {
           await time.increase(this.currentTime.add(this.dt));
         });
         it('should allow users to convert foresight to mint stake', function() {
-          this.market
+          this.market.withdrawPayoutBinary()
         });
         it('should allow withdraws for correct outcomes');
         it('should not allow withrdraws on incorrect outcomes');

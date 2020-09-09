@@ -16,7 +16,14 @@ contract Vision is ERC777, Ownable {
     /// @notice Mints tokens for the given address.
     /// @param toAddress Address to send token.
     /// @param amount Amount to mint.
-    function mint(address toAddress, uint amount) public onlyOwner {
-        super._mint(toAddress, amount, "", "");
+    function mint(address toAddress, uint amount) public onlyOwner nonReentrant {
+        _mint(toAddress, amount, "", "");
+    }
+
+    /// @notice Burn the amount of Vision for the given address.
+    /// @param acct Address to burn from.
+    /// @param amount Amount of tokens to burn.
+    function burn(address acct, uint amount) public onlyOwner nonReentrant {
+        _burn(acct, amount, "", "");
     }
 }

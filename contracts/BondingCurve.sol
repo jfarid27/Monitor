@@ -16,7 +16,7 @@ contract BondingCurve {
     /// @param currentAmount Current Amount of the tokens in circulation.
     /// @param deltaAmount Change in tokens to compute cost for.
     /// @return Returns the cost of the new deltaAmount.
-    function computePriceAndCostForAmount(
+    function computeCostForAmount(
         uint currentAmount,
         uint deltaAmount
     ) public returns (uint cost) {

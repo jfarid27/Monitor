@@ -4,11 +4,12 @@ pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/token/ERC777/ERC777.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 
 /// @title Vision
 /// @notice ERC777 for the Vision token
-contract Vision is ERC777, Ownable {
+contract Vision is ERC777, Ownable, ReentrancyGuard {
 
     /// @notice Sets up the token.
     constructor() public ERC777("Vision", "VIS", new address[](0)) {}

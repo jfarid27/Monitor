@@ -15,18 +15,18 @@ contract BondingCurve {
     /// @notice Returns the cost of a token delta using Quadratic pricing, as well as the new token price.
     /// @param currentAmount Current Amount of the tokens in circulation.
     /// @param deltaAmount Change in tokens to compute cost for.
-    /// @return Returns the cost of the new deltaAmount.
+    /// @return cost Returns the cost of the new deltaAmount.
     function computeCostForAmount(
         uint currentAmount,
         uint deltaAmount
     ) public returns (uint cost) {
-        currentBalance = (((currentAmount + deltaAmount) ** 3) / 3);
+        uint currentBalance = (((currentAmount + deltaAmount) ** 3) / 3);
         cost = (((currentAmount + deltaAmount) ** 3) / 3) - currentBalance;
     }
 
     /// @notice Returns the square root of x using the Babylonian method.
     /// @param x Value.
-    /// @return Returns the square root.
+    /// @return y Returns the square root.
     function sqrt(uint x) public returns (uint y) {
         uint z = (x + 1) / 2;
         y = x;

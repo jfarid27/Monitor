@@ -6,13 +6,14 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./ForesightTokens.sol";
 import "./Vision.sol";
+import "./BondingCurve.sol";
 
 
 /// @title Monitor
 /// @notice Monitor Interface
 contract Monitor is ReentrancyGuard, BondingCurve {
     /// @notice Only allow initialization once.
-    bool public initalized;
+    bool public initialized;
 
     /// @notice Vision ERC777 token contract.
     Vision public vision;
@@ -35,8 +36,9 @@ contract Monitor is ReentrancyGuard, BondingCurve {
         uint endTime;
         string question;
         uint tokenIndex;
-        mapping(uint => uint) totalMinted;
-        mapping(uint => uint) totalStaked;
+        mapping(uint => uint) totalMinted; // Maps outcomes to total amount minted.
+        mapping(uint => uint) totalStaked; // Maps outcomes to total amount staked.
+        mapping(uint => mapping(address => uint)) totalStakedByAddress; // Outcomes to total amount staked by address.
         uint invalidStake;
     }
 
@@ -58,27 +60,32 @@ contract Monitor is ReentrancyGuard, BondingCurve {
         vision = new Vision();
     }
 
+    /// @notice Event capturing minted vision, cost, and address.
+    event VisionMinted(uint minted, uint cost, address addr);
+
     /// @notice Mints new Vision based on the current price, using the amount deposited.
     /// @param amountDeposited Amount of stake to deposit.
-    /// @dev Note you must supply the amount of Stake Token to produce new Vision. Also must approve.
+    /// @dev Note you must supply the amount of Stake Token to produce new Vision.
+    /// @dev Must approve stake token.
     function mintVision(uint amountDeposited) public nonReentrant {
-        visionRate = mintedVision / totalStakeInVisionVault;
-        visionToMint = visionRate * amountDeposited;
+        uint visionRate = mintedVision / totalStakeInVisionVault;
+        uint visionToMint = visionRate * amountDeposited;
         mintedVision += visionToMint;
         totalStakeInVisionVault += amountDeposited;
         vision.mint(msg.sender, visionToMint);
-        stakeToken.transfer(msg.sender, address(this), amountDeposited);
+        stakeToken.transferFrom(msg.sender, address(this), amountDeposited);
+        emit VisionMinted(visionToMint, amountDeposited, msg.sender);
     }
 
     /// @notice Burns Vision based on the current price and returns allocated stake.
     /// @param visionToBurn Amount of vision to burn.
     function burnVision(uint visionToBurn) public nonReentrant {
-        stakeRate = totalStakeInVisionVault / mintedVision;
-        stakeToReturn = stakeRate * visionToBurn;
+        uint stakeRate = totalStakeInVisionVault / mintedVision;
+        uint stakeToReturn = stakeRate * visionToBurn;
         mintedVision -= visionToBurn;
         totalStakeInVisionVault -= stakeToReturn;
         vision.burn(msg.sender, visionToBurn);
-        stakeToken.transfer(address(this), msg.sender, stakeToReturn);
+        stakeToken.transferFrom(address(this), msg.sender, stakeToReturn);
     }
 
     /// @notice return details of the newly created reality market.
@@ -95,14 +102,14 @@ contract Monitor is ReentrancyGuard, BondingCurve {
         uint endTime,
         uint invalidStake
     ) public nonReentrant {
-        require(block.timestamp < market.endTime, "Market end time cannot be in the past.");
+        require(block.timestamp < endTime, "Market end time cannot be in the past.");
         uint index = realityMarketCounts + 1;
         realityMarketCounts += 1;
-        totalTokens = foresightTokens.totalTokensMinted();
+        uint totalTokens = foresightTokens.totalTokensMinted();
         uint yesIndex = totalTokens + 1;
         uint noIndex = totalTokens + 2;
         uint invalidIndex = totalTokens + 3;
-        realityMarketRegistry[index].index = index;
+        realityMarketRegistry[index].id = index;
         realityMarketRegistry[index].finalized = false;
         realityMarketRegistry[index].endTime = endTime;
         realityMarketRegistry[index].question = question;
@@ -130,14 +137,15 @@ contract Monitor is ReentrancyGuard, BondingCurve {
         }
         require(selected, "Market outcome selection does not match market index outcomes.");
         currentAmount = realityMarketRegistry[index].totalMinted[outcome];
-        visionCost = computeCostForAmount(currentAmount, amount);
+        uint visionCost = computeCostForAmount(currentAmount, amount);
         realityMarketRegistry[index].totalStaked[outcome] += visionCost;
+        realityMarketRegistry[index].totalStakedByAddress[outcome][msg.sender] += visionCost;
         realityMarketRegistry[index].totalMinted[outcome] += amount;
         foresightTokens.mint(msg.sender, outcome, amount);
     }
 
     /// @notice Event to finalize a market.
-    event RealityMarketFinalized(uint index, uint burned, uint winningOutcome);
+    event RealityMarketFinalized(uint index, uint winningOutcome);
 
     /// @notice Finalize a market and update the Vision vault with the correct losing stake.
     /// @param index Market index to finalize.
@@ -155,10 +163,10 @@ contract Monitor is ReentrancyGuard, BondingCurve {
         uint no = realityMarketRegistry[index].tokenIndex + 1;
         uint invalid = realityMarketRegistry[index].tokenIndex;
         uint winningOutcome = realityMarketRegistry[index].tokenIndex;
-        if (market.totalYes > market.totalNo && market.totalYes > market.totalInvalid) {
+        if (market.totalMinted[yes] > market.totalMinted[no] && market.totalMinted[yes] > market.totalMinted[invalid]) {
             winningOutcome = yes;
         }
-        if (market.totalNo > market.totalYes && market.totalNo > market.totalInvalid) {
+        if (market.totalMinted[no] > market.totalMinted[yes] && market.totalMinted[no] > market.totalMinted[invalid]) {
             winningOutcome = no;
         }
         if (winningOutcome == realityMarketRegistry[index].tokenIndex) {
@@ -166,7 +174,7 @@ contract Monitor is ReentrancyGuard, BondingCurve {
         }
         market.finalized = true;
         market.winningOutcome = winningOutcome;
-        RealityMarketFinalized(index, burned, winningOutcome);
+        RealityMarketFinalized(index, winningOutcome);
     }
 
     /// @notice Withdraw the senders user stake using the specified foresightToken id.
@@ -174,10 +182,13 @@ contract Monitor is ReentrancyGuard, BondingCurve {
     /// @param foresightId Id of the given foresight.
     /// @dev Invariant - Users should not be able to withdraw from a market that is not finalized.
     /// @dev Invariant - Users should not be able to withdraw using Foresight that is not reified.
+    /// @dev Invariant - User should have stake in the winning outcome to withdraw.
     function withdrawWinningStake(uint index, uint foresightId) public nonReentrant {
         RealityMarket storage market = realityMarketRegistry[index];
         require(market.finalized, "Market not finalized.");
         require(foresightId == market.winningOutcome, "Selected token is not redeemable.");
+        uint userStake = realityMarketRegistry[index].totalStakedByAddress[market.winningOutcome][msg.sender];
+        require(userStake > 0, "User has no stake in the winning outcome.");
         /// @notice Total vision lost.
         uint totalLost;
         /// @notice User's total owned foresight.
@@ -201,7 +212,8 @@ contract Monitor is ReentrancyGuard, BondingCurve {
         uint percentWon = tokensOwned / market.totalStaked[market.winningOutcome];
         uint currentAmount = realityMarketRegistry[index].totalMinted[market.winningOutcome];
         /// @notice User wins back stake + computed percent of the prize pool.
-        uint owedVision = computeCostForAmount(currentAmount, tokensOwned) + (percentWon * totalLost);
+        uint owedVision = userStake + (percentWon * totalLost);
+        realityMarketRegistry[index].totalStakedByAddress[market.winningOutcome][msg.sender] = 0;
         foresightTokens.burn(msg.sender, foresightId, tokensOwned);
         vision.transfer(address(this), owedVision);
     }

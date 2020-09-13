@@ -86,4 +86,23 @@ describe('Monitor', function() {
       });
     });
   });
+  describe('Market Creation', function() {
+    it('should fail if the expected event time is before the current block');
+    it('should fail if the end time is before the current block');
+    describe('when given a clearly described market', function() {
+      it('should properly store market data');
+    });
+  });
+  describe('Market Voting', function() {
+    describe('transactions', function() {
+      it('should properly weight foresight tokens based on the quadratic bonding curve');
+    });
+  });
+  describe('Market Finalization', function() {
+    it('should not allow withdrawals until fully finalized');
+    describe('once finalized', function() {
+      it('should not allow losing tokens to be withdrawn');
+      it('should allow winning tokens to be withdrawn');
+    });
+  });
 });

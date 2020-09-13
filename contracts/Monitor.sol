@@ -13,14 +13,14 @@ import "./BondingCurve.sol";
 /// @notice Monitor Interface
 contract Monitor is ReentrancyGuard, BondingCurve {
     /// @notice Only allow initialization once.
-    bool public initialized;
+    bool public initialized = false;
 
     /// @notice Vision ERC777 token contract.
     Vision public vision;
-    /// @notice Total supply of Vision.
-    uint public mintedVision = 0;
-    /// @notice Total StakeToken in Vision Pool.
-    uint public totalStakeInVisionVault = 0;
+    /// @notice Total supply of Vision. Note this needs to start with 1 for minting.
+    uint public mintedVision = 1;
+    /// @notice Total StakeToken in Vision Pool. Note this needs to start with 1 for minting.
+    uint public totalStakeInVisionVault = 1;
 
     /// @notice Stake token for Vision pool.
     IERC20 public stakeToken;
@@ -68,6 +68,7 @@ contract Monitor is ReentrancyGuard, BondingCurve {
     /// @dev Note you must supply the amount of Stake Token to produce new Vision.
     /// @dev Must approve stake token.
     function mintVision(uint amountDeposited) public nonReentrant {
+        require(totalStakeInVisionVault != 0, "totalStakeInVisionVault should not be 0.");
         uint visionRate = mintedVision / totalStakeInVisionVault;
         uint visionToMint = visionRate * amountDeposited;
         mintedVision += visionToMint;
@@ -79,13 +80,17 @@ contract Monitor is ReentrancyGuard, BondingCurve {
 
     /// @notice Burns Vision based on the current price and returns allocated stake.
     /// @param visionToBurn Amount of vision to burn.
+    /// @dev Invariant - totalStakeInVisionVault cannot be less than 1.
+    /// @dev Invariant - mintedVision cannot be less than 1.
     function burnVision(uint visionToBurn) public nonReentrant {
         uint stakeRate = totalStakeInVisionVault / mintedVision;
         uint stakeToReturn = stakeRate * visionToBurn;
         mintedVision -= visionToBurn;
         totalStakeInVisionVault -= stakeToReturn;
+        require(totalStakeInVisionVault > 1, "Total Stake In Vision Vault must be greater than 1.");
+        require(mintedVision > 1, "Minted Vision must be greater than 1.");
         vision.burn(msg.sender, visionToBurn);
-        stakeToken.transferFrom(address(this), msg.sender, stakeToReturn);
+        stakeToken.transfer(msg.sender, stakeToReturn);
     }
 
     /// @notice return details of the newly created reality market.

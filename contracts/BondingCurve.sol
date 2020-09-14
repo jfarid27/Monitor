@@ -19,8 +19,8 @@ contract BondingCurve {
     function computeCostForAmount(
         uint currentAmount,
         uint deltaAmount
-    ) public returns (uint cost) {
-        uint currentBalance = (((currentAmount + deltaAmount) ** 3) / 3);
+    ) public view returns (uint cost) {
+        uint currentBalance = ((currentAmount ** 3) / 3);
         cost = (((currentAmount + deltaAmount) ** 3) / 3) - currentBalance;
     }
 

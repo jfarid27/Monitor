@@ -20,8 +20,10 @@ contract BondingCurve {
         uint currentAmount,
         uint deltaAmount
     ) public view returns (uint cost) {
+        uint updatedDelta = deltaAmount;
         uint currentBalance = ((currentAmount ** 3) / 3);
-        cost = (((currentAmount + deltaAmount) ** 3) / 3) - currentBalance;
+        cost = (((currentAmount + updatedDelta) ** 3) / 3) - currentBalance;
+        return cost;
     }
 
     /// @notice Returns the square root of x using the Babylonian method.

@@ -131,6 +131,9 @@ contract Monitor is ReentrancyGuard, BondingCurve {
     /// @notice Event capturing minted foresight, stake, and address.
     event ForesightMinted(uint marketIndex, uint outcome, uint foresight, uint stake, address addr);
 
+    /// @notice Event capturing minted foresight, stake, and address.
+    event Info(uint data);
+
     /// @notice Buys a position in a reality market.
     /// @dev For a given starting token index n, n = Invalid, n+1 = No, n+2 = Yes.
     /// @param index Market index to buy the position in.
@@ -157,6 +160,7 @@ contract Monitor is ReentrancyGuard, BondingCurve {
         realityMarketRegistry[index].totalStakedByAddress[outcome][msg.sender] += visionCost;
         realityMarketRegistry[index].totalMinted[outcome] += amount;
         foresightTokens.mint(msg.sender, outcome, amount);
+        vision.transferFrom(msg.sender, address(this), visionCost);
         emit ForesightMinted(index, outcome, amount, visionCost, msg.sender);
     }
 

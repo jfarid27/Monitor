@@ -68,14 +68,23 @@ describe('Monitor', function() {
       return [trans1];
     };
 
+    this.computeSqrtBondingCurve = function(currentAmount, deltaAmount) {
+      const updatedDelta = deltaAmount.div(new BN('1000'));
+      const bal = currentAmount.pow(new BN('3')).div(new BN('3'));
+      return currentAmount.add(updatedDelta).pow(new BN('3')).div(new BN('3')).sub(bal);
+    };
+
     this.generateForesight = async function(marketIndex, invalid, no, yes) {
-      this.foresightStakeAmount = this.startingWeth.div(new BN('6'));
-      await this.vision.approve(this.monitor.address, this.foresightStakeAmount, { from: account1 });
-      await this.vision.approve(this.monitor.address, this.foresightStakeAmount, { from: account2 });
-      await this.vision.approve(this.monitor.address, this.foresightStakeAmount, { from: account3 });
-      const trans1 = await this.monitor.buyPosition(marketIndex, yes, this.foresightStakeAmount, { from: account1 });
-      const trans2 = await this.monitor.buyPosition(marketIndex, yes, this.foresightStakeAmount, { from: account2 });
-      const trans3 = await this.monitor.buyPosition(marketIndex, no, this.foresightStakeAmount, { from: account3 });
+      this.foresightAmount = new BN('1000');
+      this.expectedCostYes1 = await this.computeSqrtBondingCurve(new BN('1'), this.foresightAmount);
+      this.expectedCostYes2 = await this.monitor.computeCostForAmount(new BN('1001'), this.foresightAmount);
+      this.expectedCostNo1 = await this.computeSqrtBondingCurve(new BN('1'), this.foresightAmount);
+      await this.vision.approve(this.monitor.address, this.expectedCostYes1, { from: account1 });
+      const trans1 = await this.monitor.buyPosition(marketIndex, yes, this.foresightAmount, { from: account1 });
+      await this.vision.approve(this.monitor.address, this.expectedCostYes2, { from: account2 });
+      const trans2 = await this.monitor.buyPosition(marketIndex, yes, this.foresightAmount, { from: account2 });
+      await this.vision.approve(this.monitor.address, this.expectedCostNo1, { from: account3 });
+      const trans3 = await this.monitor.buyPosition(marketIndex, no, this.foresightAmount, { from: account3 });
       return [trans1, trans2, trans3];
     };
 
@@ -174,13 +183,10 @@ describe('Monitor', function() {
           account3: trans3.receipt.logs[0].args,
         };
       });
-      it('should properly weight foresight tokens based on the quadratic bonding curve', async function() {
-        console.log(this.votingTransactions.account1.foresight.toString(10))
-        console.log(this.votingTransactions.account2.foresight.toString(10))
-        console.log(this.votingTransactions.account3.foresight.toString(10))
-        console.log(this.votingTransactions.account1.stake.toString(10))
-        console.log(this.votingTransactions.account2.stake.toString(10))
-        console.log(this.votingTransactions.account3.stake.toString(10))
+      it.only('should properly weight first order of yes foresight tokens based on the quadratic bonding curve', async function() {
+        expect(this.votingTransactions.account1.stake.eq(this.expectedCostYes)).to.be.ok;
+      });
+      it('should properly weight second order of yes foresight tokens based on the quadratic bonding curve', async function() {
         expect(this.votingTransactions.account1.foresight.toString(10)).to.eq(false);
       });
     });

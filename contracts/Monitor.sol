@@ -140,7 +140,6 @@ contract Monitor is ReentrancyGuard, BondingCurve {
     /// @param outcome Token index of the outcome to buy into.
     /// @param amount Amount of Vision to stake on the outcome.
     function buyPosition(uint index, uint outcome, uint amount) public nonReentrant {
-        uint currentAmount;
         bool selected = false;
         require(amount > 0, "Amount to mint should be greater than 0.");
         if (outcome == realityMarketRegistry[index].tokenIndex) {
@@ -153,7 +152,7 @@ contract Monitor is ReentrancyGuard, BondingCurve {
             selected = true;
         }
         require(selected, "Market outcome selection does not match market index outcomes.");
-        currentAmount = realityMarketRegistry[index].totalMinted[outcome] + 1;
+        uint currentAmount = realityMarketRegistry[index].totalMinted[outcome] + 1;
         uint visionCost = computeCostForAmount(currentAmount, amount);
         require(visionCost > 0, "Vision cost should be greater than 0.");
         realityMarketRegistry[index].totalStaked[outcome] += visionCost;
@@ -188,9 +187,6 @@ contract Monitor is ReentrancyGuard, BondingCurve {
         }
         if (market.totalMinted[no] > market.totalMinted[yes] && market.totalMinted[no] > market.totalMinted[invalid]) {
             winningOutcome = no;
-        }
-        if (winningOutcome == realityMarketRegistry[index].tokenIndex) {
-            winningOutcome = invalid;
         }
         market.finalized = true;
         market.winningOutcome = winningOutcome;

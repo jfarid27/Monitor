@@ -6,12 +6,14 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./ForesightTokens.sol";
 import "./Vision.sol";
-import "./BondingCurve.sol";
+import "./BancorBondingCurve.sol";
 
 
 /// @title Monitor
 /// @notice Monitor Interface
-contract Monitor is ReentrancyGuard, BondingCurve {
+contract Monitor is ReentrancyGuard, BancorBondingCurve {
+    /// @notice Foresight token reserve ratio.
+    uint32 constant public RESERVE_RATIO = 9000000;
     /// @notice Only allow initialization once.
     bool public initialized = false;
 
@@ -152,15 +154,16 @@ contract Monitor is ReentrancyGuard, BondingCurve {
             selected = true;
         }
         require(selected, "Market outcome selection does not match market index outcomes.");
-        uint currentAmount = realityMarketRegistry[index].totalMinted[outcome] + 1;
-        uint visionCost = computeCostForAmount(currentAmount, amount);
-        require(visionCost > 0, "Vision cost should be greater than 0.");
-        realityMarketRegistry[index].totalStaked[outcome] += visionCost;
-        realityMarketRegistry[index].totalStakedByAddress[outcome][msg.sender] += visionCost;
-        realityMarketRegistry[index].totalMinted[outcome] += amount;
-        foresightTokens.mint(msg.sender, outcome, amount);
-        vision.transferFrom(msg.sender, address(this), visionCost);
-        emit ForesightMinted(index, outcome, amount, visionCost, msg.sender);
+        uint minted = realityMarketRegistry[index].totalMinted[outcome] + 1;
+        uint staked = realityMarketRegistry[index].totalStaked[outcome] + 1;
+        uint foresightAmount = calculatePurchaseReturn(minted, staked, RESERVE_RATIO, amount);
+        require(foresightAmount > 0, "Returned foresight should be greater than 0.");
+        realityMarketRegistry[index].totalStaked[outcome] += amount;
+        realityMarketRegistry[index].totalStakedByAddress[outcome][msg.sender] += amount;
+        realityMarketRegistry[index].totalMinted[outcome] += foresightAmount;
+        foresightTokens.mint(msg.sender, outcome, foresightAmount);
+        vision.transferFrom(msg.sender, address(this), amount);
+        emit ForesightMinted(index, outcome, foresightAmount, amount, msg.sender);
     }
 
     /// @notice Event to finalize a market.

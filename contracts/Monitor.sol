@@ -197,9 +197,9 @@ contract Monitor is ReentrancyGuard {
         RealityMarket storage market = realityMarketRegistry[index];
         require(block.timestamp > market.endTime, "Market has not reached End Time.");
         require(!market.finalized, "Market already finalized.");
-        uint yes = realityMarketRegistry[index].tokenIndex + 2;
-        uint no = realityMarketRegistry[index].tokenIndex + 1;
         uint invalid = realityMarketRegistry[index].tokenIndex;
+        uint no = realityMarketRegistry[index].tokenIndex + 1;
+        uint yes = realityMarketRegistry[index].tokenIndex + 2;
         uint winningOutcome = realityMarketRegistry[index].tokenIndex;
         if (market.totalMinted[yes] > market.totalMinted[no] && market.totalMinted[yes] > market.totalMinted[invalid]) {
             winningOutcome = yes;
@@ -214,6 +214,10 @@ contract Monitor is ReentrancyGuard {
 
     /// @notice Event to convert foresight into vision.
     event ForesightBurned(uint marketIndex, uint foresightId, uint foresightAmount, uint visionOwed, address addr);
+
+
+    /// @notice info
+    event Info(uint d, uint j);
 
     /// @notice Withdraw the senders user stake using the specified foresightToken id.
     /// @param index Market index.
@@ -231,9 +235,11 @@ contract Monitor is ReentrancyGuard {
         uint totalLost;
         /// @notice User's total owned foresight.
         uint tokensOwned = foresightTokens.balanceOf(msg.sender, foresightId);
-        uint yes = realityMarketRegistry[index].tokenIndex + 2;
-        uint no = realityMarketRegistry[index].tokenIndex + 1;
-        uint invalid = realityMarketRegistry[index].tokenIndex;
+        require(market.totalStakedByAddress[market.winningOutcome][msg.sender] > 0, "Hit");
+        require(tokensOwned > 0, "Hit 2");
+        uint invalid = market.tokenIndex;
+        uint no = market.tokenIndex + 1;
+        uint yes = market.tokenIndex + 2;
         // Invalid
         if (market.winningOutcome == invalid) {
             totalLost = market.totalStaked[no] + market.totalStaked[yes];
@@ -246,11 +252,12 @@ contract Monitor is ReentrancyGuard {
         if (market.winningOutcome == yes) {
             totalLost = market.totalStaked[no] + market.totalStaked[invalid];
         }
-        /// @notice User's computed percent of total winning tokens.
-        uint percentWon = tokensOwned / market.totalMinted[market.winningOutcome];
+        /// @notice User's computed earnings based on percent of total winning tokens.
+        uint earnings = bondingCurve.mulDiv(totalLost, tokensOwned, market.totalMinted[market.winningOutcome]);
+        require(earnings > 0, "Earnings is zero.");
         /// @notice User wins back stake + computed percent of the prize pool.
-        uint owedVision = userStake + (percentWon * totalLost);
-        realityMarketRegistry[index].totalStakedByAddress[market.winningOutcome][msg.sender] = 0;
+        uint owedVision = userStake + earnings;
+        market.totalStakedByAddress[market.winningOutcome][msg.sender] = 0;
         foresightTokens.burn(msg.sender, foresightId, tokensOwned);
         vision.transfer(address(this), owedVision);
         emit ForesightBurned(index, foresightId, tokensOwned, owedVision, msg.sender);

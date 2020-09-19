@@ -100,4 +100,91 @@ contract BancorBondingCurve is Power {
         uint256 newBalance = _reserveBalance << precision;
         return oldBalance.sub(newBalance).div(result);
     }
+
+    /// @notice Implementation of Safe x * (y / z).
+    /// @dev See https://medium.com/coinmonks/math-in-solidity-part-3-percents-and-proportions-4db014e080b1
+    /// @param x First number to multiply.
+    /// @param y First part of percent.
+    /// @param z Second part of percent.
+    /// @return Returns computation of x * (y / z)
+    function mulDiv (uint x, uint y, uint z)
+        public view returns (uint)
+    {
+        (uint j, uint h) = fullMul(x, y);
+        return fullDiv(j, h, z);
+    }
+
+    /// @notice Multiplication. Necessary for mulDiv algorithm.
+    /// @param x First number to multiply.
+    /// @param y Second number to multiply.
+    /// @return j Two part unsigned integers to return.
+    /// @return h Two part unsigned integers to return.
+    function fullMul (uint x, uint y)
+        public view returns (uint j, uint h)
+    {
+        uint xl = uint128(x);
+        uint xh = x >> 128;
+        uint yl = uint128(y);
+        uint yh = y >> 128;
+        uint xlyl = xl * yl;
+        uint xlyh = xl * yh;
+        uint xhyl = xh * yl;
+        uint xhyh = xh * yh;
+
+        uint ll = uint128(xlyl);
+        uint lh = (xlyl >> 128) + uint128(xlyh) + uint128(xhyl);
+        uint hl = uint128(xhyh) + (xlyh >> 128) + (xhyl >> 128);
+        uint hh = (xhyh >> 128);
+        j = ll + (lh << 128);
+        h = (lh >> 128) + hl + (hh << 128);
+    }
+
+    /// @notice Division of two part number j h by z. Necessary for mulDiv algorithm.
+    /// @param j Part 1.
+    /// @param h Part 2.
+    /// @param z Second number to divide by.
+    /// @return r Unsigned integer to return.
+    function fullDiv (uint j, uint h, uint z)
+        public view returns (uint r)
+    {
+        require(h < z);
+        uint zShift = mostSignificantBit(z);
+        uint shiftedZ = z;
+        if (zShift <= 127) zShift = 0;
+        else {
+            zShift -= 127;
+            shiftedZ = (shiftedZ - 1 >> zShift) + 1;
+        }
+        while (h > 0) {
+            uint lShift = mostSignificantBit(h) + 1;
+            uint hShift = 256 - lShift;
+            uint e = ((h << hShift) + (j >> lShift)) / shiftedZ;
+            if (lShift > zShift) {
+                e <<= (lShift - zShift);
+            } else {
+                e >>= (zShift - lShift);
+            }
+            r += e;
+            (uint tl, uint th) = fullMul(e, z);
+            h -= th;
+            if (tl > j) h -= 1;
+            j -= tl;
+        }
+        r += j / z;
+    }
+
+    /// @notice Generates the most significant bit in given number x.
+    /// @param x Number to retrieve bit from.
+    /// @return r Most significant bit.
+    function mostSignificantBit(uint x) public view returns (uint r) {
+        require(x > 0);
+        if (x >= 2**128) { x >>= 128; r += 128; }
+        if (x >= 2**64) { x >>= 64; r += 64; }
+        if (x >= 2**32) { x >>= 32; r += 32; }
+        if (x >= 2**16) { x >>= 16; r += 16; }
+        if (x >= 2**8) { x >>= 8; r += 8; }
+        if (x >= 2**4) { x >>= 4; r += 4; }
+        if (x >= 2**2) { x >>= 2; r += 2; }
+        if (x >= 2**1) { x >>= 1; r += 1; }
+    }
 }

@@ -228,11 +228,11 @@ describe('Monitor', function() {
       });
       it('should allow first winning tokens to be withdrawn', async function() {
         const trans = await this.monitor.withdrawWinningStake(this.marketIndex, this.yes, { from: account1 });
-        expect(trans.receipt.logs[0].args.visionOwed.gt(this.expectedCostYes1)).to.be.ok;
+        expect(trans.receipt.logs[0].args.visionOwed.gt(this.foresightStakeAmount)).to.be.ok;
       });
       it('should allow second winning tokens to be withdrawn', async function() {
         const trans = await this.monitor.withdrawWinningStake(this.marketIndex, this.yes, { from: account2 });
-        expect(trans.receipt.logs[0].args.visionOwed.gt(this.expectedCostYes2)).to.be.ok;
+        expect(trans.receipt.logs[0].args.visionOwed.gt(this.foresightStakeAmount)).to.be.ok;
       });
     });
   });

@@ -35,9 +35,11 @@ contract BancorBondingCurve is Power {
         uint32 _reserveRatio,
         uint256 _depositAmount) public view returns (uint256)
     {
-        // validate input
-        require(_supply > 0 && _reserveBalance > 0 && _reserveRatio > 0 && _reserveRatio <= MAX_RESERVE_RATIO);
-         // special case for 0 deposit amount
+
+        require(_supply > 0, "Supply is less than zero.");
+        require(_reserveBalance > 0, "Reserve balance is less than zero.");
+        require(_reserveRatio > 0, "Reserve ratio is less than zero.");
+        require(_reserveRatio <= MAX_RESERVE_RATIO, "Reserve ratio greater than max.");
         if (_depositAmount == 0) {
             return 0;
         }

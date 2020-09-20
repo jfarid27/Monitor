@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Unlicense
+// Taken from https://yos.io/2018/11/10/bonding-curves/
 
 pragma solidity 0.6.12;
 import "@openzeppelin/contracts/math/SafeMath.sol";

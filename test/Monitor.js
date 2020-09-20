@@ -13,14 +13,16 @@ describe('Monitor', function() {
     const erc1820 = await singletons.ERC1820Registry(account1);
     const Monitor = contract.fromArtifact('Monitor');
     const Vision = contract.fromArtifact('Vision');
+    const VisionVault = contract.fromArtifact('VisionVault');
     const BancorBondingCurve = contract.fromArtifact('BancorBondingCurve');
     const MockWeth = contract.fromArtifact('MockWeth');
     this.startingWeth = (new BN('15000'));
     this.bondingCurve = await BancorBondingCurve.new({ from: account1 });
     this.weth = await MockWeth.new(this.startingWeth, { from: account1 });
-    this.monitor = await Monitor.new(this.weth.address, this.bondingCurve.address, { from: account1, gasLimit: 12000000 });
-    await this.monitor.initialize({ from: account1 });
-    const visionAddress = await this.monitor.vision.call();
+    this.monitor = await Monitor.new({ from: account1, gasLimit: 12000000 });
+    this.visionVault = await VisionVault.new(this.weth.address, this.monitor.address, { from: account1, gasLimit: 12000000 });
+    const visionAddress = await this.visionVault.visionAddress.call();
+    await this.monitor.initialize(visionAddress, this.bondingCurve.address, { from: account1 });
     this.vision = await Vision.at(visionAddress);
 
     /**
@@ -30,12 +32,12 @@ describe('Monitor', function() {
       this.stakeAmount = this.startingWeth.div(new BN('3'));
       await this.weth.transfer(account2, this.stakeAmount, { from: account1 });
       await this.weth.transfer(account3, this.stakeAmount, { from: account1 });
-      await this.weth.approve(this.monitor.address, this.stakeAmount, { from: account1 });
-      await this.weth.approve(this.monitor.address, this.stakeAmount, { from: account2 });
-      await this.weth.approve(this.monitor.address, this.stakeAmount, { from: account3 });
-      const trans1 = await this.monitor.mintVision(this.stakeAmount, { from: account1 });
-      const trans2 = await this.monitor.mintVision(this.stakeAmount, { from: account2 });
-      const trans3 = await this.monitor.mintVision(this.stakeAmount, { from: account3 });
+      await this.weth.approve(this.visionVault.address, this.stakeAmount, { from: account1 });
+      await this.weth.approve(this.visionVault.address, this.stakeAmount, { from: account2 });
+      await this.weth.approve(this.visionVault.address, this.stakeAmount, { from: account3 });
+      const trans1 = await this.visionVault.mintVision(this.stakeAmount, { from: account1 });
+      const trans2 = await this.visionVault.mintVision(this.stakeAmount, { from: account2 });
+      const trans3 = await this.visionVault.mintVision(this.stakeAmount, { from: account3 });
       return [trans1, trans2, trans3];
     };
 
@@ -44,8 +46,8 @@ describe('Monitor', function() {
      */
     this.withdrawVision = async function() {
       this.withdrawAmount = this.stakeAmount;
-      await this.vision.approve(this.monitor.address, this.withdrawAmount, { from: account1 });
-      const trans1 = await this.monitor.burnVision(this.withdrawAmount, { from: account1 });
+      //await this.vision.approve(this.visionVault.address, this.withdrawAmount, { from: account1 });
+      const trans1 = await this.visionVault.burnVision(this.withdrawAmount, { from: account1 });
       return [trans1];
     };
 

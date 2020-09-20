@@ -1,0 +1,3176 @@
+{
+  "fileName": "VisionVault.sol",
+  "contractName": "VisionVault",
+  "source": "// SPDX-License-Identifier: Unlicense\n\npragma solidity 0.6.12;\n\nimport \"@openzeppelin/contracts/utils/ReentrancyGuard.sol\";\nimport \"@openzeppelin/contracts/token/ERC20/IERC20.sol\";\nimport \"@openzeppelin/contracts/math/SafeMath.sol\";\nimport \"./Vision.sol\";\n\n\n/// @notice Controlling bonding curve for vision token.\ncontract VisionVault is ReentrancyGuard {\n    using SafeMath for uint;\n    /// @notice Vision ERC777 token contract.\n    Vision public vision;\n    /// @notice Address Vision ERC777 token contract.\n    address public visionAddress;\n    /// @notice Stake token for Vision pool.\n    IERC20 public stakeToken;\n    /// @notice Total supply of Vision. Note this needs to start with 1 for minting.\n    uint public mintedVision = 1;\n    /// @notice Total StakeToken in Vision Pool. Note this needs to start with 1 for minting.\n    uint public totalStakeInVisionVault = 1;\n    /// @notice Initializiation boolean.\n    bool public initialized;\n\n    constructor(address _stakeTokenAddress, address _monitorAddress) public {\n        stakeToken = IERC20(_stakeTokenAddress);\n        vision = new Vision();\n        visionAddress = address(vision);\n    }\n\n    /// @notice Event capturing minted vision, cost, and address.\n    event VisionMinted(uint minted, uint cost, address addr);\n\n    /// @notice Mints new Vision based on the current price, using the amount deposited.\n    /// @param amountDeposited Amount of stake to deposit.\n    /// @dev Note you must supply the amount of Stake Token to produce new Vision.\n    /// @dev Must approve stake token.\n    function mintVision(uint amountDeposited) public nonReentrant {\n        require(totalStakeInVisionVault != 0, \"totalStakeInVisionVault should not be 0.\");\n        uint visionRate = mintedVision.div(totalStakeInVisionVault);\n        uint visionToMint = visionRate.mul(amountDeposited);\n        mintedVision = mintedVision.add(visionToMint);\n        totalStakeInVisionVault = totalStakeInVisionVault.add(amountDeposited);\n        vision.mint(msg.sender, visionToMint);\n        stakeToken.transferFrom(msg.sender, address(this), amountDeposited);\n        emit VisionMinted(visionToMint, amountDeposited, msg.sender);\n    }\n\n    /// @notice Event capturing burned vision, cost, and address.\n    event VisionBurned(uint burned, uint cost, address addr);\n\n    /// @notice Burns Vision based on the current price and returns allocated stake.\n    /// @param visionToBurn Amount of vision to burn.\n    /// @dev Invariant - totalStakeInVisionVault cannot be less than 1.\n    /// @dev Invariant - mintedVision cannot be less than 1.\n    /// @dev Note vision does not need to be approved to be burnt.\n    function burnVision(uint visionToBurn) public nonReentrant {\n        uint stakeRate = totalStakeInVisionVault.div(mintedVision);\n        uint stakeToReturn = stakeRate.mul(visionToBurn);\n        mintedVision = mintedVision.sub(visionToBurn);\n        totalStakeInVisionVault = totalStakeInVisionVault.sub(stakeToReturn);\n        require(totalStakeInVisionVault > 1, \"Total Stake In Vision Vault must be greater than 1.\");\n        require(mintedVision > 1, \"Minted Vision must be greater than 1.\");\n        vision.burn(msg.sender, visionToBurn);\n        stakeToken.transfer(msg.sender, stakeToReturn);\n        emit VisionBurned(visionToBurn, stakeToReturn, msg.sender);\n    }\n\n}\n",
+  "sourcePath": "contracts/VisionVault.sol",
+  "sourceMap": "314:3013:24:-:0;;;736:1;709:28;;875:1;837:39;;953:200;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;953:200:24;;;;;;;1628:1:17;1743:7;:22;1035:10:24;:39;;-1:-1:-1;;;;;;1035:39:24;-1:-1:-1;;;;;1035:39:24;;;;;953:200;1093:12;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;1084:6:24;:21;;-1:-1:-1;;;;;;1084:21:24;;;-1:-1:-1;;;;;1084:21:24;;;;;;;;1115:13;:31;;1139:6;;;;1115:31;;;;;-1:-1:-1;314:3013:24;;-1:-1:-1;314:3013:24;;;;;;;;;:::o;:::-;;;;;;;",
+  "deployedSourceMap": "314:3013:24:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;435:20;;;:::i;:::-;;;;-1:-1:-1;;;;;435:20:24;;;;;;;;;;;;;;2651:673;;;;;;;;;;;;;;;;-1:-1:-1;2651:673:24;;:::i;:::-;;923:23;;;:::i;:::-;;;;;;;;;;;;;;;;;;837:39;;;:::i;:::-;;;;;;;;;;;;;;;;709:28;;;:::i;594:24::-;;;:::i;515:28::-;;;:::i;1558:619::-;;;;;;;;;;;;;;;;-1:-1:-1;1558:619:24;;:::i;435:20::-;;;-1:-1:-1;;;;;435:20:24;;:::o;2651:673::-;1671:1:17;2260:7;;:19;;2252:63;;;;;-1:-1:-1;;;2252:63:17;;;;;;;;;;;;-1:-1:-1;;;;;;;;;;;2252:63:17;;;;;;;;;;;;;;;1671:1;2390:7;:18;;;2765:12:24::1;::::0;2737:23:::1;::::0;:41:::1;::::0;:27:::1;:41::i;:::-;2720:58:::0;-1:-1:-1;2788:18:24::1;2809:27;2720:58:::0;2823:12;2809:13:::1;:27::i;:::-;2861:12;::::0;2788:48;;-1:-1:-1;2861:30:24::1;::::0;2878:12;2861:16:::1;:30::i;:::-;2846:12;:45:::0;2927:23:::1;::::0;:42:::1;::::0;2955:13;2927:27:::1;:42::i;:::-;2901:23;:68:::0;;;3013:1:::1;-1:-1:-1::0;2979:91:24::1;;;;-1:-1:-1::0;;;2979:91:24::1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3103:1;3088:12;;:16;3080:66;;;;-1:-1:-1::0;;;3080:66:24::1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3156:6;::::0;:37:::1;::::0;;-1:-1:-1;;;3156:37:24;;3168:10:::1;3156:37;::::0;::::1;::::0;;;;;;;;;-1:-1:-1;;;;;3156:6:24;;::::1;::::0;:11:::1;::::0;:37;;;;;:6:::1;::::0;:37;;;;;;;;:6;;:37;::::1;;::::0;::::1;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;-1:-1:-1::0;;3203:10:24::1;::::0;:46:::1;::::0;;-1:-1:-1;;;3203:46:24;;3223:10:::1;3203:46;::::0;::::1;::::0;;;;;;;;;-1:-1:-1;;;;;3203:10:24;;::::1;::::0;-1:-1:-1;3203:19:24::1;::::0;-1:-1:-1;3203:46:24;;;;;::::1;::::0;;;;;;;;;:10:::1;::::0;:46;::::1;;::::0;::::1;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;;;;;;;;::::0;::::1;;-1:-1:-1::0;;3264:53:24::1;::::0;;;;;3203:46:::1;3264:53:::0;::::1;::::0;;;3306:10:::1;3264:53:::0;;;;;;::::1;::::0;;;;;;;::::1;-1:-1:-1::0;;1628:1:17;2563:7;:22;-1:-1:-1;2651:673:24:o;923:23::-;;;;;;:::o;837:39::-;;;;:::o;709:28::-;;;;:::o;594:24::-;;;-1:-1:-1;;;;;594:24:24;;:::o;515:28::-;;;-1:-1:-1;;;;;515:28:24;;:::o;1558:619::-;1671:1:17;2260:7;;:19;;2252:63;;;;;-1:-1:-1;;;2252:63:17;;;;;;;;;;;;-1:-1:-1;;;;;;;;;;;2252:63:17;;;;;;;;;;;;;;;1671:1;2390:7;:18;1638:23:24::1;::::0;1630:81:::1;;;;-1:-1:-1::0;;;1630:81:24::1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1721:15;1739:41;1756:23;;1739:12;;:16;;:41;;;;:::i;:::-;1721:59:::0;-1:-1:-1;1790:17:24::1;1810:31;1721:59:::0;1825:15;1810:14:::1;:31::i;:::-;1866:12;::::0;1790:51;;-1:-1:-1;1866:30:24::1;::::0;1790:51;1866:16:::1;:30::i;:::-;1851:12;:45:::0;1932:23:::1;::::0;:44:::1;::::0;1960:15;1932:27:::1;:44::i;:::-;1906:23;:70:::0;1986:6:::1;::::0;:37:::1;::::0;;-1:-1:-1;;;1986:37:24;;1998:10:::1;1986:37;::::0;::::1;::::0;;;;;;;;;-1:-1:-1;;;;;1986:6:24;;::::1;::::0;:11:::1;::::0;:37;;;;;:6:::1;::::0;:37;;;;;;;;:6;;:37;::::1;;::::0;::::1;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;-1:-1:-1::0;;2033:10:24::1;::::0;:67:::1;::::0;;-1:-1:-1;;;2033:67:24;;2057:10:::1;2033:67;::::0;::::1;::::0;2077:4:::1;2033:67:::0;;;;;;;;;;;;-1:-1:-1;;;;;2033:10:24;;::::1;::::0;-1:-1:-1;2033:23:24::1;::::0;-1:-1:-1;2033:67:24;;;;;::::1;::::0;;;;;;;;;:10:::1;::::0;:67;::::1;;::::0;::::1;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;;;;;;;;::::0;::::1;;-1:-1:-1::0;;2115:55:24::1;::::0;;;;;2033:67:::1;2115:55:::0;::::1;::::0;;;2159:10:::1;2115:55:::0;;;;;;::::1;::::0;;;;;;;::::1;-1:-1:-1::0;;1628:1:17;2563:7;:22;-1:-1:-1;1558:619:24:o;3101:130:5:-;3159:7;3185:39;3189:1;3192;3185:39;;;;;;;;;;;;;-1:-1:-1;;;3185:39:5;;;:3;:39::i;:::-;3178:46;;3101:130;;;;;:::o;2180:459::-;2238:7;2479:6;2475:45;;-1:-1:-1;2508:1:5;2501:8;;2475:45;2542:5;;;2546:1;2542;:5;:1;2565:5;;;;;:10;2557:56;;;;-1:-1:-1;;;2557:56:5;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1321:134;1379:7;1405:43;1409:1;1412;1405:43;;;;;;;;;;;;;;;;;:3;:43::i;874:176::-;932:7;963:5;;;986:6;;;;978:46;;;;;-1:-1:-1;;;978:46:5;;;;;;;;;;;;-1:-1:-1;;;978:46:5;;;;;;;;;;;;;;3713:272;3799:7;3833:12;3826:5;3818:28;;;;-1:-1:-1;;;3818:28:5;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3856:9;3872:1;3868;:5;;;;;;;3713:272;-1:-1:-1;;;;;3713:272:5:o;1746:187::-;1832:7;1867:12;1859:6;;;;1851:29;;;;-1:-1:-1;;;1851:29:5;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;1902:5:5;;;1746:187::o",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_stakeTokenAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_monitorAddress",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "burned",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "cost",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "VisionBurned",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "minted",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "cost",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "VisionMinted",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "visionToBurn",
+          "type": "uint256"
+        }
+      ],
+      "name": "burnVision",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "initialized",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amountDeposited",
+          "type": "uint256"
+        }
+      ],
+      "name": "mintVision",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "mintedVision",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "stakeToken",
+      "outputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalStakeInVisionVault",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "vision",
+      "outputs": [
+        {
+          "internalType": "contract Vision",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "visionAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "ast": {
+    "absolutePath": "contracts/VisionVault.sol",
+    "exportedSymbols": {
+      "VisionVault": [
+        7982
+      ]
+    },
+    "id": 7983,
+    "license": "Unlicense",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 7761,
+        "literals": [
+          "solidity",
+          "0.6",
+          ".12"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "39:23:24"
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
+        "file": "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
+        "id": 7762,
+        "nodeType": "ImportDirective",
+        "scope": 7983,
+        "sourceUnit": 3814,
+        "src": "64:59:24",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "file": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "id": 7763,
+        "nodeType": "ImportDirective",
+        "scope": 7983,
+        "sourceUnit": 2271,
+        "src": "124:56:24",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/math/SafeMath.sol",
+        "file": "@openzeppelin/contracts/math/SafeMath.sol",
+        "id": 7764,
+        "nodeType": "ImportDirective",
+        "scope": 7983,
+        "sourceUnit": 487,
+        "src": "181:51:24",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "contracts/Vision.sol",
+        "file": "./Vision.sol",
+        "id": 7765,
+        "nodeType": "ImportDirective",
+        "scope": 7983,
+        "sourceUnit": 7760,
+        "src": "233:22:24",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 7767,
+              "name": "ReentrancyGuard",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3813,
+              "src": "338:15:24",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ReentrancyGuard_$3813",
+                "typeString": "contract ReentrancyGuard"
+              }
+            },
+            "id": 7768,
+            "nodeType": "InheritanceSpecifier",
+            "src": "338:15:24"
+          }
+        ],
+        "contractDependencies": [
+          3813,
+          7759
+        ],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 7766,
+          "nodeType": "StructuredDocumentation",
+          "src": "258:56:24",
+          "text": "@notice Controlling bonding curve for vision token."
+        },
+        "fullyImplemented": true,
+        "id": 7982,
+        "linearizedBaseContracts": [
+          7982,
+          3813
+        ],
+        "name": "VisionVault",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 7771,
+            "libraryName": {
+              "contractScope": null,
+              "id": 7769,
+              "name": "SafeMath",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 486,
+              "src": "366:8:24",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_SafeMath_$486",
+                "typeString": "library SafeMath"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "360:24:24",
+            "typeName": {
+              "id": 7770,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "379:4:24",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            }
+          },
+          {
+            "constant": false,
+            "documentation": {
+              "id": 7772,
+              "nodeType": "StructuredDocumentation",
+              "src": "389:41:24",
+              "text": "@notice Vision ERC777 token contract."
+            },
+            "functionSelector": "07062cf2",
+            "id": 7774,
+            "mutability": "mutable",
+            "name": "vision",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 7982,
+            "src": "435:20:24",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_Vision_$7759",
+              "typeString": "contract Vision"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 7773,
+              "name": "Vision",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 7759,
+              "src": "435:6:24",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Vision_$7759",
+                "typeString": "contract Vision"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "documentation": {
+              "id": 7775,
+              "nodeType": "StructuredDocumentation",
+              "src": "461:49:24",
+              "text": "@notice Address Vision ERC777 token contract."
+            },
+            "functionSelector": "6279cb27",
+            "id": 7777,
+            "mutability": "mutable",
+            "name": "visionAddress",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 7982,
+            "src": "515:28:24",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 7776,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "515:7:24",
+              "stateMutability": "nonpayable",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "documentation": {
+              "id": 7778,
+              "nodeType": "StructuredDocumentation",
+              "src": "549:40:24",
+              "text": "@notice Stake token for Vision pool."
+            },
+            "functionSelector": "51ed6a30",
+            "id": 7780,
+            "mutability": "mutable",
+            "name": "stakeToken",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 7982,
+            "src": "594:24:24",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_IERC20_$2270",
+              "typeString": "contract IERC20"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 7779,
+              "name": "IERC20",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2270,
+              "src": "594:6:24",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_IERC20_$2270",
+                "typeString": "contract IERC20"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "documentation": {
+              "id": 7781,
+              "nodeType": "StructuredDocumentation",
+              "src": "624:80:24",
+              "text": "@notice Total supply of Vision. Note this needs to start with 1 for minting."
+            },
+            "functionSelector": "49232b85",
+            "id": 7784,
+            "mutability": "mutable",
+            "name": "mintedVision",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 7982,
+            "src": "709:28:24",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 7782,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "709:4:24",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "31",
+              "id": 7783,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "number",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "736:1:24",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_rational_1_by_1",
+                "typeString": "int_const 1"
+              },
+              "value": "1"
+            },
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "documentation": {
+              "id": 7785,
+              "nodeType": "StructuredDocumentation",
+              "src": "743:89:24",
+              "text": "@notice Total StakeToken in Vision Pool. Note this needs to start with 1 for minting."
+            },
+            "functionSelector": "40f30f4a",
+            "id": 7788,
+            "mutability": "mutable",
+            "name": "totalStakeInVisionVault",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 7982,
+            "src": "837:39:24",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 7786,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "837:4:24",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "31",
+              "id": 7787,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "number",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "875:1:24",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_rational_1_by_1",
+                "typeString": "int_const 1"
+              },
+              "value": "1"
+            },
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "documentation": {
+              "id": 7789,
+              "nodeType": "StructuredDocumentation",
+              "src": "882:36:24",
+              "text": "@notice Initializiation boolean."
+            },
+            "functionSelector": "158ef93e",
+            "id": 7791,
+            "mutability": "mutable",
+            "name": "initialized",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 7982,
+            "src": "923:23:24",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_bool",
+              "typeString": "bool"
+            },
+            "typeName": {
+              "id": 7790,
+              "name": "bool",
+              "nodeType": "ElementaryTypeName",
+              "src": "923:4:24",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bool",
+                "typeString": "bool"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 7817,
+              "nodeType": "Block",
+              "src": "1025:128:24",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 7802,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 7798,
+                      "name": "stakeToken",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7780,
+                      "src": "1035:10:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_IERC20_$2270",
+                        "typeString": "contract IERC20"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 7800,
+                          "name": "_stakeTokenAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7793,
+                          "src": "1055:18:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 7799,
+                        "name": "IERC20",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 2270,
+                        "src": "1048:6:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_IERC20_$2270_$",
+                          "typeString": "type(contract IERC20)"
+                        }
+                      },
+                      "id": 7801,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1048:26:24",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_IERC20_$2270",
+                        "typeString": "contract IERC20"
+                      }
+                    },
+                    "src": "1035:39:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IERC20_$2270",
+                      "typeString": "contract IERC20"
+                    }
+                  },
+                  "id": 7803,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1035:39:24"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 7808,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 7804,
+                      "name": "vision",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7774,
+                      "src": "1084:6:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_Vision_$7759",
+                        "typeString": "contract Vision"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [],
+                      "expression": {
+                        "argumentTypes": [],
+                        "id": 7806,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "NewExpression",
+                        "src": "1093:10:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_creation_nonpayable$__$returns$_t_contract$_Vision_$7759_$",
+                          "typeString": "function () returns (contract Vision)"
+                        },
+                        "typeName": {
+                          "contractScope": null,
+                          "id": 7805,
+                          "name": "Vision",
+                          "nodeType": "UserDefinedTypeName",
+                          "referencedDeclaration": 7759,
+                          "src": "1097:6:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_Vision_$7759",
+                            "typeString": "contract Vision"
+                          }
+                        }
+                      },
+                      "id": 7807,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1093:12:24",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_Vision_$7759",
+                        "typeString": "contract Vision"
+                      }
+                    },
+                    "src": "1084:21:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_Vision_$7759",
+                      "typeString": "contract Vision"
+                    }
+                  },
+                  "id": 7809,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1084:21:24"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 7815,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 7810,
+                      "name": "visionAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7777,
+                      "src": "1115:13:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 7813,
+                          "name": "vision",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7774,
+                          "src": "1139:6:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_Vision_$7759",
+                            "typeString": "contract Vision"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_contract$_Vision_$7759",
+                            "typeString": "contract Vision"
+                          }
+                        ],
+                        "id": 7812,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "lValueRequested": false,
+                        "nodeType": "ElementaryTypeNameExpression",
+                        "src": "1131:7:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_address_$",
+                          "typeString": "type(address)"
+                        },
+                        "typeName": {
+                          "id": 7811,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "1131:7:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": null,
+                            "typeString": null
+                          }
+                        }
+                      },
+                      "id": 7814,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1131:15:24",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1115:31:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 7816,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1115:31:24"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 7818,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 7796,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7793,
+                  "mutability": "mutable",
+                  "name": "_stakeTokenAddress",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 7818,
+                  "src": "965:26:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7792,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "965:7:24",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 7795,
+                  "mutability": "mutable",
+                  "name": "_monitorAddress",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 7818,
+                  "src": "993:23:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7794,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "993:7:24",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "964:53:24"
+            },
+            "returnParameters": {
+              "id": 7797,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1025:0:24"
+            },
+            "scope": 7982,
+            "src": "953:200:24",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "anonymous": false,
+            "documentation": {
+              "id": 7819,
+              "nodeType": "StructuredDocumentation",
+              "src": "1159:61:24",
+              "text": "@notice Event capturing minted vision, cost, and address."
+            },
+            "id": 7827,
+            "name": "VisionMinted",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 7826,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7821,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "minted",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 7827,
+                  "src": "1244:11:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 7820,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1244:4:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 7823,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "cost",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 7827,
+                  "src": "1257:9:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 7822,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1257:4:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 7825,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "addr",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 7827,
+                  "src": "1268:12:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7824,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1268:7:24",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1243:38:24"
+            },
+            "src": "1225:57:24"
+          },
+          {
+            "body": {
+              "id": 7897,
+              "nodeType": "Block",
+              "src": "1620:557:24",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 7838,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 7836,
+                          "name": "totalStakeInVisionVault",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7788,
+                          "src": "1638:23:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "hexValue": "30",
+                          "id": 7837,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1665:1:24",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_rational_0_by_1",
+                            "typeString": "int_const 0"
+                          },
+                          "value": "0"
+                        },
+                        "src": "1638:28:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "746f74616c5374616b65496e566973696f6e5661756c742073686f756c64206e6f7420626520302e",
+                        "id": 7839,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1668:42:24",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_4fb04dc24561c95f59fdeed2e8f8879e50ee9d8b6096b4c3d5460a8e9cbdaad0",
+                          "typeString": "literal_string \"totalStakeInVisionVault should not be 0.\""
+                        },
+                        "value": "totalStakeInVisionVault should not be 0."
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_4fb04dc24561c95f59fdeed2e8f8879e50ee9d8b6096b4c3d5460a8e9cbdaad0",
+                          "typeString": "literal_string \"totalStakeInVisionVault should not be 0.\""
+                        }
+                      ],
+                      "id": 7835,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        -18,
+                        -18
+                      ],
+                      "referencedDeclaration": -18,
+                      "src": "1630:7:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 7840,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1630:81:24",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 7841,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1630:81:24"
+                },
+                {
+                  "assignments": [
+                    7843
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 7843,
+                      "mutability": "mutable",
+                      "name": "visionRate",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 7897,
+                      "src": "1721:15:24",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 7842,
+                        "name": "uint",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "1721:4:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 7848,
+                  "initialValue": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 7846,
+                        "name": "totalStakeInVisionVault",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7788,
+                        "src": "1756:23:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 7844,
+                        "name": "mintedVision",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7784,
+                        "src": "1739:12:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "id": 7845,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "div",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 416,
+                      "src": "1739:16:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
+                        "typeString": "function (uint256,uint256) pure returns (uint256)"
+                      }
+                    },
+                    "id": 7847,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1739:41:24",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1721:59:24"
+                },
+                {
+                  "assignments": [
+                    7850
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 7850,
+                      "mutability": "mutable",
+                      "name": "visionToMint",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 7897,
+                      "src": "1790:17:24",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 7849,
+                        "name": "uint",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "1790:4:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 7855,
+                  "initialValue": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 7853,
+                        "name": "amountDeposited",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7830,
+                        "src": "1825:15:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 7851,
+                        "name": "visionRate",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7843,
+                        "src": "1810:10:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "id": 7852,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "mul",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 399,
+                      "src": "1810:14:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
+                        "typeString": "function (uint256,uint256) pure returns (uint256)"
+                      }
+                    },
+                    "id": 7854,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1810:31:24",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1790:51:24"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 7861,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 7856,
+                      "name": "mintedVision",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7784,
+                      "src": "1851:12:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 7859,
+                          "name": "visionToMint",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7850,
+                          "src": "1883:12:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 7857,
+                          "name": "mintedVision",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7784,
+                          "src": "1866:12:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "id": 7858,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "add",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 319,
+                        "src": "1866:16:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
+                          "typeString": "function (uint256,uint256) pure returns (uint256)"
+                        }
+                      },
+                      "id": 7860,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1866:30:24",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1851:45:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 7862,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1851:45:24"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 7868,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 7863,
+                      "name": "totalStakeInVisionVault",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7788,
+                      "src": "1906:23:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 7866,
+                          "name": "amountDeposited",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7830,
+                          "src": "1960:15:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 7864,
+                          "name": "totalStakeInVisionVault",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7788,
+                          "src": "1932:23:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "id": 7865,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "add",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 319,
+                        "src": "1932:27:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
+                          "typeString": "function (uint256,uint256) pure returns (uint256)"
+                        }
+                      },
+                      "id": 7867,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1932:44:24",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1906:70:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 7869,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1906:70:24"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 7873,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": -15,
+                          "src": "1998:3:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 7874,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": null,
+                        "src": "1998:10:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 7875,
+                        "name": "visionToMint",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7850,
+                        "src": "2010:12:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 7870,
+                        "name": "vision",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7774,
+                        "src": "1986:6:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Vision_$7759",
+                          "typeString": "contract Vision"
+                        }
+                      },
+                      "id": 7872,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "mint",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 7738,
+                      "src": "1986:11:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256) external"
+                      }
+                    },
+                    "id": 7876,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1986:37:24",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 7877,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1986:37:24"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 7881,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": -15,
+                          "src": "2057:3:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 7882,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": null,
+                        "src": "2057:10:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 7885,
+                            "name": "this",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": -28,
+                            "src": "2077:4:24",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_contract$_VisionVault_$7982",
+                              "typeString": "contract VisionVault"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_contract$_VisionVault_$7982",
+                              "typeString": "contract VisionVault"
+                            }
+                          ],
+                          "id": 7884,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "nodeType": "ElementaryTypeNameExpression",
+                          "src": "2069:7:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_address_$",
+                            "typeString": "type(address)"
+                          },
+                          "typeName": {
+                            "id": 7883,
+                            "name": "address",
+                            "nodeType": "ElementaryTypeName",
+                            "src": "2069:7:24",
+                            "typeDescriptions": {
+                              "typeIdentifier": null,
+                              "typeString": null
+                            }
+                          }
+                        },
+                        "id": 7886,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "2069:13:24",
+                        "tryCall": false,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 7887,
+                        "name": "amountDeposited",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7830,
+                        "src": "2084:15:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 7878,
+                        "name": "stakeToken",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7780,
+                        "src": "2033:10:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_IERC20_$2270",
+                          "typeString": "contract IERC20"
+                        }
+                      },
+                      "id": 7880,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "transferFrom",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2251,
+                      "src": "2033:23:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$_t_bool_$",
+                        "typeString": "function (address,address,uint256) external returns (bool)"
+                      }
+                    },
+                    "id": 7888,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2033:67:24",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 7889,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2033:67:24"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 7891,
+                        "name": "visionToMint",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7850,
+                        "src": "2128:12:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 7892,
+                        "name": "amountDeposited",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7830,
+                        "src": "2142:15:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 7893,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": -15,
+                          "src": "2159:3:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 7894,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": null,
+                        "src": "2159:10:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      ],
+                      "id": 7890,
+                      "name": "VisionMinted",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7827,
+                      "src": "2115:12:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_uint256_$_t_address_$returns$__$",
+                        "typeString": "function (uint256,uint256,address)"
+                      }
+                    },
+                    "id": 7895,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2115:55:24",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 7896,
+                  "nodeType": "EmitStatement",
+                  "src": "2110:60:24"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 7828,
+              "nodeType": "StructuredDocumentation",
+              "src": "1288:265:24",
+              "text": "@notice Mints new Vision based on the current price, using the amount deposited.\n @param amountDeposited Amount of stake to deposit.\n @dev Note you must supply the amount of Stake Token to produce new Vision.\n @dev Must approve stake token."
+            },
+            "functionSelector": "73dd289d",
+            "id": 7898,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 7833,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 7832,
+                  "name": "nonReentrant",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 3812,
+                  "src": "1607:12:24",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1607:12:24"
+              }
+            ],
+            "name": "mintVision",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 7831,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7830,
+                  "mutability": "mutable",
+                  "name": "amountDeposited",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 7898,
+                  "src": "1578:20:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 7829,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1578:4:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1577:22:24"
+            },
+            "returnParameters": {
+              "id": 7834,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1620:0:24"
+            },
+            "scope": 7982,
+            "src": "1558:619:24",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "anonymous": false,
+            "documentation": {
+              "id": 7899,
+              "nodeType": "StructuredDocumentation",
+              "src": "2183:61:24",
+              "text": "@notice Event capturing burned vision, cost, and address."
+            },
+            "id": 7907,
+            "name": "VisionBurned",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 7906,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7901,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "burned",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 7907,
+                  "src": "2268:11:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 7900,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2268:4:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 7903,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "cost",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 7907,
+                  "src": "2281:9:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 7902,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2281:4:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 7905,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "addr",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 7907,
+                  "src": "2292:12:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7904,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2292:7:24",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2267:38:24"
+            },
+            "src": "2249:57:24"
+          },
+          {
+            "body": {
+              "id": 7980,
+              "nodeType": "Block",
+              "src": "2710:614:24",
+              "statements": [
+                {
+                  "assignments": [
+                    7916
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 7916,
+                      "mutability": "mutable",
+                      "name": "stakeRate",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 7980,
+                      "src": "2720:14:24",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 7915,
+                        "name": "uint",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "2720:4:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 7921,
+                  "initialValue": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 7919,
+                        "name": "mintedVision",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7784,
+                        "src": "2765:12:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 7917,
+                        "name": "totalStakeInVisionVault",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7788,
+                        "src": "2737:23:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "id": 7918,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "div",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 416,
+                      "src": "2737:27:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
+                        "typeString": "function (uint256,uint256) pure returns (uint256)"
+                      }
+                    },
+                    "id": 7920,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2737:41:24",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "2720:58:24"
+                },
+                {
+                  "assignments": [
+                    7923
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 7923,
+                      "mutability": "mutable",
+                      "name": "stakeToReturn",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 7980,
+                      "src": "2788:18:24",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 7922,
+                        "name": "uint",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "2788:4:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 7928,
+                  "initialValue": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 7926,
+                        "name": "visionToBurn",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7910,
+                        "src": "2823:12:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 7924,
+                        "name": "stakeRate",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7916,
+                        "src": "2809:9:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "id": 7925,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "mul",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 399,
+                      "src": "2809:13:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
+                        "typeString": "function (uint256,uint256) pure returns (uint256)"
+                      }
+                    },
+                    "id": 7927,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2809:27:24",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "2788:48:24"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 7934,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 7929,
+                      "name": "mintedVision",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7784,
+                      "src": "2846:12:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 7932,
+                          "name": "visionToBurn",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7910,
+                          "src": "2878:12:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 7930,
+                          "name": "mintedVision",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7784,
+                          "src": "2861:12:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "id": 7931,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sub",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 336,
+                        "src": "2861:16:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
+                          "typeString": "function (uint256,uint256) pure returns (uint256)"
+                        }
+                      },
+                      "id": 7933,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "2861:30:24",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "2846:45:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 7935,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2846:45:24"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 7941,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 7936,
+                      "name": "totalStakeInVisionVault",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7788,
+                      "src": "2901:23:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 7939,
+                          "name": "stakeToReturn",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7923,
+                          "src": "2955:13:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 7937,
+                          "name": "totalStakeInVisionVault",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7788,
+                          "src": "2927:23:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "id": 7938,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sub",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 336,
+                        "src": "2927:27:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
+                          "typeString": "function (uint256,uint256) pure returns (uint256)"
+                        }
+                      },
+                      "id": 7940,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "2927:42:24",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "2901:68:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 7942,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2901:68:24"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 7946,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 7944,
+                          "name": "totalStakeInVisionVault",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7788,
+                          "src": "2987:23:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": ">",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "hexValue": "31",
+                          "id": 7945,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "3013:1:24",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_rational_1_by_1",
+                            "typeString": "int_const 1"
+                          },
+                          "value": "1"
+                        },
+                        "src": "2987:27:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "546f74616c205374616b6520496e20566973696f6e205661756c74206d7573742062652067726561746572207468616e20312e",
+                        "id": 7947,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "3016:53:24",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_cb165ed1482950467fb402fa80411a2d796a32125d1feedc2b4b31d87009b24e",
+                          "typeString": "literal_string \"Total Stake In Vision Vault must be greater than 1.\""
+                        },
+                        "value": "Total Stake In Vision Vault must be greater than 1."
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_cb165ed1482950467fb402fa80411a2d796a32125d1feedc2b4b31d87009b24e",
+                          "typeString": "literal_string \"Total Stake In Vision Vault must be greater than 1.\""
+                        }
+                      ],
+                      "id": 7943,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        -18,
+                        -18
+                      ],
+                      "referencedDeclaration": -18,
+                      "src": "2979:7:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 7948,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2979:91:24",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 7949,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2979:91:24"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 7953,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 7951,
+                          "name": "mintedVision",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7784,
+                          "src": "3088:12:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": ">",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "hexValue": "31",
+                          "id": 7952,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "3103:1:24",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_rational_1_by_1",
+                            "typeString": "int_const 1"
+                          },
+                          "value": "1"
+                        },
+                        "src": "3088:16:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "4d696e74656420566973696f6e206d7573742062652067726561746572207468616e20312e",
+                        "id": 7954,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "3106:39:24",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_ce28168547e6f8ad8d4d7a68558dd197f8193373b59956d1378cd67e4dcf641a",
+                          "typeString": "literal_string \"Minted Vision must be greater than 1.\""
+                        },
+                        "value": "Minted Vision must be greater than 1."
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_ce28168547e6f8ad8d4d7a68558dd197f8193373b59956d1378cd67e4dcf641a",
+                          "typeString": "literal_string \"Minted Vision must be greater than 1.\""
+                        }
+                      ],
+                      "id": 7950,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        -18,
+                        -18
+                      ],
+                      "referencedDeclaration": -18,
+                      "src": "3080:7:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 7955,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "3080:66:24",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 7956,
+                  "nodeType": "ExpressionStatement",
+                  "src": "3080:66:24"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 7960,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": -15,
+                          "src": "3168:3:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 7961,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": null,
+                        "src": "3168:10:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 7962,
+                        "name": "visionToBurn",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7910,
+                        "src": "3180:12:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 7957,
+                        "name": "vision",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7774,
+                        "src": "3156:6:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Vision_$7759",
+                          "typeString": "contract Vision"
+                        }
+                      },
+                      "id": 7959,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "burn",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 7758,
+                      "src": "3156:11:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256) external"
+                      }
+                    },
+                    "id": 7963,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "3156:37:24",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 7964,
+                  "nodeType": "ExpressionStatement",
+                  "src": "3156:37:24"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 7968,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": -15,
+                          "src": "3223:3:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 7969,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": null,
+                        "src": "3223:10:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 7970,
+                        "name": "stakeToReturn",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7923,
+                        "src": "3235:13:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 7965,
+                        "name": "stakeToken",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7780,
+                        "src": "3203:10:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_IERC20_$2270",
+                          "typeString": "contract IERC20"
+                        }
+                      },
+                      "id": 7967,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "transfer",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2219,
+                      "src": "3203:19:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
+                        "typeString": "function (address,uint256) external returns (bool)"
+                      }
+                    },
+                    "id": 7971,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "3203:46:24",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 7972,
+                  "nodeType": "ExpressionStatement",
+                  "src": "3203:46:24"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 7974,
+                        "name": "visionToBurn",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7910,
+                        "src": "3277:12:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 7975,
+                        "name": "stakeToReturn",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7923,
+                        "src": "3291:13:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 7976,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": -15,
+                          "src": "3306:3:24",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 7977,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": null,
+                        "src": "3306:10:24",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      ],
+                      "id": 7973,
+                      "name": "VisionBurned",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7907,
+                      "src": "3264:12:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_uint256_$_t_address_$returns$__$",
+                        "typeString": "function (uint256,uint256,address)"
+                      }
+                    },
+                    "id": 7978,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "3264:53:24",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 7979,
+                  "nodeType": "EmitStatement",
+                  "src": "3259:58:24"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 7908,
+              "nodeType": "StructuredDocumentation",
+              "src": "2312:334:24",
+              "text": "@notice Burns Vision based on the current price and returns allocated stake.\n @param visionToBurn Amount of vision to burn.\n @dev Invariant - totalStakeInVisionVault cannot be less than 1.\n @dev Invariant - mintedVision cannot be less than 1.\n @dev Note vision does not need to be approved to be burnt."
+            },
+            "functionSelector": "0fd6f0c8",
+            "id": 7981,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 7913,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 7912,
+                  "name": "nonReentrant",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 3812,
+                  "src": "2697:12:24",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "2697:12:24"
+              }
+            ],
+            "name": "burnVision",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 7911,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7910,
+                  "mutability": "mutable",
+                  "name": "visionToBurn",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 7981,
+                  "src": "2671:17:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 7909,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2671:4:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2670:19:24"
+            },
+            "returnParameters": {
+              "id": 7914,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2710:0:24"
+            },
+            "scope": 7982,
+            "src": "2651:673:24",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "scope": 7983,
+        "src": "314:3013:24"
+      }
+    ],
+    "src": "39:3289:24"
+  },
+  "bytecode": "0x60806040526001600455600160055534801561001a57600080fd5b506040516132f23803806132f28339818101604052604081101561003d57600080fd5b5080516020909101516001600055600380546001600160a01b0319166001600160a01b038416179055604051610072906100c4565b604051809103906000f08015801561008e573d6000803e3d6000fd5b50600180546001600160a01b03199081166001600160a01b03938416179182905560028054929093169116179055506100d19050565b612928806109ca83390190565b6108ea806100e06000396000f3fe608060405234801561001057600080fd5b50600436106100785760003560e01c806307062cf21461007d5780630fd6f0c8146100a1578063158ef93e146100c057806340f30f4a146100dc57806349232b85146100f657806351ed6a30146100fe5780636279cb271461010657806373dd289d1461010e575b600080fd5b61008561012b565b604080516001600160a01b039092168252519081900360200190f35b6100be600480360360208110156100b757600080fd5b503561013a565b005b6100c861037c565b604080519115158252519081900360200190f35b6100e4610385565b60408051918252519081900360200190f35b6100e461038b565b610085610391565b6100856103a0565b6100be6004803603602081101561012457600080fd5b50356103af565b6001546001600160a01b031681565b60026000541415610180576040805162461bcd60e51b815260206004820152601f60248201526000805160206107f4833981519152604482015290519081900360640190fd5b60026000908155600454600554610196916105bc565b905060006101a48284610604565b6004549091506101b4908461065d565b6004556005546101c4908261065d565b60058190556001106102075760405162461bcd60e51b815260040180806020018281038252603381526020018061085d6033913960400191505060405180910390fd5b6001600454116102485760405162461bcd60e51b81526004018080602001828103825260258152602001806108906025913960400191505060405180910390fd5b60015460408051632770a7eb60e21b81523360048201526024810186905290516001600160a01b0390921691639dc29fac9160448082019260009290919082900301818387803b15801561029b57600080fd5b505af11580156102af573d6000803e3d6000fd5b50506003546040805163a9059cbb60e01b81523360048201526024810186905290516001600160a01b03909216935063a9059cbb92506044808201926020929091908290030181600087803b15801561030757600080fd5b505af115801561031b573d6000803e3d6000fd5b505050506040513d602081101561033157600080fd5b50506040805184815260208101839052338183015290517fdb189cae9939ae9577cd7993487757e01fa75f03849f228d761de234fb5a9ed79181900360600190a15050600160005550565b60065460ff1681565b60055481565b60045481565b6003546001600160a01b031681565b6002546001600160a01b031681565b600260005414156103f5576040805162461bcd60e51b815260206004820152601f60248201526000805160206107f4833981519152604482015290519081900360640190fd5b60026000556005546104385760405162461bcd60e51b81526004018080602001828103825260288152602001806108146028913960400191505060405180910390fd5b60006104516005546004546105bc90919063ffffffff16565b9050600061045f8284610604565b60045490915061046f908261069f565b60045560055461047f908461069f565b600555600154604080516340c10f1960e01b81523360048201526024810184905290516001600160a01b03909216916340c10f199160448082019260009290919082900301818387803b1580156104d557600080fd5b505af11580156104e9573d6000803e3d6000fd5b5050600354604080516323b872dd60e01b81523360048201523060248201526044810188905290516001600160a01b0390921693506323b872dd92506064808201926020929091908290030181600087803b15801561054757600080fd5b505af115801561055b573d6000803e3d6000fd5b505050506040513d602081101561057157600080fd5b50506040805182815260208101859052338183015290517fdab62f63027fc0b88347694d531be13a27ebf5a7fec53f8248e829e157f162ff9181900360600190a15050600160005550565b60006105fb83836040518060400160405280601a815260200179536166654d6174683a206469766973696f6e206279207a65726f60301b8152506106f7565b90505b92915050565b600082610613575060006105fe565b8282028284828161062057fe5b04146105fb5760405162461bcd60e51b815260040180806020018281038252602181526020018061083c6021913960400191505060405180910390fd5b60006105fb83836040518060400160405280601e81526020017f536166654d6174683a207375627472616374696f6e206f766572666c6f770000815250610799565b6000828201838110156105fb576040805162461bcd60e51b815260206004820152601b60248201527a536166654d6174683a206164646974696f6e206f766572666c6f7760281b604482015290519081900360640190fd5b600081836107835760405162461bcd60e51b81526004018080602001828103825283818151815260200191508051906020019080838360005b83811015610748578181015183820152602001610730565b50505050905090810190601f1680156107755780820380516001836020036101000a031916815260200191505b509250505060405180910390fd5b50600083858161078f57fe5b0495945050505050565b600081848411156107eb5760405162461bcd60e51b8152602060048201818152835160248401528351909283926044909101919085019080838360008315610748578181015183820152602001610730565b50505090039056fe5265656e7472616e637947756172643a207265656e7472616e742063616c6c00746f74616c5374616b65496e566973696f6e5661756c742073686f756c64206e6f7420626520302e536166654d6174683a206d756c7469706c69636174696f6e206f766572666c6f77546f74616c205374616b6520496e20566973696f6e205661756c74206d7573742062652067726561746572207468616e20312e4d696e74656420566973696f6e206d7573742062652067726561746572207468616e20312ea26469706673582212206a0bc9c282ab8845ce065f4180ccaa2e39a1119bfee645cc57996db0c811fbef64736f6c634300060c003360806040523480156200001157600080fd5b50604080518082018252600681527f566973696f6e0000000000000000000000000000000000000000000000000000602080830191825283518085018552600381527f564953000000000000000000000000000000000000000000000000000000000081830152845160008152918201909452825192939290916200009a9160029190620002fd565b508151620000b0906003906020850190620002fd565b508051620000c690600490602084019062000382565b5060005b600454811015620001265760016005600060048481548110620000e957fe5b6000918252602080832091909101546001600160a01b031683528201929092526040019020805460ff1916911515919091179055600101620000ca565b50604080517f29965a1d00000000000000000000000000000000000000000000000000000000815230600482018190527fac7fbab5f54a3ca8194167523c6753bfeb96a445279294b6125b68cce2177054602483015260448201529051731820a4b7618bde71dce8cdc73aab6c95905fad24916329965a1d91606480830192600092919082900301818387803b158015620001c057600080fd5b505af1158015620001d5573d6000803e3d6000fd5b5050604080517f29965a1d00000000000000000000000000000000000000000000000000000000815230600482018190527faea199e31a596269b42cdafd93407f14436db6e4cad65417994c2eb37381e05a602483015260448201529051731820a4b7618bde71dce8cdc73aab6c95905fad2493506329965a1d9250606480830192600092919082900301818387803b1580156200027257600080fd5b505af115801562000287573d6000803e3d6000fd5b505050505050506000620002a0620002f960201b60201c565b600980546001600160a01b0319166001600160a01b038316908117909155604051919250906000907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a3506001600a5562000420565b3390565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106200034057805160ff191683800117855562000370565b8280016001018555821562000370579182015b828111156200037057825182559160200191906001019062000353565b506200037e929150620003e8565b5090565b828054828255906000526020600020908101928215620003da579160200282015b82811115620003da57825182546001600160a01b0319166001600160a01b03909116178255602090920191600190910190620003a3565b506200037e929150620003ff565b5b808211156200037e5760008155600101620003e9565b5b808211156200037e5780546001600160a01b031916815560010162000400565b6124f880620004306000396000f3fe608060405234801561001057600080fd5b506004361061011d5760003560e01c806306e485381461012257806306fdde031461017a578063095ea7b3146101f757806318160ddd1461023757806323b872dd14610251578063313ce5671461028757806340c10f19146102a5578063556f0dc7146102d357806362ad1b83146102db57806370a0823114610424578063715018a61461044a5780638da5cb5b14610452578063959b8c3f1461047657806395d89b411461049c5780639bd9bbc6146104a45780639dc29fac1461055d578063a9059cbb14610589578063d95b6371146105b5578063dd62ed3e146105e3578063f2fde38b14610611578063fad8b32a14610637578063fc673c4f1461065d578063fe9d93031461079b575b600080fd5b61012a610846565b60408051602080825283518183015283519192839290830191858101910280838360005b8381101561016657818101518382015260200161014e565b505050509050019250505060405180910390f35b6101826108a8565b6040805160208082528351818301528351919283929083019185019080838360005b838110156101bc5781810151838201526020016101a4565b50505050905090810190601f1680156101e95780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b6102236004803603604081101561020d57600080fd5b506001600160a01b038135169060200135610932565b604080519115158252519081900360200190f35b61023f610954565b60408051918252519081900360200190f35b6102236004803603606081101561026757600080fd5b506001600160a01b0381358116916020810135909116906040013561095a565b61028f610ad7565b6040805160ff9092168252519081900360200190f35b6102d1600480360360408110156102bb57600080fd5b506001600160a01b038135169060200135610adc565b005b61023f610bb5565b6102d1600480360360a08110156102f157600080fd5b6001600160a01b03823581169260208101359091169160408201359190810190608081016060820135600160201b81111561032b57600080fd5b82018360208201111561033d57600080fd5b803590602001918460018302840111600160201b8311171561035e57600080fd5b91908080601f0160208091040260200160405190810160405280939291908181526020018383808284376000920191909152509295949360208101935035915050600160201b8111156103b057600080fd5b8201836020820111156103c257600080fd5b803590602001918460018302840111600160201b831117156103e357600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250929550610bba945050505050565b61023f6004803603602081101561043a57600080fd5b50356001600160a01b0316610c1c565b6102d1610c37565b61045a610cc7565b604080516001600160a01b039092168252519081900360200190f35b6102d16004803603602081101561048c57600080fd5b50356001600160a01b0316610cd6565b610182610e22565b6102d1600480360360608110156104ba57600080fd5b6001600160a01b0382351691602081013591810190606081016040820135600160201b8111156104e957600080fd5b8201836020820111156104fb57600080fd5b803590602001918460018302840111600160201b8311171561051c57600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250929550610e83945050505050565b6102d16004803603604081101561057357600080fd5b506001600160a01b038135169060200135610ead565b6102236004803603604081101561059f57600080fd5b506001600160a01b038135169060200135610f7d565b610223600480360360408110156105cb57600080fd5b506001600160a01b0381358116916020013516611056565b61023f600480360360408110156105f957600080fd5b506001600160a01b03813581169160200135166110f8565b6102d16004803603602081101561062757600080fd5b50356001600160a01b0316611123565b6102d16004803603602081101561064d57600080fd5b50356001600160a01b031661120a565b6102d16004803603608081101561067357600080fd5b6001600160a01b0382351691602081013591810190606081016040820135600160201b8111156106a257600080fd5b8201836020820111156106b457600080fd5b803590602001918460018302840111600160201b831117156106d557600080fd5b91908080601f0160208091040260200160405190810160405280939291908181526020018383808284376000920191909152509295949360208101935035915050600160201b81111561072757600080fd5b82018360208201111561073957600080fd5b803590602001918460018302840111600160201b8311171561075a57600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250929550611356945050505050565b6102d1600480360360408110156107b157600080fd5b81359190810190604081016020820135600160201b8111156107d257600080fd5b8201836020820111156107e457600080fd5b803590602001918460018302840111600160201b8311171561080557600080fd5b91908080601f0160208091040260200160405190810160405280939291908181526020018383808284376000920191909152509295506113b4945050505050565b6060600480548060200260200160405190810160405280929190818152602001828054801561089e57602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311610880575b5050505050905090565b60028054604080516020601f600019610100600187161502019094168590049384018190048102820181019092528281526060939092909183018282801561089e5780601f106109065761010080835404028352916020019161089e565b820191906000526020600020905b81548152906001019060200180831161091457509395945050505050565b60008061093d6113da565b905061094a8185856113de565b5060019392505050565b60015490565b60006001600160a01b0383166109a15760405162461bcd60e51b81526004018080602001828103825260248152602001806123be6024913960400191505060405180910390fd5b6001600160a01b0384166109e65760405162461bcd60e51b81526004018080602001828103825260268152602001806124576026913960400191505060405180910390fd5b60006109f06113da565b9050610a1e8186868660405180602001604052806000815250604051806020016040528060008152506114ca565b610a4a8186868660405180602001604052806000815250604051806020016040528060008152506116f7565b610a9e8582610a998660405180606001604052806029815260200161242e602991396001600160a01b03808c166000908152600860209081526040808320938b168352929052205491906118fe565b6113de565b610acc8186868660405180602001604052806000815250604051806020016040528060008152506000611995565b506001949350505050565b601290565b610ae46113da565b6009546001600160a01b03908116911614610b34576040805162461bcd60e51b81526020600482018190526024820152600080516020612331833981519152604482015290519081900360640190fd5b6002600a541415610b7a576040805162461bcd60e51b815260206004820152601f6024820152600080516020612216833981519152604482015290519081900360640190fd5b6002600a81905550610bac82826040518060200160405280600081525060405180602001604052806000815250611c1a565b50506001600a55565b600190565b610bcb610bc56113da565b86611056565b610c065760405162461bcd60e51b815260040180806020018281038252602c815260200180612402602c913960400191505060405180910390fd5b610c1585858585856001611e40565b5050505050565b6001600160a01b031660009081526020819052604090205490565b610c3f6113da565b6009546001600160a01b03908116911614610c8f576040805162461bcd60e51b81526020600482018190526024820152600080516020612331833981519152604482015290519081900360640190fd5b6009546040516000916001600160a01b031690600080516020612351833981519152908390a3600980546001600160a01b0319169055565b6009546001600160a01b031690565b806001600160a01b0316610ce86113da565b6001600160a01b03161415610d2e5760405162461bcd60e51b81526004018080602001828103825260248152602001806122ec6024913960400191505060405180910390fd5b6001600160a01b03811660009081526005602052604090205460ff1615610d915760076000610d5b6113da565b6001600160a01b03908116825260208083019390935260409182016000908120918516815292529020805460ff19169055610dd8565b600160066000610d9f6113da565b6001600160a01b03908116825260208083019390935260409182016000908120918616815292529020805460ff19169115159190911790555b610de06113da565b6001600160a01b0316816001600160a01b03167ff4caeb2d6ca8932a215a353d0703c326ec2d81fc68170f320eb2ab49e9df61f960405160405180910390a350565b60038054604080516020601f600260001961010060018816150201909516949094049384018190048102820181019092528281526060939092909183018282801561089e5780601f106109065761010080835404028352916020019161089e565b610ea8610e8e6113da565b848484604051806020016040528060008152506001611e40565b505050565b610eb56113da565b6009546001600160a01b03908116911614610f05576040805162461bcd60e51b81526020600482018190526024820152600080516020612331833981519152604482015290519081900360640190fd5b6002600a541415610f4b576040805162461bcd60e51b815260206004820152601f6024820152600080516020612216833981519152604482015290519081900360640190fd5b6002600a81905550610bac82826040518060200160405280600081525060405180602001604052806000815250611f17565b60006001600160a01b038316610fc45760405162461bcd60e51b81526004018080602001828103825260248152602001806123be6024913960400191505060405180910390fd5b6000610fce6113da565b9050610ffc8182868660405180602001604052806000815250604051806020016040528060008152506114ca565b6110288182868660405180602001604052806000815250604051806020016040528060008152506116f7565b61094a8182868660405180602001604052806000815250604051806020016040528060008152506000611995565b6000816001600160a01b0316836001600160a01b031614806110c157506001600160a01b03831660009081526005602052604090205460ff1680156110c157506001600160a01b0380831660009081526007602090815260408083209387168352929052205460ff16155b806110f157506001600160a01b0380831660009081526006602090815260408083209387168352929052205460ff165b9392505050565b6001600160a01b03918216600090815260086020908152604080832093909416825291909152205490565b61112b6113da565b6009546001600160a01b0390811691161461117b576040805162461bcd60e51b81526020600482018190526024820152600080516020612331833981519152604482015290519081900360640190fd5b6001600160a01b0381166111c05760405162461bcd60e51b81526004018080602001828103825260268152602001806122a46026913960400191505060405180910390fd5b6009546040516001600160a01b0380841692169060008051602061235183398151915290600090a3600980546001600160a01b0319166001600160a01b0392909216919091179055565b6112126113da565b6001600160a01b0316816001600160a01b031614156112625760405162461bcd60e51b81526004018080602001828103825260218152602001806123106021913960400191505060405180910390fd5b6001600160a01b03811660009081526005602052604090205460ff16156112ce576001600760006112916113da565b6001600160a01b03908116825260208083019390935260409182016000908120918616815292529020805460ff191691151591909117905561130c565b600660006112da6113da565b6001600160a01b03908116825260208083019390935260409182016000908120918516815292529020805460ff191690555b6113146113da565b6001600160a01b0316816001600160a01b03167f50546e66e5f44d728365dc3908c63bc5cfeeab470722c1677e3073a6ac294aa160405160405180910390a350565b6113676113616113da565b85611056565b6113a25760405162461bcd60e51b815260040180806020018281038252602c815260200180612402602c913960400191505060405180910390fd5b6113ae84848484611f17565b50505050565b6113d66113bf6113da565b838360405180602001604052806000815250611f17565b5050565b3390565b6001600160a01b0383166114235760405162461bcd60e51b81526004018080602001828103825260258152602001806122366025913960400191505060405180910390fd5b6001600160a01b0382166114685760405162461bcd60e51b81526004018080602001828103825260238152602001806124a06023913960400191505060405180910390fd5b6001600160a01b03808416600081815260086020908152604080832094871680845294825291829020859055815185815291517f8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b9259281900390910190a3505050565b6040805163555ddc6560e11b81526001600160a01b03871660048201527f29ddb589b1fb5fc7cf394961c1adf5f8c6454761adf795e67fe149f658abe89560248201529051600091731820a4b7618bde71dce8cdc73aab6c95905fad249163aabbb8ca91604480820192602092909190829003018186803b15801561154e57600080fd5b505afa158015611562573d6000803e3d6000fd5b505050506040513d602081101561157857600080fd5b505190506001600160a01b038116156116ee57806001600160a01b03166375ab97828888888888886040518763ffffffff1660e01b815260040180876001600160a01b03168152602001866001600160a01b03168152602001856001600160a01b031681526020018481526020018060200180602001838103835285818151815260200191508051906020019080838360005b8381101561162357818101518382015260200161160b565b50505050905090810190601f1680156116505780820380516001836020036101000a031916815260200191505b50838103825284518152845160209182019186019080838360005b8381101561168357818101518382015260200161166b565b50505050905090810190601f1680156116b05780820380516001836020036101000a031916815260200191505b5098505050505050505050600060405180830381600087803b1580156116d557600080fd5b505af11580156116e9573d6000803e3d6000fd5b505050505b50505050505050565b611703868686866113ae565b6117408360405180606001604052806027815260200161227d602791396001600160a01b03881660009081526020819052604090205491906118fe565b6001600160a01b03808716600090815260208190526040808220939093559086168152205461176f908461213f565b600080866001600160a01b03166001600160a01b0316815260200190815260200160002081905550836001600160a01b0316856001600160a01b0316876001600160a01b03167f06b541ddaa720db2b10a4d0cdac39b8d360425fc073085fac19bc82614677987868686604051808481526020018060200180602001838103835285818151815260200191508051906020019080838360005b83811015611820578181015183820152602001611808565b50505050905090810190601f16801561184d5780820380516001836020036101000a031916815260200191505b50838103825284518152845160209182019186019080838360005b83811015611880578181015183820152602001611868565b50505050905090810190601f1680156118ad5780820380516001836020036101000a031916815260200191505b509550505050505060405180910390a4836001600160a01b0316856001600160a01b03166000805160206123e2833981519152856040518082815260200191505060405180910390a3505050505050565b6000818484111561198d5760405162461bcd60e51b81526004018080602001828103825283818151815260200191508051906020019080838360005b8381101561195257818101518382015260200161193a565b50505050905090810190601f16801561197f5780820380516001836020036101000a031916815260200191505b509250505060405180910390fd5b505050900390565b6040805163555ddc6560e11b81526001600160a01b03871660048201527fb281fc8c12954d22544db45de3159a39272895b169a852b314f9cc762e44c53b60248201529051600091731820a4b7618bde71dce8cdc73aab6c95905fad249163aabbb8ca91604480820192602092909190829003018186803b158015611a1957600080fd5b505afa158015611a2d573d6000803e3d6000fd5b505050506040513d6020811015611a4357600080fd5b505190506001600160a01b03811615611bbc57806001600160a01b03166223de298989898989896040518763ffffffff1660e01b815260040180876001600160a01b03168152602001866001600160a01b03168152602001856001600160a01b031681526020018481526020018060200180602001838103835285818151815260200191508051906020019080838360005b83811015611aed578181015183820152602001611ad5565b50505050905090810190601f168015611b1a5780820380516001836020036101000a031916815260200191505b50838103825284518152845160209182019186019080838360005b83811015611b4d578181015183820152602001611b35565b50505050905090810190601f168015611b7a5780820380516001836020036101000a031916815260200191505b5098505050505050505050600060405180830381600087803b158015611b9f57600080fd5b505af1158015611bb3573d6000803e3d6000fd5b50505050611c10565b8115611c1057611bd4866001600160a01b0316612197565b15611c105760405162461bcd60e51b815260040180806020018281038252604d815260200180612371604d913960600191505060405180910390fd5b5050505050505050565b6001600160a01b038416611c75576040805162461bcd60e51b815260206004820181905260248201527f4552433737373a206d696e7420746f20746865207a65726f2061646472657373604482015290519081900360640190fd5b6000611c7f6113da565b9050611c8e81600087876113ae565b600154611c9b908561213f565b6001556001600160a01b038516600090815260208190526040902054611cc1908561213f565b6001600160a01b038616600090815260208190526040812091909155611cee908290878787876001611995565b846001600160a01b0316816001600160a01b03167f2fe5be0146f74c5bce36c0b80911af6c7d86ff27e89d5cfa61fc681327954e5d868686604051808481526020018060200180602001838103835285818151815260200191508051906020019080838360005b83811015611d6d578181015183820152602001611d55565b50505050905090810190601f168015611d9a5780820380516001836020036101000a031916815260200191505b50838103825284518152845160209182019186019080838360005b83811015611dcd578181015183820152602001611db5565b50505050905090810190601f168015611dfa5780820380516001836020036101000a031916815260200191505b509550505050505060405180910390a36040805185815290516001600160a01b038716916000916000805160206123e28339815191529181900360200190a35050505050565b6001600160a01b038616611e855760405162461bcd60e51b815260040180806020018281038252602281526020018061225b6022913960400191505060405180910390fd5b6001600160a01b038516611ee0576040805162461bcd60e51b815260206004820181905260248201527f4552433737373a2073656e6420746f20746865207a65726f2061646472657373604482015290519081900360640190fd5b6000611eea6113da565b9050611efa8188888888886114ca565b611f088188888888886116f7565b6116ee81888888888888611995565b6001600160a01b038416611f5c5760405162461bcd60e51b81526004018080602001828103825260228152602001806122ca6022913960400191505060405180910390fd5b6000611f666113da565b9050611f7581866000876113ae565b611f84818660008787876114ca565b611fc18460405180606001604052806023815260200161247d602391396001600160a01b03881660009081526020819052604090205491906118fe565b6001600160a01b038616600090815260208190526040902055600154611fe790856121d3565b600181905550846001600160a01b0316816001600160a01b03167fa78a9be3a7b862d26933ad85fb11d80ef66b8f972d7cbba06621d583943a4098868686604051808481526020018060200180602001838103835285818151815260200191508051906020019080838360005b8381101561206c578181015183820152602001612054565b50505050905090810190601f1680156120995780820380516001836020036101000a031916815260200191505b50838103825284518152845160209182019186019080838360005b838110156120cc5781810151838201526020016120b4565b50505050905090810190601f1680156120f95780820380516001836020036101000a031916815260200191505b509550505050505060405180910390a36040805185815290516000916001600160a01b038816916000805160206123e28339815191529181900360200190a35050505050565b6000828201838110156110f1576040805162461bcd60e51b815260206004820152601b60248201527a536166654d6174683a206164646974696f6e206f766572666c6f7760281b604482015290519081900360640190fd5b6000813f7fc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a4708181148015906121cb57508115155b949350505050565b60006110f183836040518060400160405280601e81526020017f536166654d6174683a207375627472616374696f6e206f766572666c6f7700008152506118fe56fe5265656e7472616e637947756172643a207265656e7472616e742063616c6c004552433737373a20617070726f76652066726f6d20746865207a65726f20616464726573734552433737373a2073656e642066726f6d20746865207a65726f20616464726573734552433737373a207472616e7366657220616d6f756e7420657863656564732062616c616e63654f776e61626c653a206e6577206f776e657220697320746865207a65726f20616464726573734552433737373a206275726e2066726f6d20746865207a65726f20616464726573734552433737373a20617574686f72697a696e672073656c66206173206f70657261746f724552433737373a207265766f6b696e672073656c66206173206f70657261746f724f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65728be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e04552433737373a20746f6b656e20726563697069656e7420636f6e747261637420686173206e6f20696d706c656d656e74657220666f7220455243373737546f6b656e73526563697069656e744552433737373a207472616e7366657220746f20746865207a65726f2061646472657373ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef4552433737373a2063616c6c6572206973206e6f7420616e206f70657261746f7220666f7220686f6c6465724552433737373a207472616e7366657220616d6f756e74206578636565647320616c6c6f77616e63654552433737373a207472616e736665722066726f6d20746865207a65726f20616464726573734552433737373a206275726e20616d6f756e7420657863656564732062616c616e63654552433737373a20617070726f766520746f20746865207a65726f2061646472657373a2646970667358221220065ff65db091aa66fe8717333b409b9e29ea4db2aeb7d4e5c6cfd1fb05e53d5764736f6c634300060c0033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100785760003560e01c806307062cf21461007d5780630fd6f0c8146100a1578063158ef93e146100c057806340f30f4a146100dc57806349232b85146100f657806351ed6a30146100fe5780636279cb271461010657806373dd289d1461010e575b600080fd5b61008561012b565b604080516001600160a01b039092168252519081900360200190f35b6100be600480360360208110156100b757600080fd5b503561013a565b005b6100c861037c565b604080519115158252519081900360200190f35b6100e4610385565b60408051918252519081900360200190f35b6100e461038b565b610085610391565b6100856103a0565b6100be6004803603602081101561012457600080fd5b50356103af565b6001546001600160a01b031681565b60026000541415610180576040805162461bcd60e51b815260206004820152601f60248201526000805160206107f4833981519152604482015290519081900360640190fd5b60026000908155600454600554610196916105bc565b905060006101a48284610604565b6004549091506101b4908461065d565b6004556005546101c4908261065d565b60058190556001106102075760405162461bcd60e51b815260040180806020018281038252603381526020018061085d6033913960400191505060405180910390fd5b6001600454116102485760405162461bcd60e51b81526004018080602001828103825260258152602001806108906025913960400191505060405180910390fd5b60015460408051632770a7eb60e21b81523360048201526024810186905290516001600160a01b0390921691639dc29fac9160448082019260009290919082900301818387803b15801561029b57600080fd5b505af11580156102af573d6000803e3d6000fd5b50506003546040805163a9059cbb60e01b81523360048201526024810186905290516001600160a01b03909216935063a9059cbb92506044808201926020929091908290030181600087803b15801561030757600080fd5b505af115801561031b573d6000803e3d6000fd5b505050506040513d602081101561033157600080fd5b50506040805184815260208101839052338183015290517fdb189cae9939ae9577cd7993487757e01fa75f03849f228d761de234fb5a9ed79181900360600190a15050600160005550565b60065460ff1681565b60055481565b60045481565b6003546001600160a01b031681565b6002546001600160a01b031681565b600260005414156103f5576040805162461bcd60e51b815260206004820152601f60248201526000805160206107f4833981519152604482015290519081900360640190fd5b60026000556005546104385760405162461bcd60e51b81526004018080602001828103825260288152602001806108146028913960400191505060405180910390fd5b60006104516005546004546105bc90919063ffffffff16565b9050600061045f8284610604565b60045490915061046f908261069f565b60045560055461047f908461069f565b600555600154604080516340c10f1960e01b81523360048201526024810184905290516001600160a01b03909216916340c10f199160448082019260009290919082900301818387803b1580156104d557600080fd5b505af11580156104e9573d6000803e3d6000fd5b5050600354604080516323b872dd60e01b81523360048201523060248201526044810188905290516001600160a01b0390921693506323b872dd92506064808201926020929091908290030181600087803b15801561054757600080fd5b505af115801561055b573d6000803e3d6000fd5b505050506040513d602081101561057157600080fd5b50506040805182815260208101859052338183015290517fdab62f63027fc0b88347694d531be13a27ebf5a7fec53f8248e829e157f162ff9181900360600190a15050600160005550565b60006105fb83836040518060400160405280601a815260200179536166654d6174683a206469766973696f6e206279207a65726f60301b8152506106f7565b90505b92915050565b600082610613575060006105fe565b8282028284828161062057fe5b04146105fb5760405162461bcd60e51b815260040180806020018281038252602181526020018061083c6021913960400191505060405180910390fd5b60006105fb83836040518060400160405280601e81526020017f536166654d6174683a207375627472616374696f6e206f766572666c6f770000815250610799565b6000828201838110156105fb576040805162461bcd60e51b815260206004820152601b60248201527a536166654d6174683a206164646974696f6e206f766572666c6f7760281b604482015290519081900360640190fd5b600081836107835760405162461bcd60e51b81526004018080602001828103825283818151815260200191508051906020019080838360005b83811015610748578181015183820152602001610730565b50505050905090810190601f1680156107755780820380516001836020036101000a031916815260200191505b509250505060405180910390fd5b50600083858161078f57fe5b0495945050505050565b600081848411156107eb5760405162461bcd60e51b8152602060048201818152835160248401528351909283926044909101919085019080838360008315610748578181015183820152602001610730565b50505090039056fe5265656e7472616e637947756172643a207265656e7472616e742063616c6c00746f74616c5374616b65496e566973696f6e5661756c742073686f756c64206e6f7420626520302e536166654d6174683a206d756c7469706c69636174696f6e206f766572666c6f77546f74616c205374616b6520496e20566973696f6e205661756c74206d7573742062652067726561746572207468616e20312e4d696e74656420566973696f6e206d7573742062652067726561746572207468616e20312ea26469706673582212206a0bc9c282ab8845ce065f4180ccaa2e39a1119bfee645cc57996db0c811fbef64736f6c634300060c0033",
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.12+commit.27d51765.Emscripten.clang",
+    "optimizer": {
+      "enabled": true,
+      "runs": 1
+    },
+    "evmVersion": "petersburg"
+  }
+}

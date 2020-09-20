@@ -1,8 +1,21 @@
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: Unlicense
 
 pragma solidity 0.6.12;
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./Power.sol"; // Efficient power function.
+
+
+/// @notice Monitor interface for the BondingCurve code.
+interface IBancorBondingCurve {
+    function calculatePurchaseReturn(
+        uint256 _supply,
+        uint256 _reserveBalance,
+        uint32 _reserveRatio,
+        uint256 _depositAmount) external view returns (uint256);
+
+    function mulDiv (uint x, uint y, uint z)
+        external view returns (uint);
+}
 
 
 /**

@@ -35,10 +35,10 @@ contract Monitor is ReentrancyGuard {
     ForesightTokens public foresightTokens;
 
     /// @notice Bancor bonding curve contract.
-    BancorBondingCurve public bondingCurve;
+    IBancorBondingCurve public bondingCurve;
     address public bondingCurveAddress;
 
-    // @notice Reality Market info
+    /// @notice Reality Market info
     struct RealityMarket {
         uint id;
         bool finalized;
@@ -72,7 +72,7 @@ contract Monitor is ReentrancyGuard {
         initialized = true;
         vision = new Vision();
         foresightTokens = new ForesightTokens();
-        bondingCurve = BancorBondingCurve(bondingCurveAddress);
+        bondingCurve = IBancorBondingCurve(bondingCurveAddress);
     }
 
     modifier isInitialized { require(initialized, "Monitor is not initialized"); _; }
@@ -214,10 +214,6 @@ contract Monitor is ReentrancyGuard {
 
     /// @notice Event to convert foresight into vision.
     event ForesightBurned(uint marketIndex, uint foresightId, uint foresightAmount, uint visionOwed, address addr);
-
-
-    /// @notice info
-    event Info(uint d, uint j);
 
     /// @notice Withdraw the senders user stake using the specified foresightToken id.
     /// @param index Market index.

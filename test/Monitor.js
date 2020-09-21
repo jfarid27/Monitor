@@ -16,11 +16,17 @@ describe('Monitor', function() {
     const VisionVault = contract.fromArtifact('VisionVault');
     const BancorBondingCurve = contract.fromArtifact('BancorBondingCurve');
     const MockWeth = contract.fromArtifact('MockWeth');
-    this.startingWeth = (new BN('15000'));
+    this.decimals = new BN('1000000000000000000');
+    this.startingWeth = (new BN('150')).mul(this.decimals);
     this.bondingCurve = await BancorBondingCurve.new({ from: account1 });
     this.weth = await MockWeth.new(this.startingWeth, { from: account1 });
     this.monitor = await Monitor.new({ from: account1, gasLimit: 12000000 });
-    this.visionVault = await VisionVault.new(this.weth.address, this.monitor.address, { from: account1, gasLimit: 12000000 });
+    this.visionVault = await VisionVault.new(
+      this.weth.address,
+      this.monitor.address,
+      this.bondingCurve.address,
+      { from: account1, gasLimit: 12000000 }
+    );
     const visionAddress = await this.visionVault.visionAddress.call();
     await this.monitor.initialize(visionAddress, this.bondingCurve.address, { from: account1 });
     this.vision = await Vision.at(visionAddress);
@@ -29,7 +35,7 @@ describe('Monitor', function() {
      * Sets up both accounts with vision using backed WETH.
      */
     this.generateVision = async function() {
-      this.stakeAmount = this.startingWeth.div(new BN('3'));
+      this.stakeAmount = this.startingWeth.div(new BN('10'));
       await this.weth.transfer(account2, this.stakeAmount, { from: account1 });
       await this.weth.transfer(account3, this.stakeAmount, { from: account1 });
       await this.weth.approve(this.visionVault.address, this.stakeAmount, { from: account1 });
@@ -46,7 +52,6 @@ describe('Monitor', function() {
      */
     this.withdrawVision = async function() {
       this.withdrawAmount = this.stakeAmount;
-      //await this.vision.approve(this.visionVault.address, this.withdrawAmount, { from: account1 });
       const trans1 = await this.visionVault.burnVision(this.withdrawAmount, { from: account1 });
       return [trans1];
     };
@@ -59,6 +64,9 @@ describe('Monitor', function() {
       return value.eq(expected);
     };
 
+    /**
+     * Creates a market usign the given data.
+     */
     this.createMarket = async function(endTime) {
       this.question = "foo";
       this.marketStakeAmount = this.stakeAmount.div(new BN('2'));
@@ -73,7 +81,7 @@ describe('Monitor', function() {
     };
 
     this.generateForesight = async function(marketIndex, invalid, no, yes) {
-      this.foresightStakeAmount = new BN('1000');
+      this.foresightStakeAmount = new BN('1').mul(this.decimals);
       this.expectedReturnYes1 = await this.monitor.getPurchaseReturn(marketIndex, yes, this.foresightStakeAmount);
       this.expectedReturnYes2 = await this.monitor.getPurchaseReturn(marketIndex, yes, this.foresightStakeAmount);
       this.expectedReturnNo1 = await this.monitor.getPurchaseReturn(marketIndex, no, this.foresightStakeAmount);
@@ -92,10 +100,12 @@ describe('Monitor', function() {
       beforeEach(async function() {
         await this.generateVision();
       });
-      it('should debit correct amount of stake token', async function() {
-        const check1 = await this.checkBalanceEqERC20(this.weth, account1, new BN('0'));
-        const check2 = await this.checkBalanceEqERC20(this.weth, account2, new BN('0'));
+      it('should debit correct amount of stake token for main account', async function() {
+        const check1 = await this.checkBalanceEqERC20(this.weth, account1, this.startingWeth.sub(this.stakeAmount.mul(new BN('3'))));
         expect(check1).to.be.ok;
+      });
+      it('should debit correct amount of stake token for other account', async function() {
+        const check2 = await this.checkBalanceEqERC20(this.weth, account2, new BN('0'));
         expect(check2).to.be.ok;
       });
       it('should credit correct amount of Vision', async function() {
@@ -116,10 +126,19 @@ describe('Monitor', function() {
         expect(check1).to.be.ok;
         expect(check2).to.be.ok;
       });
-      it('should credit correct amount of stake token', async function() {
-        const check1 = await this.checkBalanceEqERC20(this.weth, account1, this.stakeAmount);
-        const check2 = await this.checkBalanceEqERC20(this.weth, account2, new BN('0'));
+      it('should credit correct amount of stake token for main account', async function() {
+        const expected = this.startingWeth
+          .sub(
+            this.stakeAmount.mul(new BN('3'))
+          )
+          .add(
+            this.stakeAmount.mul(new BN('99')).div(new BN('100'))
+          );
+        const check1 = await this.checkBalanceEqERC20(this.weth, account1, expected);
         expect(check1).to.be.ok;
+      });
+      it('should credit correct amount of stake token for other account', async function() {
+        const check2 = await this.checkBalanceEqERC20(this.weth, account2, new BN('0'));
         expect(check2).to.be.ok;
       });
     });

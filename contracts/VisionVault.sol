@@ -5,6 +5,7 @@ pragma solidity 0.6.12;
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
+import "./BancorBondingCurve.sol";
 import "./Vision.sol";
 
 
@@ -23,11 +24,14 @@ contract VisionVault is ReentrancyGuard {
     uint public totalStakeInVisionVault = 1;
     /// @notice Initializiation boolean.
     bool public initialized;
+    /// @notice Bancor bonding curve contract.
+    IBancorBondingCurve public bondingCurve;
 
-    constructor(address _stakeTokenAddress, address _monitorAddress) public {
+    constructor(address _stakeTokenAddress, address _monitorAddress, address _bondingCurveAddress) public {
         stakeToken = IERC20(_stakeTokenAddress);
         vision = new Vision();
         visionAddress = address(vision);
+        bondingCurve = IBancorBondingCurve(_bondingCurveAddress);
     }
 
     /// @notice Event capturing minted vision, cost, and address.
@@ -51,14 +55,14 @@ contract VisionVault is ReentrancyGuard {
     /// @notice Event capturing burned vision, cost, and address.
     event VisionBurned(uint burned, uint cost, address addr);
 
-    /// @notice Burns Vision based on the current price and returns allocated stake.
+    /// @notice Burns Vision based on the current price and returns 99% of allocated stake.
     /// @param visionToBurn Amount of vision to burn.
     /// @dev Invariant - totalStakeInVisionVault cannot be less than 1.
     /// @dev Invariant - mintedVision cannot be less than 1.
     /// @dev Note vision does not need to be approved to be burnt.
     function burnVision(uint visionToBurn) public nonReentrant {
         uint stakeRate = totalStakeInVisionVault.div(mintedVision);
-        uint stakeToReturn = stakeRate.mul(visionToBurn);
+        uint stakeToReturn = bondingCurve.mulDiv(stakeRate.mul(visionToBurn), 990000, 1000000);
         mintedVision = mintedVision.sub(visionToBurn);
         totalStakeInVisionVault = totalStakeInVisionVault.sub(stakeToReturn);
         require(totalStakeInVisionVault > 1, "Total Stake In Vision Vault must be greater than 1.");

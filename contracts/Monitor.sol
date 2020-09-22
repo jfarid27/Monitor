@@ -18,6 +18,9 @@ contract Monitor is ReentrancyGuard, Ownable {
     /// @notice Foresight token reserve ratio.
     uint32 constant public RESERVE_RATIO = 900000;
 
+    /// @notice Constant week for finalization.
+    uint constant public A_WEEK = 604800;
+
     /// @notice Initalizer
     address public initializer;
 
@@ -146,7 +149,7 @@ contract Monitor is ReentrancyGuard, Ownable {
     /// @dev Event - Emits finalizedMarket event
     function finalizeMarket(uint index) public nonReentrant isInitialized {
         RealityMarket storage market = realityMarketRegistry[index];
-        require(block.timestamp > market.endTime, "Market has not reached End Time.");
+        require(block.timestamp > market.endTime.add(A_WEEK), "Market has not reached End Time.");
         require(!market.finalized, "Market already finalized.");
         uint invalid = realityMarketRegistry[index].tokenIndex;
         uint no = realityMarketRegistry[index].tokenIndex.add(1);

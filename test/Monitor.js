@@ -232,7 +232,8 @@ describe('Monitor', function() {
     });
     describe('once finalized', function() {
       beforeEach(async function() {
-        await time.increase(this.timeDelta.add(this.timeDelta));
+        this.one_week = new BN('604800');
+        await time.increase(this.timeDelta.add(this.timeDelta).add(this.one_week));
         await this.monitor.finalizeMarket(this.marketIndex, { from: account1 });
       });
       it('should not allow losing tokens to be withdrawn', async function() {

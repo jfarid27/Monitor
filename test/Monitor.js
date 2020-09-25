@@ -94,6 +94,20 @@ describe('Monitor', function() {
       return [trans1, trans2, trans3];
     };
 
+    this.generateForesight2 = async function(marketIndex, invalid, no, yes) {
+      this.foresightStakeAmount = new BN('1').mul(this.decimals);
+      this.expectedReturnNo1 = await this.monitor.getPurchaseReturn(marketIndex, no, this.foresightStakeAmount);
+      this.expectedReturnNo2 = await this.monitor.getPurchaseReturn(marketIndex, no, this.foresightStakeAmount);
+      this.expectedReturnNo3 = await this.monitor.getPurchaseReturn(marketIndex, no, this.foresightStakeAmount);
+      await this.vision.approve(this.monitor.address, this.foresightStakeAmount, { from: account1 });
+      const trans1 = await this.monitor.buyPosition(marketIndex, no, this.foresightStakeAmount, { from: account1 });
+      await this.vision.approve(this.monitor.address, this.foresightStakeAmount, { from: account2 });
+      const trans2 = await this.monitor.buyPosition(marketIndex, no, this.foresightStakeAmount, { from: account2 });
+      await this.vision.approve(this.monitor.address, this.foresightStakeAmount, { from: account3 });
+      const trans3 = await this.monitor.buyPosition(marketIndex, no, this.foresightStakeAmount, { from: account3 });
+      return [trans1, trans2, trans3];
+    }
+
   });
   describe('Vision Bonding Curve', function() {
     describe('deposit stake for vision', function() {
@@ -215,13 +229,15 @@ describe('Monitor', function() {
     beforeEach(async function() {
       await this.generateVision();
       this.currentTime = await time.latest();
-      this.timeDelta = new BN('5000');
+      this.one_week = new BN('604800');
+      this.timeDelta = this.one_week;
       const [trans] = await this.createMarket(this.currentTime.add(this.timeDelta));
       this.marketCreatedTransactionEvent = trans.receipt.logs[0].args;
       this.marketIndex = this.marketCreatedTransactionEvent.index;
       this.yes = this.marketCreatedTransactionEvent.yesIndex;
       this.no = this.marketCreatedTransactionEvent.noIndex;
       this.invalid = this.marketCreatedTransactionEvent.invalidIndex;
+      await time.increase(this.timeDelta.div(new BN('2')));
       const [trans1, trans2, trans3] = await this.generateForesight(this.marketIndex, this.invalid, this.no, this.yes);
     });
     it('should not allow withdrawals until fully finalized', async function() {
@@ -230,10 +246,9 @@ describe('Monitor', function() {
         'Market not finalized.'
       );
     });
-    describe('once finalized', function() {
+    describe('once finalized and a week has past since the winning outcome has taken the lead', function() {
       beforeEach(async function() {
-        this.one_week = new BN('604800');
-        await time.increase(this.timeDelta.add(this.timeDelta).add(this.one_week));
+        await time.increase(this.timeDelta.add(this.timeDelta).add(this.timeDelta.mul(new BN('2'))));
         await this.monitor.finalizeMarket(this.marketIndex, { from: account1 });
       });
       it('should not allow losing tokens to be withdrawn', async function() {
@@ -255,6 +270,47 @@ describe('Monitor', function() {
       it('should allow second winning tokens to be withdrawn', async function() {
         const trans = await this.monitor.withdrawWinningStake(this.marketIndex, this.yes, { from: account2 });
         expect(trans.receipt.logs[0].args.visionOwed.gt(this.foresightStakeAmount)).to.be.ok;
+      });
+    });
+    describe('when a new outcome takes the lead', function() {
+      beforeEach(async function() {
+        await time.increase(this.timeDelta);
+        const [trans1, trans2, trans3] = await this.generateForesight2(this.marketIndex, this.yes, this.no, this.invalid);
+        this.votingTransactions2 = {
+          account1: trans1.receipt.logs[0].args,
+          account2: trans2.receipt.logs[0].args,
+          account3: trans3.receipt.logs[0].args,
+        };
+      });
+      it('should not allow any tokens to be withdrawn.', async function() {
+        await expectRevert(
+          this.monitor.withdrawWinningStake(this.marketIndex, this.no, { from: account3 }),
+          "Market not finalized."
+        );
+      });
+      describe('once a week has past since the winning outcome has taken the lead and the end time has a week added', function() {
+        beforeEach(async function() {
+          await time.increase(this.timeDelta.add(this.timeDelta.div(new BN('2'))));
+          await this.monitor.finalizeMarket(this.marketIndex, { from: account1 });
+        });
+        it('should not allow losing tokens to be withdrawn', async function() {
+          await expectRevert(
+            this.monitor.withdrawWinningStake(this.marketIndex, this.yes, { from: account3 }),
+            "Selected token is not redeemable."
+          );
+        });
+        it('should allow first winning tokens to be withdrawn', async function() {
+          const trans = await this.monitor.withdrawWinningStake(this.marketIndex, this.no, { from: account1 });
+          expect(trans.receipt.logs[0].args.visionOwed.gt(this.foresightStakeAmount)).to.be.ok;
+        });
+        it('should allow second winning tokens to be withdrawn', async function() {
+          const trans = await this.monitor.withdrawWinningStake(this.marketIndex, this.no, { from: account2 });
+          expect(trans.receipt.logs[0].args.visionOwed.gt(this.foresightStakeAmount)).to.be.ok;
+        });
+        it('should allow third winning tokens to be withdrawn', async function() {
+          const trans = await this.monitor.withdrawWinningStake(this.marketIndex, this.no, { from: account3 });
+          expect(trans.receipt.logs[0].args.visionOwed.gt(this.foresightStakeAmount.mul(new BN('2')))).to.be.ok;
+        });
       });
     });
   });

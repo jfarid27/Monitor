@@ -235,7 +235,7 @@
         "id": 3817,
         "nodeType": "ImportDirective",
         "scope": 4501,
-        "sourceUnit": 7700,
+        "sourceUnit": 7703,
         "src": "171:21:18",
         "symbolAliases": [],
         "unitAlias": ""
@@ -587,10 +587,10 @@
               "id": 3845,
               "name": "Power",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 7699,
+              "referencedDeclaration": 7702,
               "src": "821:5:18",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Power_$7699",
+                "typeIdentifier": "t_contract$_Power_$7702",
                 "typeString": "contract Power"
               }
             },
@@ -600,7 +600,7 @@
           }
         ],
         "contractDependencies": [
-          7699
+          7702
         ],
         "contractKind": "contract",
         "documentation": {
@@ -613,7 +613,7 @@
         "id": 4500,
         "linearizedBaseContracts": [
           4500,
-          7699
+          7702
         ],
         "name": "BancorBondingCurve",
         "nodeType": "ContractDefinition",
@@ -1743,7 +1743,7 @@
                         "name": "power",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 6225,
+                        "referencedDeclaration": 6228,
                         "src": "2467:5:18",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_uint256_$_t_uint256_$_t_uint32_$_t_uint32_$returns$_t_uint256_$_t_uint8_$",
@@ -3145,7 +3145,7 @@
                         "name": "power",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 6225,
+                        "referencedDeclaration": 6228,
                         "src": "4253:5:18",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_uint256_$_t_uint256_$_t_uint32_$_t_uint32_$returns$_t_uint256_$_t_uint8_$",

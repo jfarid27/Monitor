@@ -42,6 +42,7 @@ contract Monitor is ReentrancyGuard, Ownable {
         uint id;
         bool finalized;
         uint winningOutcome;
+        uint leadTime;
         uint endTime;
         string question;
         uint tokenIndex;
@@ -86,16 +87,17 @@ contract Monitor is ReentrancyGuard, Ownable {
         uint index = realityMarketCounts.add(1);
         realityMarketCounts = index;
         uint totalTokens = foresightTokens.totalTokensMinted();
-        uint invalidIndex = totalTokens.add(1);
-        uint noIndex = totalTokens.add(2);
-        uint yesIndex = totalTokens.add(3);
         realityMarketRegistry[index].id = index;
         realityMarketRegistry[index].finalized = false;
         realityMarketRegistry[index].endTime = endTime;
         realityMarketRegistry[index].question = question;
         realityMarketRegistry[index].tokenIndex = foresightTokens.registerNewSet();
+        uint invalid = realityMarketRegistry[index].tokenIndex;
+        realityMarketRegistry[index].winningOutcome = invalid;
+        uint no = realityMarketRegistry[index].tokenIndex.add(1);
+        uint yes = realityMarketRegistry[index].tokenIndex.add(2);
         vision.transferFrom(msg.sender, address(this), invalidStake);
-        RealityMarketCreated(index, yesIndex, noIndex, invalidIndex, invalidStake);
+        RealityMarketCreated(index, yes, no, invalid, invalidStake);
     }
 
     /// @notice Event capturing minted foresight, stake, and address.
@@ -113,24 +115,28 @@ contract Monitor is ReentrancyGuard, Ownable {
     /// @param index Market index to buy the position in.
     /// @param outcome Token index of the outcome to buy into.
     /// @param amount Amount of Vision to stake on the outcome.
+    /// @dev Invariant - User may not purchase positions once the market has been finalized.
+    /// @dev Invariant - Market outcome may not be
     function buyPosition(uint index, uint outcome, uint amount) public nonReentrant isInitialized {
-        bool selected = false;
+        require(!realityMarketRegistry[index].finalized, "Market already finalized.");
         require(amount > 0, "Amount to mint should be greater than 0.");
-        if (outcome == realityMarketRegistry[index].tokenIndex.add(2)) {
-            selected = true;
-        }
-        if (outcome == realityMarketRegistry[index].tokenIndex.add(1)) {
-            selected = true;
-        }
-        if (outcome == realityMarketRegistry[index].tokenIndex) {
-            selected = true;
-        }
-        require(selected, "Market outcome selection does not match market index outcomes.");
+        uint invalid = realityMarketRegistry[index].tokenIndex;
+        uint no = realityMarketRegistry[index].tokenIndex.add(1);
+        uint yes = realityMarketRegistry[index].tokenIndex.add(2);
+        require(
+            (outcome == no || outcome == yes || outcome == invalid),
+            "Market outcome selection does not match market index outcomes."
+        );
         uint foresightAmount = getPurchaseReturn(index, outcome, amount);
         require(foresightAmount > 0, "Returned foresight should be greater than 0.");
         realityMarketRegistry[index].totalStaked[outcome] = realityMarketRegistry[index].totalStaked[outcome].add(amount);
         realityMarketRegistry[index].totalStakedByAddress[outcome][msg.sender] = realityMarketRegistry[index].totalStakedByAddress[outcome][msg.sender].add(amount);
         realityMarketRegistry[index].totalMinted[outcome] = realityMarketRegistry[index].totalMinted[outcome].add(foresightAmount);
+        uint winningOutcome = realityMarketRegistry[index].winningOutcome;
+        if (realityMarketRegistry[index].totalStaked[outcome] > realityMarketRegistry[index].totalStaked[winningOutcome]) {
+            realityMarketRegistry[index].winningOutcome = outcome;
+            realityMarketRegistry[index].leadTime = block.timestamp;
+        }
         foresightTokens.mint(msg.sender, outcome, foresightAmount);
         vision.transferFrom(msg.sender, address(this), amount);
         emit ForesightMinted(index, outcome, foresightAmount, amount, msg.sender);
@@ -150,20 +156,13 @@ contract Monitor is ReentrancyGuard, Ownable {
     function finalizeMarket(uint index) public nonReentrant isInitialized {
         RealityMarket storage market = realityMarketRegistry[index];
         require(block.timestamp > market.endTime.add(A_WEEK), "Market has not reached End Time.");
+        require(block.timestamp > market.leadTime.add(A_WEEK), "Leading outcome has not lead for more than 1 week.");
         require(!market.finalized, "Market already finalized.");
         uint invalid = realityMarketRegistry[index].tokenIndex;
         uint no = realityMarketRegistry[index].tokenIndex.add(1);
         uint yes = realityMarketRegistry[index].tokenIndex.add(2);
-        uint winningOutcome = realityMarketRegistry[index].tokenIndex;
-        if (market.totalMinted[yes] > market.totalMinted[no] && market.totalMinted[yes] > market.totalMinted[invalid]) {
-            winningOutcome = yes;
-        }
-        if (market.totalMinted[no] > market.totalMinted[yes] && market.totalMinted[no] > market.totalMinted[invalid]) {
-            winningOutcome = no;
-        }
         market.finalized = true;
-        market.winningOutcome = winningOutcome;
-        RealityMarketFinalized(index, winningOutcome);
+        RealityMarketFinalized(index, market.winningOutcome);
     }
 
     /// @notice Event to convert foresight into vision.
